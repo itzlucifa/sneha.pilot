@@ -1,4 +1,4 @@
--- Run this SQL in your Supabase project's SQL Editor to create the tables
+-- Run this SQL in your Supabase SQL Editor to create the tables
 
 CREATE TABLE pilot_signups (
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -20,6 +20,6 @@ CREATE TABLE pilot_feedback (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Optional: Enable Row Level Security
--- ALTER TABLE pilot_signups ENABLE ROW LEVEL SECURITY;
--- ALTER TABLE pilot_feedback ENABLE ROW LEVEL SECURITY;
+-- Allow anonymous inserts (public forms, no auth needed)
+ALTER TABLE pilot_signups DISABLE ROW LEVEL SECURITY;
+ALTER TABLE pilot_feedback DISABLE ROW LEVEL SECURITY;
