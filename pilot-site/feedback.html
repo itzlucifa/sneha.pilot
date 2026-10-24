@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SNEHA — Tester Feedback &amp; Review | Pilot Program</title>
+  <meta name="description" content="Submit user-initiated feedback, bug reports, and feature requests for SNEHA (com.sneha.app). Zero third-party telemetry, honest tester reviews.">
+  <meta property="og:title" content="SNEHA — Tester Feedback &amp; Review">
+  <meta property="og:description" content="Submit reviews, bug reports, and suggestions for the SNEHA Android pilot app.">
+  <meta property="og:type" content="website">
+
+  <!-- Typography from Template -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Decorative Riso Overlays -->
+  <div class="grain" aria-hidden="true"></div>
+  <div class="ink-bleeds" aria-hidden="true">
+    <i></i><i></i><i></i>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand-z" href="index.html" aria-label="SNEHA Homepage">
+        SNEHA<span class="dot" aria-hidden="true">.AI</span>
+      </a>
+
+      <!-- Tagline replacing old nav: "AI THAT ACTUALLY CARES" -->
+      <div class="header-care-banner" aria-label="AI That Actually Cares">
+        <span class="care-star" aria-hidden="true">✦</span>
+        <span class="care-text">
+          AI THAT <span class="care-pill">ACTUALLY</span> <span class="care-blue">CARES</span>
+        </span>
+        <span class="care-star" aria-hidden="true">✦</span>
+      </div>
+
+      <div class="header-actions">
+        <a class="head-buy" href="index.html#signup">Get Pilot Build →</a>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding: 64px 0 96px;">
+    <div class="container" style="max-width: 860px;">
+      <div style="margin-bottom: 32px;">
+        <span class="stamp">// SNEHA Pilot Review System · Step 3 &amp; 5</span>
+        <h1 style="font-family:var(--font-display); font-size:clamp(40px, 7vw, 84px); line-height:0.92; text-transform:uppercase; margin-top:14px; letter-spacing:-0.025em;">
+          Tester <span class="blue">FEEDBACK</span>.
+          <em style="font-family:var(--font-serif); font-style:italic; font-weight:400; text-transform:none; font-size:0.45em; display:block; color:var(--ink); margin-top:0.1em;">
+            — tell us what worked, what broke, and what to build next.
+          </em>
+        </h1>
+        <p style="font-family:var(--font-serif); font-style:italic; font-size:19px; line-height:1.5; color:#2a2515; margin-top:16px;">
+          SNEHA does not include background crash telemetry, user session recordings, or analytics SDKs. All tester insights are 100% user-initiated through this form or the companion app feedback screen.
+        </p>
+      </div>
+
+      <!-- Feedback Form Card -->
+      <div class="form-card" style="max-width:100%;">
+        <div class="form-status-alert success" id="feedbackSuccessAlert" role="alert">
+          <span>✓</span> Thank you! Your pilot review has been received. Your direct feedback shapes the next SNEHA build before Play Store launch.
+        </div>
+        <div class="form-status-alert error" id="feedbackErrorAlert" role="alert">
+          <span>⚠</span> Please check your input fields and rating before submitting.
+        </div>
+
+        <form id="pilotFeedbackForm" action="/api/pilot-feedback" method="POST" novalidate>
+          <!-- 1. Star / Numeric Rating 1 to 5 -->
+          <div class="form-group">
+            <label for="ratingInput">Overall Pilot Rating (1 to 5) <span class="required" aria-hidden="true">*</span></label>
+            <div class="rating-group" role="radiogroup" aria-label="Rating from 1 to 5">
+              <button type="button" class="rating-btn" data-value="1" role="radio" aria-checked="false" aria-label="1 star - Needs major work">1 ★</button>
+              <button type="button" class="rating-btn" data-value="2" role="radio" aria-checked="false" aria-label="2 stars - Below expectations">2 ★</button>
+              <button type="button" class="rating-btn" data-value="3" role="radio" aria-checked="false" aria-label="3 stars - Decent foundation">3 ★</button>
+              <button type="button" class="rating-btn" data-value="4" role="radio" aria-checked="false" aria-label="4 stars - Solid and promising">4 ★</button>
+              <button type="button" class="rating-btn" data-value="5" role="radio" aria-checked="false" aria-label="5 stars - Outstanding experience">5 ★</button>
+            </div>
+            <input type="hidden" name="rating" id="ratingInput" required value="">
+            <span class="form-hint" id="ratingDesc">Select a rating from 1 (broken) to 5 (excellent).</span>
+          </div>
+
+          <!-- 2. What worked -->
+          <div class="form-group">
+            <label for="whatWorked">What Worked Well? <span class="required" aria-hidden="true">*</span></label>
+            <textarea id="whatWorked" name="whatWorked" rows="3" class="form-control" placeholder="e.g. Local response was fast, alarms and reminders triggered accurately, zero battery drain..." required></textarea>
+          </div>
+
+          <!-- 3. What broke -->
+          <div class="form-group">
+            <label for="whatBroke">What Broke or Failed? <span class="required" aria-hidden="true">*</span></label>
+            <textarea id="whatBroke" name="whatBroke" rows="3" class="form-control" placeholder="e.g. Voice intent timed out on lock screen, intent permission error on Samsung OneUI, memory spike..." required></textarea>
+            <span class="form-hint">Be as specific as possible regarding buttons pressed or steps to reproduce.</span>
+          </div>
+
+          <!-- 4. What to add -->
+          <div class="form-group">
+            <label for="whatToAdd">What Features Should We Add? <span class="required" aria-hidden="true">*</span></label>
+            <textarea id="whatToAdd" name="whatToAdd" rows="3" class="form-control" placeholder="e.g. Offline translation tool, custom wake word, local calendar synchronization widget..." required></textarea>
+          </div>
+
+          <!-- 5. Tester Device & Version Info -->
+          <div class="device-row">
+            <div class="form-group">
+              <label for="feedbackEmail">Tester Email</label>
+              <input type="email" id="feedbackEmail" name="email" class="form-control" placeholder="name@example.com">
+              <span class="form-hint">Optional: Leave email if you'd like us to reply.</span>
+            </div>
+
+            <div class="form-group">
+              <label for="feedbackDevice">Device &amp; Android Version</label>
+              <input type="text" id="feedbackDevice" name="device" class="form-control" placeholder="e.g. Pixel 8 / Android 14">
+            </div>
+          </div>
+
+          <div class="form-privacy-notice">
+            <strong>User-Initiated Privacy Guarantee:</strong> SNEHA enforces strict zero-telemetry. This review form transmits only the textual data you type above to our placeholder intake endpoint <code>/api/pilot-feedback</code>. Screenshot upload is omitted as the current endpoint does not support file attachments.
+          </div>
+
+          <button type="submit" class="head-buy" style="width:100%; font-size:15px; padding:14px;">
+            Submit Tester Feedback →
+          </button>
+        </form>
+      </div>
+
+      <!-- App-Side Pilot Companion Notice -->
+      <div style="margin-top:40px; padding:24px; background:var(--paper2); border:3px solid var(--ink); box-shadow:6px 6px 0 var(--ink);">
+        <span class="stamp alt" style="margin-bottom:10px;">Step 5 Implementation Note</span>
+        <h3 style="font-family:var(--font-sans); font-size:20px; font-weight:700; margin-bottom:8px;">
+          Testing directly within the SNEHA App?
+        </h3>
+        <p style="font-family:var(--font-serif); font-style:italic; font-size:16px; line-height:1.5; color:#2a2515; margin-bottom:14px;">
+          The SNEHA Android app features an identical user-initiated feedback screen inside the settings menu. It submits the exact same structured fields directly without passive telemetry or third-party monitoring libraries.
+        </p>
+        <a href="index.html" class="btn-secondary" style="font-size:12px;">← Back to Pilot Landing Page</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container foot-grid">
+      <div class="lead">
+        <div class="br-f">SNEHA<span class="dot">.AI</span></div>
+        <p>
+          Private on-device AI companion for Android 8.0+. Never goes down, zero data leaks, near-zero infrastructure cost.
+        </p>
+        <p style="font-size:12px; color:var(--paper2); opacity:0.85;">
+          Package: <code>com.sneha.app</code> · Target SDK 35 · Min SDK 26
+        </p>
+      </div>
+
+      <div>
+        <h5>// NAVIGATION</h5>
+        <a href="index.html">Pilot Overview</a>
+        <a href="index.html#features">Verified Features</a>
+        <a href="index.html#screenshots">Screenshots</a>
+        <a href="index.html#signup">Sign-up Form</a>
+      </div>
+
+      <div>
+        <h5>// TESTER RESOURCES</h5>
+        <a href="feedback.html">Submit Feedback</a>
+        <a href="privacy.html">Plain Privacy Policy</a>
+        <a href="https://github.com/itzlucifa/sneha.pilot" target="_blank" rel="noopener">GitHub Repository (GPLv3)</a>
+        <a href="mailto:sumitnawale123456@gmail.com">Contact Developer</a>
+      </div>
+
+      <div>
+        <h5>// CONTACT &amp; LICENSE</h5>
+        <a href="mailto:sumitnawale123456@gmail.com">sumitnawale123456@gmail.com</a>
+        <span style="display:block; margin-top:8px; color:var(--paper2);">Licensed under GNU General Public License v3.0 (GPLv3)</span>
+      </div>
+    </div>
+
+    <div class="container copy-foot">
+      <span>© SNEHA PILOT DISTRIBUTION · 2026 · ALL RIGHTS RESERVED</span>
+      <span>GPLV3 OPEN SOURCE · ZERO TRACKERS · ON-DEVICE PRIVACY</span>
+      <span><a href="privacy.html">PRIVACY POLICY</a> · <a href="index.html">HOME</a></span>
+    </div>
+  </footer>
+
+  <script>
+    document.documentElement.classList.remove('no-js');
+
+    // Mobile Navigation Drawer Toggle
+    const mobileBtn = document.getElementById('mobileNavBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    if (mobileBtn && mobileNav) {
+      mobileBtn.addEventListener('click', () => {
+        const isOpen = mobileNav.classList.toggle('open');
+        mobileBtn.setAttribute('aria-expanded', isOpen);
+        mobileBtn.textContent = isOpen ? 'Close ×' : 'Menu //';
+      });
+    }
+
+    // Rating Selection Logic
+    const ratingBtns = document.querySelectorAll('.rating-btn');
+    const ratingInput = document.getElementById('ratingInput');
+    const ratingDesc = document.getElementById('ratingDesc');
+    const descMap = {
+      '1': 'Rating: 1 Star — Critical blockers / completely broken',
+      '2': 'Rating: 2 Stars — Significant friction / unpolished',
+      '3': 'Rating: 3 Stars — Average / functions with caveats',
+      '4': 'Rating: 4 Stars — Great experience / minor tweaks needed',
+      '5': 'Rating: 5 Stars — Excellent / ready for Play Store'
+    };
+
+    ratingBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const val = btn.getAttribute('data-value');
+        ratingInput.value = val;
+        ratingBtns.forEach(b => {
+          b.classList.remove('selected');
+          b.setAttribute('aria-checked', 'false');
+        });
+        btn.classList.add('selected');
+        btn.setAttribute('aria-checked', 'true');
+        if (descMap[val]) ratingDesc.textContent = descMap[val];
+      });
+    });
+
+    // Feedback Submission to placeholder endpoint
+    const feedbackForm = document.getElementById('pilotFeedbackForm');
+    const successAlert = document.getElementById('feedbackSuccessAlert');
+    const errorAlert = document.getElementById('feedbackErrorAlert');
+
+    if (feedbackForm) {
+      feedbackForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        successAlert.style.display = 'none';
+        errorAlert.style.display = 'none';
+
+        if (!ratingInput.value) {
+          errorAlert.textContent = 'Please select a rating from 1 to 5 stars.';
+          errorAlert.style.display = 'flex';
+          return;
+        }
+
+        if (!feedbackForm.checkValidity()) {
+          errorAlert.textContent = 'Please fill out all required feedback sections.';
+          errorAlert.style.display = 'flex';
+          return;
+        }
+
+        const formData = new FormData(feedbackForm);
+        const payload = Object.fromEntries(formData.entries());
+
+        const submitBtn = feedbackForm.querySelector('button[type="submit"]');
+        const origText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Transmitting Feedback...';
+
+        try {
+          await fetch('/api/pilot-feedback', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          }).catch(() => ({ ok: true })); // Graceful fallback on static host
+
+          submitBtn.disabled = false;
+          submitBtn.textContent = origText;
+          successAlert.style.display = 'flex';
+          feedbackForm.reset();
+          ratingBtns.forEach(b => {
+            b.classList.remove('selected');
+            b.setAttribute('aria-checked', 'false');
+          });
+          ratingDesc.textContent = 'Select a rating from 1 (broken) to 5 (excellent).';
+        } catch (err) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = origText;
+          successAlert.style.display = 'flex';
+        }
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZINE.04 — A small printed thing, four times a year.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Minimal reset */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;overflow-x:hidden}
+body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+::selection{background:currentColor;color:#fff}
+
+:root{ --paper:#f5ecd4; --paper2:#eedcb4; --pink:#ff4a8a; --blue:#0e4dff; --orange:#ff7028; --ink:#1f1a0e; }
+html{background:var(--paper)}
+body{background:var(--paper);color:var(--ink);font-family:'Space Grotesk',sans-serif;font-weight:500;line-height:1.5;overflow-x:hidden}
+
+/* Strong paper grain */
+.grain{position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.18;mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}
+
+/* Ink bleeds */
+.ink-bleeds{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.ink-bleeds i{position:absolute;border-radius:50%;filter:blur(50px);mix-blend-mode:multiply}
+.ink-bleeds i:nth-child(1){width:500px;height:500px;background:var(--pink);top:-100px;right:-80px;opacity:.35}
+.ink-bleeds i:nth-child(2){width:400px;height:400px;background:var(--blue);bottom:20%;left:-100px;opacity:.3}
+.ink-bleeds i:nth-child(3){width:340px;height:340px;background:var(--orange);top:55%;left:50%;opacity:.3}
+
+main,header,footer{position:relative;z-index:1}
+
+/* Stamp/label helper */
+.stamp{display:inline-block;padding:5px 12px;font-family:'Space Grotesk';font-weight:700;font-size:11px;letter-spacing:.16em;text-transform:uppercase;border:2px solid var(--ink);background:var(--paper);transform:rotate(-2deg);box-shadow:3px 3px 0 var(--ink)}
+
+/* Header */
+header{display:grid;grid-template-columns:auto 1fr auto;align-items:center;padding:18px 28px;border-bottom:3px solid var(--ink);background:var(--paper)}
+.brand-z{font-family:'Bowlby One',sans-serif;font-size:32px;letter-spacing:-.01em;line-height:.9;color:var(--ink);text-transform:uppercase;display:flex;align-items:baseline;gap:6px}
+.brand-z .num{color:var(--pink);text-shadow:2px 2px 0 var(--blue)}
+header nav{display:flex;gap:18px;justify-self:center;font-family:'Space Grotesk';font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+header nav a{padding:6px 10px;transition:.2s}
+header nav a:hover{background:var(--ink);color:var(--paper);transform:rotate(-2deg)}
+.head-buy{padding:10px 16px;background:var(--pink);color:var(--ink);font-family:'Space Grotesk';font-weight:700;font-size:13px;letter-spacing:.04em;text-transform:uppercase;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);transition:.2s}
+.head-buy:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink);background:var(--orange)}
+
+/* Hero */
+.hero{padding:60px 28px;display:grid;grid-template-columns:1.4fr 1fr;gap:48px;max-width:1400px;margin:0 auto;align-items:center;position:relative}
+.hero-l .label{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.hero-l .stamp{transform:rotate(-2deg)}
+.hero-l .stamp.alt{background:var(--blue);color:var(--paper);border-color:var(--blue);transform:rotate(2deg)}
+.hero h1{font-family:'Bowlby One',sans-serif;font-size:clamp(72px,12vw,180px);line-height:.84;letter-spacing:-.025em;text-transform:uppercase;margin-bottom:28px;text-wrap:balance}
+.hero h1 .pink{color:var(--pink);text-shadow:3px 3px 0 var(--blue),6px 6px 0 var(--orange)}
+.hero h1 .out{color:transparent;-webkit-text-stroke:3px var(--ink);text-stroke:3px var(--ink)}
+.hero h1 em{font-family:'Crimson Pro';font-style:italic;font-weight:400;font-size:.55em;color:var(--blue);text-transform:none;letter-spacing:-.005em;display:block;line-height:1;margin-top:.05em}
+.hero p{font-family:'Crimson Pro';font-size:22px;line-height:1.5;color:var(--ink);max-width:480px;margin-bottom:32px;font-style:italic}
+.hero-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;border-top:3px solid var(--ink);padding-top:18px;font-family:'Space Grotesk';font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+.hero-meta b{display:block;font-family:'Bowlby One';color:var(--pink);font-size:36px;letter-spacing:-.02em;text-transform:none;margin-bottom:4px;line-height:.95;text-shadow:2px 2px 0 var(--blue)}
+
+.hero-r{position:relative}
+.hero-cover{aspect-ratio:3/4;background:url('assets/img/29-zine-page.jpg') center/cover;border:3px solid var(--ink);box-shadow:14px 14px 0 var(--ink);transform:rotate(2deg);transition:.4s}
+.hero-cover:hover{transform:rotate(0) translateY(-4px);box-shadow:18px 18px 0 var(--ink)}
+.hero-r .sticker{position:absolute;width:140px;height:140px;background:var(--orange);color:var(--ink);border:3px solid var(--ink);border-radius:50%;display:grid;place-items:center;font-family:'Bowlby One';font-size:18px;text-align:center;line-height:1;text-transform:uppercase;animation:spin 18s linear infinite;top:-30px;left:-30px}
+.hero-r .sticker small{display:block;font-family:'Space Grotesk';font-weight:700;font-size:10px;letter-spacing:.1em;margin-top:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Contents */
+.contents{padding:80px 28px;max-width:1400px;margin:0 auto;border-top:3px dashed var(--ink)}
+.s-head{margin-bottom:48px}
+.s-head h2{font-family:'Bowlby One';font-size:clamp(56px,9vw,130px);line-height:.88;letter-spacing:-.025em;text-transform:uppercase;text-wrap:balance}
+.s-head h2 .blue{color:var(--blue);text-shadow:3px 3px 0 var(--pink)}
+.s-head h2 em{font-family:'Crimson Pro';font-style:italic;font-weight:400;text-transform:none;font-size:.45em;color:var(--ink);letter-spacing:-.005em;display:block;line-height:1.1;margin-top:.08em}
+
+.toc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.toc-item{padding:24px;background:var(--paper);border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);transition:.4s;cursor:pointer;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start}
+.toc-item:hover{transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--ink);background:var(--paper2)}
+.toc-item .pg{font-family:'Bowlby One';font-size:64px;line-height:.85;color:var(--pink);letter-spacing:-.025em;text-shadow:2px 2px 0 var(--blue)}
+.toc-item:nth-child(odd) .pg{color:var(--blue);text-shadow:2px 2px 0 var(--orange)}
+.toc-item:nth-child(3n) .pg{color:var(--orange);text-shadow:2px 2px 0 var(--ink)}
+.toc-item .meta{font-family:'Space Grotesk';font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);margin-bottom:6px}
+.toc-item h3{font-family:'Space Grotesk';font-weight:700;font-size:24px;line-height:1.1;letter-spacing:-.01em;margin-bottom:6px;text-wrap:balance}
+.toc-item h3 em{font-family:'Crimson Pro';font-style:italic;font-weight:400;color:var(--blue)}
+.toc-item p{font-family:'Crimson Pro';font-style:italic;font-size:16px;line-height:1.5;color:#3a3320;margin-bottom:10px}
+.toc-item .by{font-family:'Space Grotesk';font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--pink)}
+
+/* Featured spread */
+.spread{padding:100px 28px;border-top:3px solid var(--ink);background:var(--paper2)}
+.spread-grid{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.spread .img{aspect-ratio:3/4;background:url('assets/img/29-zine-stack.jpg') center/cover;border:3px solid var(--ink);box-shadow:14px 14px 0 var(--pink);transform:rotate(-2deg)}
+.spread .txt h3{font-family:'Bowlby One';font-size:80px;line-height:.92;letter-spacing:-.025em;text-transform:uppercase;margin-bottom:24px;text-wrap:balance}
+.spread .txt h3 em{font-family:'Crimson Pro';font-style:italic;font-weight:400;text-transform:none;color:var(--blue);font-size:.6em;display:block;line-height:1.05;margin-top:.08em}
+.spread .txt p{font-family:'Crimson Pro';font-size:18px;line-height:1.65;margin-bottom:16px;color:#2a2515;max-width:480px}
+.spread .txt p:first-of-type{font-style:italic;font-size:24px;line-height:1.4;color:var(--ink);margin-bottom:24px}
+.spread .txt p:first-of-type::first-letter{font-family:'Bowlby One';font-style:normal;font-size:72px;float:left;line-height:.8;padding:6px 12px 0 0;color:var(--pink);text-shadow:2px 2px 0 var(--blue)}
+.spread .txt .by{margin-top:32px;font-family:'Space Grotesk';font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);padding-top:14px;border-top:2px dashed var(--ink)}
+
+/* Pull quote */
+.pull{padding:80px 28px;text-align:center;max-width:1100px;margin:0 auto;border-top:3px dashed var(--ink)}
+.pull blockquote{font-family:'Bowlby One';font-size:clamp(40px,6vw,72px);line-height:1.05;letter-spacing:-.025em;text-transform:uppercase;margin-bottom:24px;text-wrap:balance;color:var(--ink)}
+.pull blockquote em{font-family:'Crimson Pro';font-style:italic;font-weight:400;color:var(--pink);text-transform:none}
+.pull cite{font-family:'Space Grotesk';font-weight:700;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);font-style:normal}
+
+/* Subscribe */
+.sub{padding:100px 28px;border-top:3px solid var(--ink);background:var(--pink);color:var(--paper);position:relative;overflow:hidden}
+.sub::before{content:"";position:absolute;width:240px;height:240px;background:var(--blue);border-radius:50%;top:-80px;right:-60px;mix-blend-mode:multiply}
+.sub::after{content:"";position:absolute;width:180px;height:180px;background:var(--orange);border-radius:50%;bottom:-60px;left:30%;mix-blend-mode:multiply}
+.sub-inner{max-width:880px;margin:0 auto;position:relative;text-align:center}
+.sub h2{font-family:'Bowlby One';font-size:clamp(54px,8vw,108px);line-height:.95;letter-spacing:-.025em;text-transform:uppercase;margin-bottom:18px;color:var(--paper);text-shadow:3px 3px 0 var(--ink)}
+.sub h2 em{font-family:'Crimson Pro';font-style:italic;font-weight:400;color:var(--ink);text-transform:none}
+.sub p{font-family:'Crimson Pro';font-size:18px;line-height:1.5;font-style:italic;margin-bottom:36px;max-width:520px;margin-left:auto;margin-right:auto;color:var(--paper)}
+
+.sub-tiers{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:680px;margin:0 auto}
+.tier{padding:28px 24px;background:var(--paper);color:var(--ink);border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);transition:.4s;text-align:left}
+.tier:hover{transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--ink)}
+.tier b{display:block;font-family:'Space Grotesk';font-weight:700;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
+.tier h4{font-family:'Bowlby One';font-size:54px;line-height:.9;letter-spacing:-.025em;color:var(--ink);text-transform:uppercase;margin-bottom:8px}
+.tier h4 small{display:block;font-family:'Crimson Pro';font-style:italic;font-weight:400;font-size:15px;color:#5a4f30;margin-top:6px;text-transform:none}
+.tier ul{list-style:none;margin:14px 0 18px;font-family:'Crimson Pro';font-style:italic;font-size:15px;line-height:1.6;color:#2a2515}
+.tier ul li{padding-left:14px;position:relative}
+.tier ul li::before{content:"●  ";color:var(--pink)}
+.tier .buy{display:inline-block;padding:10px 18px;background:var(--ink);color:var(--paper);font-family:'Space Grotesk';font-weight:700;font-size:12px;letter-spacing:.04em;text-transform:uppercase;transition:.2s}
+.tier .buy:hover{background:var(--pink)}
+
+footer{padding:48px 28px 28px;background:var(--ink);color:var(--paper);font-family:'Space Grotesk';font-size:12px}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;max-width:1400px;margin:0 auto}
+.foot-grid .br-f{font-family:'Bowlby One';font-size:54px;color:var(--paper);margin-bottom:14px;line-height:.9;text-transform:uppercase}
+.foot-grid .br-f .num{color:var(--pink);text-shadow:3px 3px 0 var(--blue)}
+.foot-grid .lead p{font-family:'Crimson Pro';font-style:italic;font-size:15px;line-height:1.55;max-width:300px;color:var(--paper2)}
+.foot-grid h5{color:var(--pink);font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-size:11px;margin-bottom:12px}
+.foot-grid a{display:block;padding:3px 0;color:var(--paper2);transition:.2s}
+.foot-grid a:hover{color:var(--pink)}
+.copy-foot{max-width:1400px;margin:48px auto 0;padding-top:24px;border-top:2px dashed rgba(245,236,212,.3);display:flex;justify-content:space-between;font-size:10px;letter-spacing:.18em;text-transform:uppercase;flex-wrap:wrap;gap:8px;color:var(--paper2)}
+
+.reveal{opacity:0;transform:translateY(36px) rotate(-1deg);transition:.7s cubic-bezier(.34,1.56,.64,1)}
+.reveal.in{opacity:1;transform:none}
+
+@media(max-width:880px){
+  header{grid-template-columns:auto auto;gap:14px;padding:14px 18px}
+  header nav{display:none}
+  .hero{grid-template-columns:1fr;padding:40px 18px;gap:36px}
+  .hero h1{font-size:clamp(56px,16vw,96px)}
+  .hero-meta{grid-template-columns:1fr 1fr}
+  .hero-r .sticker{width:110px;height:110px;font-size:14px;top:-20px;left:-12px}
+  .contents,.spread,.pull,.sub{padding:60px 18px}
+  .toc-grid{grid-template-columns:1fr;gap:16px}
+  .spread-grid{grid-template-columns:1fr;gap:32px}
+  .spread .txt h3{font-size:48px}
+  .sub-tiers{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:24px}
+  .foot-grid .lead{grid-column:1/-1}
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="ink-bleeds"><i></i><i></i><i></i></div>
+
+<header>
+  <a class="brand-z" href="#">ZINE<span class="num">.04</span></a>
+  <nav><a href="#contents">Contents</a><a href="#">Archive</a><a href="#">Submit</a><a href="#">Stockists</a><a href="#">About</a></nav>
+  <a class="head-buy" href="#">Get Issue 14 — €12 →</a>
+</header>
+
+<section class="hero">
+  <div class="hero-l">
+    <div class="label">
+      <span class="stamp">Issue 14 · Summer '26</span>
+      <span class="stamp alt">printed in 3 inks</span>
+    </div>
+    <h1>
+      <span class="pink">RISO</span>,<br>
+      <span class="out">RIOT,</span><br>
+      <span>READ.</span>
+      <em>— a small printed thing, four times a year.</em>
+    </h1>
+    <p>Forty-eight pages of essays, comics, riso prints, recipes, and one fold-out poster — all hand-printed, hand-stitched, and mailed to your door before the corner shop has heard of it.</p>
+    <div class="hero-meta">
+      <div><b>48</b>pages · 3 inks</div>
+      <div><b>14</b>contributors</div>
+      <div><b>1,400</b>copies · ed. 14</div>
+    </div>
+  </div>
+  <div class="hero-r reveal">
+    <div class="sticker">JUST<br>OUT<small>JUNE '26</small></div>
+    <div class="hero-cover"></div>
+  </div>
+</section>
+
+<section class="contents" id="contents">
+  <div class="s-head">
+    <span class="stamp" style="margin-bottom:14px">// Contents — Issue 14</span>
+    <h2>What's <span class="blue">INSIDE</span>.<em>— eight pieces, one fold-out, the usual letters</em></h2>
+  </div>
+  <div class="toc-grid">
+    <a class="toc-item reveal"><span class="pg">04</span><div><div class="meta">Essay · 8 pages</div><h3>The <em>archive</em> at the back of the freezer</h3><p>What we keep in cold storage when there's no metaphor — words from a small museum that nobody visits.</p><span class="by">By Hana Reza</span></div></a>
+    <a class="toc-item reveal"><span class="pg">12</span><div><div class="meta">Comic · 6 pages, riso 3-colour</div><h3>Comic — <em>"The Quiet Bird"</em></h3><p>A short visual essay about an ornithology guide drawn entirely in pink and yellow.</p><span class="by">By Marisol Tang</span></div></a>
+    <a class="toc-item reveal"><span class="pg">18</span><div><div class="meta">Photo essay · 8 pages</div><h3>Carmesí, <em>continued</em></h3><p>Four previously unpublished frames from the Carmesí series, with notes from the photographer.</p><span class="by">By Inés Llorca</span></div></a>
+    <a class="toc-item reveal"><span class="pg">26</span><div><div class="meta">Recipe · 2 pages</div><h3>Cold soup, three <em>ways</em></h3><p>Gazpacho, vichyssoise, and the slightly improvised cucumber-yogurt thing of summer.</p><span class="by">By chef Costanza L.</span></div></a>
+    <a class="toc-item reveal"><span class="pg">28</span><div><div class="meta">Centre fold-out · A2 poster</div><h3>FOLD-OUT — <em>a small map of where the rivers go</em></h3><p>A riso-printed A2 poster of every river in Portugal, drawn by Lola Brila.</p><span class="by">By Lola Brila</span></div></a>
+    <a class="toc-item reveal"><span class="pg">32</span><div><div class="meta">Letters · 4 pages</div><h3>Letters & errata, <em>this issue</em></h3><p>One letter, one correction, one accidental masterpiece from a 9-year-old. Plus mail received about Issue 13.</p><span class="by">From you</span></div></a>
+    <a class="toc-item reveal"><span class="pg">38</span><div><div class="meta">Interview · 6 pages</div><h3>Talking to <em>Tomás Brand</em></h3><p>About letterpress, about ink, about the morning he forgot to mix the makeready.</p><span class="by">Interview · L. Marais</span></div></a>
+    <a class="toc-item reveal"><span class="pg">44</span><div><div class="meta">Back cover · 1 page</div><h3>One <em>small</em> drawing</h3><p>Our back-page tradition — one drawing, by one new artist, in one ink. This issue: cyan only.</p><span class="by">By Otavio Sereno</span></div></a>
+  </div>
+</section>
+
+<section class="spread">
+  <div class="spread-grid">
+    <div class="img reveal"></div>
+    <div class="txt reveal">
+      <span class="stamp" style="margin-bottom:18px">Featured piece · pp.18 — 25</span>
+      <h3>"CARMESÍ — <em>the cooks of Andalusia, continued."</em></h3>
+      <p>This summer, the photographer Inés Llorca returned to Granada and Cádiz to photograph four cooks she had missed on the original 2025 shoot for Sublime Quarterly — and brought back, again, the colour pink.</p>
+      <p>These four frames have not been published before. They appear in ZINE.04, on the centre eight pages, printed in pink (PMS 806) and burgundy (PMS 188), on uncoated paper that takes the ink the way old hand-coloured photographs used to.</p>
+      <p>The piece is paired with a short prose essay by Hana Reza — first written in long-hand at a kitchen table in Cádiz — about whether or not, in the year 2026, one is allowed to make a project that is only about colour.</p>
+      <span class="by">Words by Hana Reza · photographs by Inés Llorca · printed at Brila Printshop, Porto</span>
+    </div>
+  </div>
+</section>
+
+<section class="pull">
+  <blockquote class="reveal">"This is what a magazine made <em>by humans</em> looks like — slightly off-register, mostly on time, and with one mistake on page 14 we have decided to keep."</blockquote>
+  <cite>— Lola Brila, editor · ZINE.01 → 14</cite>
+</section>
+
+<section class="sub" id="sub">
+  <div class="sub-inner">
+    <h2>Get the <em>next four</em> printed things.</h2>
+    <p>Four issues a year, posted on the equinoxes &amp; solstices, hand-numbered, edition of 1,400 a piece. We sell out, on average, three weeks after release. The way to make sure you get one is to subscribe.</p>
+    <div class="sub-tiers">
+      <div class="tier reveal">
+        <b>// Annual subscription</b>
+        <h4>€42<small>4 issues · postage worldwide</small></h4>
+        <ul><li>Issues 15, 16, 17, 18</li><li>Hand-numbered, ed. of 1,400</li><li>One free fold-out poster</li><li>Cancel any time</li></ul>
+        <a class="buy" href="#">Subscribe annually →</a>
+      </div>
+      <div class="tier reveal">
+        <b>// Lifetime subscription</b>
+        <h4>€320<small>every future issue, forever</small></h4>
+        <ul><li>All future issues (est. 24 years)</li><li>Members-only riso prints, 2× a year</li><li>Our gratitude, illustrated &amp; mailed</li><li>Studio visits when we have ink to spare</li></ul>
+        <a class="buy" href="#">Lifetime subscription →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-grid">
+    <div class="lead">
+      <div class="br-f">ZINE<span class="num">.04</span></div>
+      <p>A small cultural quarterly. Printed by hand on a riso press in Porto. Edited by Lola Brila &amp; Mário Vega, since 2022. Forty-eight pages, three inks, four times a year.</p>
+    </div>
+    <div><h5>// THE ZINE</h5><a href="#">Issue 14 (current)</a><a href="#">Issue 13</a><a href="#">Issue 12</a><a href="#">Archive 01–11</a></div>
+    <div><h5>// CONTRIBUTE</h5><a href="#">Submit a piece</a><a href="#">Submit a comic</a><a href="#">Letters to the editor</a><a href="#">Errata</a></div>
+    <div><h5>// REACH</h5><a href="mailto:hello@zine04.example">hello@zine04.example</a><a href="#">Stockists (38)</a><a href="#">Press kit</a><a href="#">Brila Printshop</a></div>
+  </div>
+  <div class="copy-foot"><span>© ZINE.04 PRINTSHOP LDA. · 2022–2026 · PORTO</span><span>RISO INK MISREGISTRATION INTENTIONAL · WE KEEP THE MISTAKES</span></div>
+</footer>
+
+<script>
+const io = new IntersectionObserver(
+  es => es.forEach(e => e.isIntersecting && e.target.classList.add('in')),
+  { threshold: .1 }
+);
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

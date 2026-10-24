@@ -1,0 +1,6 @@
+{
+  "name": "SNEHA - Pilot Distribution",
+  "description": "Official pilot distribution website and tester companion for SNEHA (com.sneha.app), the privacy-first on-device AI companion for Android 8.0+.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
