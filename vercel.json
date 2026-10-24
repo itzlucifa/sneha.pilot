@@ -3,24 +3,11 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
-      "source": "/pilot-site/(.*)",
-      "destination": "/pilot-site/$1"
-    },
-    {
       "source": "/api/(.*)",
       "destination": "/api/$1"
     }
   ],
   "headers": [
-    {
-      "source": "/pilot-site/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=60, s-maxage=300"
-        }
-      ]
-    },
     {
       "source": "/assets/(.*)",
       "headers": [

@@ -6,7 +6,7 @@
 
 **Created by Sumit Nawale** · [sumitnawale123456@gmail.com](mailto:sumitnawale123456@gmail.com)
 
-SNEHA is the privacy-first, on-device AI companion for Android 8.0+ (Min SDK 26 · Target SDK 35). This repository contains the official pilot distribution website, the in-app tester companion dashboard, and the complete static marketing site — all licensed under **GPLv3**.
+SNEHA is the privacy-first, on-device AI companion for Android 8.0+ (Min SDK 26 · Target SDK 35). This repository contains the official pilot distribution website and the in-app tester companion dashboard — all licensed under **GPLv3**.
 
 > **Project Origin:** Originally scaffolded in Google AI Studio and fully rebuilt, audited, and production-hardened by **Sumit Nawale** for the public pilot release. All credit to the original AI Studio template framework; all engineering, design, and content copyright © 2026 Sumit Nawale.
 
@@ -18,7 +18,8 @@ SNEHA is the privacy-first, on-device AI companion for Android 8.0+ (Min SDK 26 
 - **GPLv3 Open Source** — full source code auditability
 - **Android 8.0+ (SDK 26) through Android 15 (SDK 35)**
 - **Interactive React Dashboard** (`src/App.tsx`) with 4 tabbed views: Pilot Site, App-Side Feedback, Privacy Policy, Feature Audit
-- **Static Pilot Website** (`pilot-site/`) — zero build step, deployable to any static host (Vercel, Netlify, Cloudflare Pages)
+- **Hamburger Menu Navigation** — fully responsive across all screen sizes (desktop, tablet, mobile, compact)
+- **Scroll Reveal Animations** — sections fade in as you scroll down
 - **Interactive Screenshot Lightbox** with 1:1 HD inspector
 - **Spinning Audio Sticker Player** — plays "Humdum" by Aditya Rikhari
 - **Neo-Brutalist Zine Aesthetic** — Bowlby One, Crimson Pro, Space Grotesk typography
@@ -30,19 +31,11 @@ SNEHA is the privacy-first, on-device AI companion for Android 8.0+ (Min SDK 26 
 ```
 sneha---pilot-distribution/
 ├── src/                    # React application source
-│   ├── App.tsx             # Main interactive dashboard (4 tabs)
+│   ├── App.tsx             # Main interactive dashboard (4 tabs + hamburger menu)
 │   ├── main.tsx            # React entry point
-│   └── index.css           # Tailwind CSS + design tokens
-├── pilot-site/             # Pure static HTML website
-│   ├── index.html          # Landing page + pilot signup
-│   ├── feedback.html       # Tester feedback form
-│   ├── privacy.html        # Plain-language privacy policy
-│   ├── style.css           # Complete zine aesthetic CSS system
-│   ├── VERIFICATION.md     # Step 7 audit report
-│   └── docs/               # Template spec & feature audit docs
+│   └── index.css           # Tailwind CSS + design tokens + scroll animations
 ├── public/                 # Static assets served by Vite
-│   ├── assets/             # Images, video, audio, PDF
-│   └── pilot-site/         # Duplicate of pilot-site/ for static serving
+│   └── assets/             # Images, video, audio, PDF
 ├── template-source/        # Original ZINE.04 template reference
 ├── vercel.json             # Vercel deployment config
 ├── vite.config.ts          # Vite build configuration

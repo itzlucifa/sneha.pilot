@@ -4,7 +4,7 @@
  * SNEHA Pilot Distribution Platform & In-App Tester Companion
  */
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Shield,
   Smartphone,
@@ -23,12 +23,39 @@ import {
   Volume2,
   VolumeX,
   Play,
-  Pause
+  Pause,
+  Menu,
+  X
 } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'pilot-site' | 'in-app-feedback' | 'privacy' | 'audit'>('pilot-site');
   const [viewportMode, setViewportMode] = useState<'desktop' | 'tablet' | 'mobile' | 'compact'>('desktop');
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Scroll reveal animation
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.08 }
+    );
+
+    const timer = setTimeout(() => {
+      document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
+    }, 100);
+
+    return () => { clearTimeout(timer); observer.disconnect(); };
+  }, [activeTab]);
+
+  // Close menu on route change
+  useEffect(() => { setMenuOpen(false); }, [activeTab]);
 
   // Song audio state for hero spinning sticker
   const [isPlayingSong, setIsPlayingSong] = useState(false);
@@ -99,73 +126,68 @@ export default function App() {
         <div className="absolute -bottom-10 right-1/4 w-72 h-72 rounded-full bg-[#ff7028]/15 blur-3xl mix-blend-multiply" />
       </div>
 
-      {/* Top Banner & Control Bar */}
-      <aside aria-label="Pilot navigation bar" className="sticky top-0 z-50 bg-[#1f1a0e] text-[#f5ecd4] border-b-4 border-[#1f1a0e] px-4 py-2.5 shadow-md">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs font-bold tracking-wider uppercase">
+      {/* Header with Hamburger Menu */}
+      <header className="sticky top-0 z-50 bg-[#1f1a0e] text-[#f5ecd4] border-b-4 border-[#1f1a0e] shadow-lg">
+        <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2">
-            <span className="bg-[#ff4a8a] text-[#1f1a0e] px-2 py-0.5 border border-[#f5ecd4] font-black">
+            <span className="bg-[#ff4a8a] text-[#1f1a0e] px-2 py-0.5 border border-[#f5ecd4] font-black text-sm">
               SNEHA v0.9.4
             </span>
-            <span className="text-[#eedcb4] hidden sm:inline">
-              // Package: com.sneha.app · Min SDK 26 · Target SDK 35
+            <span className="text-[#eedcb4] hidden sm:inline text-xs">
+              // com.sneha.app · Min SDK 26 · Target SDK 35
             </span>
           </div>
 
-          {/* Navigation Controls */}
-          <div className="flex items-center gap-1.5 flex-wrap">
-            <button
-              onClick={() => setActiveTab('pilot-site')}
-              className={`px-3 py-1 border transition-all ${
-                activeTab === 'pilot-site'
-                  ? 'bg-[#ff4a8a] text-[#1f1a0e] border-[#f5ecd4] shadow-[2px_2px_0_#f5ecd4]'
-                  : 'bg-transparent text-[#eedcb4] border-transparent hover:text-white'
-              }`}
-            >
+          {/* Hamburger Toggle */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="md:hidden flex flex-col justify-center items-center w-10 h-10 bg-[#f5ecd4] border-2 border-[#f5ecd4] rounded"
+            aria-label="Toggle menu"
+            aria-expanded={menuOpen}
+          >
+            {menuOpen ? <X size={20} className="text-[#1f1a0e]" /> : <Menu size={20} className="text-[#1f1a0e]" />}
+          </button>
+
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center gap-1.5">
+            <button onClick={() => setActiveTab('pilot-site')} className={`px-3 py-1 border transition-all ${activeTab === 'pilot-site' ? 'bg-[#ff4a8a] text-[#1f1a0e] border-[#f5ecd4] shadow-[2px_2px_0_#f5ecd4]' : 'bg-transparent text-[#eedcb4] border-transparent hover:text-white'}`}>
               1. Pilot Site
             </button>
-            <button
-              onClick={() => setActiveTab('in-app-feedback')}
-              className={`px-3 py-1 border transition-all ${
-                activeTab === 'in-app-feedback'
-                  ? 'bg-[#0e4dff] text-white border-[#f5ecd4] shadow-[2px_2px_0_#f5ecd4]'
-                  : 'bg-transparent text-[#eedcb4] border-transparent hover:text-white'
-              }`}
-            >
-              2. App-Side Feedback (Step 5)
+            <button onClick={() => setActiveTab('in-app-feedback')} className={`px-3 py-1 border transition-all ${activeTab === 'in-app-feedback' ? 'bg-[#0e4dff] text-white border-[#f5ecd4] shadow-[2px_2px_0_#f5ecd4]' : 'bg-transparent text-[#eedcb4] border-transparent hover:text-white'}`}>
+              2. App-Side Feedback
             </button>
-            <button
-              onClick={() => setActiveTab('privacy')}
-              className={`px-3 py-1 border transition-all ${
-                activeTab === 'privacy'
-                  ? 'bg-[#ff7028] text-[#1f1a0e] border-[#f5ecd4] shadow-[2px_2px_0_#f5ecd4]'
-                  : 'bg-transparent text-[#eedcb4] border-transparent hover:text-white'
-              }`}
-            >
+            <button onClick={() => setActiveTab('privacy')} className={`px-3 py-1 border transition-all ${activeTab === 'privacy' ? 'bg-[#ff7028] text-[#1f1a0e] border-[#f5ecd4] shadow-[2px_2px_0_#f5ecd4]' : 'bg-transparent text-[#eedcb4] border-transparent hover:text-white'}`}>
               3. Privacy Policy
             </button>
-            <button
-              onClick={() => setActiveTab('audit')}
-              className={`px-3 py-1 border transition-all ${
-                activeTab === 'audit'
-                  ? 'bg-[#eedcb4] text-[#1f1a0e] border-[#1f1a0e] shadow-[2px_2px_0_#f5ecd4]'
-                  : 'bg-transparent text-[#eedcb4] border-transparent hover:text-white'
-              }`}
-            >
-              4. Feature Audit (Step 2)
+            <button onClick={() => setActiveTab('audit')} className={`px-3 py-1 border transition-all ${activeTab === 'audit' ? 'bg-[#eedcb4] text-[#1f1a0e] border-[#1f1a0e] shadow-[2px_2px_0_#f5ecd4]' : 'bg-transparent text-[#eedcb4] border-transparent hover:text-white'}`}>
+              4. Feature Audit
             </button>
-
-            <a
-              href="/pilot-site/index.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ml-2 inline-flex items-center gap-1 px-2.5 py-1 bg-[#0e4dff] text-white border border-[#f5ecd4] font-black hover:bg-white transition-all shadow-[2px_2px_0_#f5ecd4]"
-              title="Open pure static HTML website in new tab"
-            >
-              Static Site <ExternalLink size={12} />
-            </a>
-          </div>
+          </nav>
         </div>
-      </aside>
+
+        {/* Mobile Menu Drawer */}
+        {menuOpen && (
+          <div className="md:hidden absolute top-full left-0 right-0 bg-[#1f1a0e] border-b-4 border-[#1f1a0e] shadow-2xl z-50 animate-[fade-in_0.2s_ease-out]">
+            <div className="flex flex-col">
+              <button onClick={() => { setActiveTab('pilot-site'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#f5ecd4] font-bold border-b border-[#3a3320] hover:bg-[#ff4a8a] hover:text-[#1f1a0e] transition-all text-lg">
+                1. Pilot Site
+              </button>
+              <button onClick={() => { setActiveTab('in-app-feedback'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#f5ecd4] font-bold border-b border-[#3a3320] hover:bg-[#0e4dff] transition-all text-lg">
+                2. App-Side Feedback (Step 5)
+              </button>
+              <button onClick={() => { setActiveTab('privacy'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#f5ecd4] font-bold border-b border-[#3a3320] hover:bg-[#ff7028] hover:text-[#1f1a0e] transition-all text-lg">
+                3. Privacy Policy
+              </button>
+              <button onClick={() => { setActiveTab('audit'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#f5ecd4] font-bold border-b border-[#3a3320] hover:bg-[#eedcb4] hover:text-[#1f1a0e] transition-all text-lg">
+                4. Feature Audit (Step 2)
+              </button>
+              <div className="px-5 py-3 bg-[#0e4dff] text-white font-bold text-center">
+                Viewport Testing: {viewportMode}
+              </div>
+            </div>
+          </div>
+        )}
+      </header>
 
       {/* Main Content Area Based on Active Tab */}
       <main className="relative z-10">
@@ -208,7 +230,7 @@ export default function App() {
             }`}>
               {/* Site Header */}
               <header className="p-3 sm:p-5 border-b-3 border-[#1f1a0e] bg-[#f5ecd4] flex flex-wrap md:flex-nowrap items-center justify-between gap-3 sticky top-0 z-40">
-                <a href="#hero" className="font-['Bowlby_One'] text-2xl sm:text-3xl tracking-tight text-[#1f1a0e] uppercase shrink-0 order-1">
+                <a href="#hero" className="font-['Bowlby_One'] text-2xl sm:text-3xl tracking-tight text-[#1f1a0e] uppercase shrink-0 order-1" data-reveal="brand">
                   SNEHA<span className="text-[#ff4a8a] text-shadow-[2px_2px_0_#0e4dff]">.AI</span>
                 </a>
 
@@ -216,6 +238,7 @@ export default function App() {
                 <div
                   className="flex items-center justify-center gap-1.5 sm:gap-2.5 px-3 sm:px-4 py-1 sm:py-1.5 bg-[#eedcb4] border-2 sm:border-3 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] select-none order-3 md:order-2 w-full md:w-auto mx-auto my-1 md:my-0"
                   aria-label="AI That Actually Cares"
+                  data-reveal="motto"
                 >
                   <span className="text-[#ff7028] text-xs sm:text-sm animate-pulse select-none" aria-hidden="true">✦</span>
                   <div className="font-['Bowlby_One'] text-xs sm:text-sm md:text-base tracking-tight uppercase text-[#1f1a0e] flex items-center gap-1 sm:gap-1.5 whitespace-nowrap">
@@ -238,7 +261,7 @@ export default function App() {
 
               {/* Hero Section */}
               <section className="px-4 sm:px-8 py-10 sm:py-16 max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center" id="hero">
-                <div className="lg:col-span-7">
+                <div className="lg:col-span-7" data-reveal="hero-left">
                   <div className="flex flex-wrap gap-2 mb-4">
                     <span className="inline-block px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest border-2 border-[#1f1a0e] bg-[#f5ecd4] shadow-[2px_2px_0_#1f1a0e] -rotate-1">
                       Android 8.0+ // SDK 26–35
@@ -298,7 +321,7 @@ export default function App() {
                 </div>
 
                 {/* Hero Right: Showcase frame with dimensions */}
-                <div className="lg:col-span-5 relative flex justify-center">
+                <div className="lg:col-span-5 relative flex justify-center" data-reveal="hero-right">
                   <div className="relative w-full max-w-[340px]">
                     {/* Audio element for Humdum song */}
                     <audio
@@ -376,7 +399,7 @@ export default function App() {
 
               {/* Verified Features Section */}
               <section className="px-4 sm:px-8 py-14 max-w-6xl mx-auto border-t-3 border-dashed border-[#1f1a0e]" id="features">
-                <div className="mb-8">
+                <div className="mb-8" data-reveal="features-header">
                   <span className="inline-block px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest border-2 border-[#1f1a0e] bg-[#f5ecd4] shadow-[2px_2px_0_#1f1a0e] -rotate-1 mb-3">
                     // Verified Capabilities · Step 2 Audit
                   </span>
@@ -388,7 +411,7 @@ export default function App() {
                   </h2>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5" data-reveal="features-grid">
                   {/* Card 1 */}
                   <div className="p-6 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[6px_6px_0_#1f1a0e] hover:shadow-[8px_8px_0_#1f1a0e] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all">
                     <div className="flex items-center justify-between mb-2">
@@ -616,7 +639,7 @@ export default function App() {
                   </div>
 
                   {/* Right Column: Architecture text */}
-                  <div className="lg:col-span-6">
+                  <div className="lg:col-span-6" data-reveal="screenshots-right">
                     <span className="inline-block px-2.5 py-1 text-[10px] sm:text-[11px] font-bold uppercase tracking-widest border-2 border-[#1f1a0e] bg-[#f5ecd4] shadow-[2px_2px_0_#1f1a0e] mb-3">
                       UI Architecture · Android 8.0–15
                     </span>
@@ -808,7 +831,7 @@ export default function App() {
 
         {/* Tab 2: In-App Feedback Screen (Step 5 App-Side Support) */}
         {activeTab === 'in-app-feedback' && (
-          <div className="max-w-3xl mx-auto px-4 py-12">
+          <div className="max-w-3xl mx-auto px-4 py-12" data-reveal="feedback-section">
             <div className="mb-6 flex items-center justify-between">
               <div>
                 <span className="inline-block px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest border-2 border-[#1f1a0e] bg-[#0e4dff] text-white shadow-[2px_2px_0_#1f1a0e] mb-2">
@@ -952,7 +975,7 @@ export default function App() {
 
         {/* Tab 3: Plain-Language Privacy Policy */}
         {activeTab === 'privacy' && (
-          <div className="max-w-3xl mx-auto px-4 py-12">
+          <div className="max-w-3xl mx-auto px-4 py-12" data-reveal="privacy-section">
             <span className="inline-block px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest border-2 border-[#1f1a0e] bg-[#ff7028] text-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] mb-3">
               Step 3.6 // Plain-Language Privacy
             </span>
