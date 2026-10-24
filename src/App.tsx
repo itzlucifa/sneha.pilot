@@ -158,7 +158,7 @@ export default function App() {
               href="/pilot-site/index.html"
               target="_blank"
               rel="noopener noreferrer"
-              className="ml-2 inline-flex items-center gap-1 px-2.5 py-1 bg-[#eedcb4] text-[#1f1a0e] border border-[#1f1a0e] font-black hover:bg-white transition-all shadow-[2px_2px_0_#f5ecd4]"
+              className="ml-2 inline-flex items-center gap-1 px-2.5 py-1 bg-[#0e4dff] text-white border border-[#f5ecd4] font-black hover:bg-white transition-all shadow-[2px_2px_0_#f5ecd4]"
               title="Open pure static HTML website in new tab"
             >
               Static Site <ExternalLink size={12} />

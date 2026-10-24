@@ -301,6 +301,139 @@ header.site-header {
   flex-shrink: 0;
 }
 
+/* Desktop Navigation */
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.nav-link {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding: 6px 12px;
+  border: 2px solid transparent;
+  transition: var(--transition-fast);
+  border-radius: 0;
+}
+
+.nav-link:hover {
+  background-color: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.nav-static {
+  background-color: var(--blue);
+  color: var(--paper);
+  border-color: var(--blue);
+}
+
+.nav-static:hover {
+  background-color: var(--pink);
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+/* Hamburger Menu Button (Mobile) */
+.mobile-nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  width: 40px;
+  height: 40px;
+  background-color: var(--paper);
+  border: 2px solid var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: var(--transition-fast);
+}
+
+.mobile-nav-toggle:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+.mobile-nav-toggle.is-open {
+  background-color: var(--pink);
+}
+
+.hamburger-line {
+  width: 20px;
+  height: 2.5px;
+  background-color: var(--ink);
+  transition: var(--transition-fast);
+}
+
+.mobile-nav-toggle.is-open .hamburger-line:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.mobile-nav-toggle.is-open .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-nav-toggle.is-open .hamburger-line:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Mobile Navigation Drawer */
+.mobile-nav-drawer {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: var(--paper);
+  border-bottom: 3px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--ink);
+  z-index: 99;
+  padding: 8px 0;
+}
+
+.mobile-nav-drawer.open {
+  display: flex;
+}
+
+.mobile-nav-drawer .mob-link {
+  font-family: var(--font-display);
+  font-size: 18px;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding: 14px 24px;
+  border-bottom: 2px solid var(--paper2);
+  transition: var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mobile-nav-drawer .mob-link:hover {
+  background-color: var(--pink);
+  color: var(--ink);
+  padding-left: 30px;
+}
+
+.mobile-nav-drawer .mob-link.nav-static {
+  background-color: var(--blue);
+  color: var(--paper);
+  font-weight: 700;
+}
+
+.mobile-nav-drawer .mob-link.nav-static:hover {
+  background-color: var(--pink);
+  color: var(--ink);
+}
+
 /* Button Component Hierarchy */
 .head-buy,
 .btn-primary {
@@ -1793,6 +1926,12 @@ footer.site-footer {
     margin-top: 6px;
     font-size: 13px;
     padding: 6px 12px;
+  }
+  .desktop-nav {
+    display: none;
+  }
+  .mobile-nav-toggle {
+    display: flex;
   }
   .hero-grid {
     grid-template-columns: 1fr;

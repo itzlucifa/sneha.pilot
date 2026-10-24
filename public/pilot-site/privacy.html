@@ -30,6 +30,13 @@
         SNEHA<span class="dot" aria-hidden="true">.AI</span>
       </a>
 
+      <!-- Hamburger Menu Button (Mobile) -->
+      <button class="mobile-nav-toggle" id="mobileNavBtn" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+
       <!-- Tagline replacing old nav: "AI THAT ACTUALLY CARES" -->
       <div class="header-care-banner" aria-label="AI That Actually Cares">
         <span class="care-star" aria-hidden="true">✦</span>
@@ -39,9 +46,27 @@
         <span class="care-star" aria-hidden="true">✦</span>
       </div>
 
+      <!-- Desktop Navigation -->
+      <nav class="desktop-nav" aria-label="Main navigation">
+        <a href="index.html" class="nav-link">1. Pilot Site</a>
+        <a href="feedback.html" class="nav-link">2. App-Side Feedback</a>
+        <a href="privacy.html" class="nav-link">3. Privacy Policy</a>
+        <a href="index.html#features" class="nav-link">4. Feature Audit</a>
+        <a href="index.html" class="nav-link nav-static">Static Site</a>
+      </nav>
+
       <div class="header-actions">
         <a class="head-buy" href="index.html#signup">Join Pilot →</a>
       </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-nav-drawer" id="mobileNav" aria-hidden="true">
+      <a href="index.html" class="mob-link">1. Pilot Site</a>
+      <a href="feedback.html" class="mob-link">2. App-Side Feedback (Step 5)</a>
+      <a href="privacy.html" class="mob-link">3. Privacy Policy</a>
+      <a href="index.html#features" class="mob-link">4. Feature Audit (Step 2)</a>
+      <a href="index.html" class="mob-link nav-static">Static Site</a>
     </div>
   </header>
 
@@ -189,7 +214,21 @@
       mobileBtn.addEventListener('click', () => {
         const isOpen = mobileNav.classList.toggle('open');
         mobileBtn.setAttribute('aria-expanded', isOpen);
-        mobileBtn.textContent = isOpen ? 'Close ×' : 'Menu //';
+        mobileBtn.classList.toggle('is-open', isOpen);
+      });
+      document.querySelectorAll('.mob-link').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileNav.classList.remove('open');
+          mobileBtn.setAttribute('aria-expanded', 'false');
+          mobileBtn.classList.remove('is-open');
+        });
+      });
+      document.addEventListener('click', (e) => {
+        if (!mobileNav.contains(e.target) && !mobileBtn.contains(e.target)) {
+          mobileNav.classList.remove('open');
+          mobileBtn.setAttribute('aria-expanded', 'false');
+          mobileBtn.classList.remove('is-open');
+        }
       });
     }
   </script>
