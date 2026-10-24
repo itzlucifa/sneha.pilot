@@ -27,6 +27,7 @@ import {
   Menu,
   X
 } from 'lucide-react';
+import { supabaseInsert, isSupabaseConfigured } from './supabase';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'pilot-site' | 'in-app-feedback' | 'privacy' | 'audit'>('pilot-site');
@@ -87,6 +88,8 @@ export default function App() {
     deviceModel: ''
   });
   const [signupSuccess, setSignupSuccess] = useState(false);
+  const [signupError, setSignupError] = useState('');
+  const [signupLoading, setSignupLoading] = useState(false);
 
   // In-App Feedback state (Step 5 App-Side Support)
   const [feedbackRating, setFeedbackRating] = useState<number>(5);
@@ -96,25 +99,61 @@ export default function App() {
   const [testerEmail, setTesterEmail] = useState('');
   const [testerDevice, setTesterDevice] = useState('Pixel 7 / Android 14');
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  const [feedbackError, setFeedbackError] = useState('');
+  const [feedbackLoading, setFeedbackLoading] = useState(false);
 
-  const handleSignupSubmit = (e: React.FormEvent) => {
+  const handleSignupSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!signupForm.name || !signupForm.email || !signupForm.deviceModel) return;
-    setSignupSuccess(true);
-    setTimeout(() => {
+    if (!isSupabaseConfigured()) {
+      setSignupError('Supabase not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.');
+      return;
+    }
+    setSignupLoading(true);
+    setSignupError('');
+    try {
+      await supabaseInsert('pilot_signups', {
+        name: signupForm.name,
+        email: signupForm.email,
+        android_version: signupForm.androidVersion,
+        device_model: signupForm.deviceModel,
+      });
+      setSignupSuccess(true);
       setSignupForm({ name: '', email: '', androidVersion: 'Android 15 (Target SDK 35)', deviceModel: '' });
-    }, 4000);
+    } catch (err: any) {
+      setSignupError(err.message || 'Submission failed. Please try again.');
+    } finally {
+      setSignupLoading(false);
+    }
   };
 
-  const handleFeedbackSubmit = (e: React.FormEvent) => {
+  const handleFeedbackSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!whatWorked || !whatBroke || !whatToAdd) return;
-    setFeedbackSubmitted(true);
-    setTimeout(() => {
+    if (!isSupabaseConfigured()) {
+      setFeedbackError('Supabase not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.');
+      return;
+    }
+    setFeedbackLoading(true);
+    setFeedbackError('');
+    try {
+      await supabaseInsert('pilot_feedback', {
+        rating: feedbackRating,
+        what_worked: whatWorked,
+        what_broke: whatBroke,
+        what_to_add: whatToAdd,
+        tester_email: testerEmail || null,
+        tester_device: testerDevice || null,
+      });
+      setFeedbackSubmitted(true);
       setWhatWorked('');
       setWhatBroke('');
       setWhatToAdd('');
-    }, 5000);
+    } catch (err: any) {
+      setFeedbackError(err.message || 'Submission failed. Please try again.');
+    } finally {
+      setFeedbackLoading(false);
+    }
   };
 
   return (
@@ -699,11 +738,22 @@ export default function App() {
                         <strong>Minimal Data Statement:</strong> We store nothing beyond what is needed to verify test device compatibility. No trackers, no ad networks, no hidden metrics.
                       </div>
 
+                      {signupError && (
+                        <div className="p-3 bg-[#ff4a8a]/15 border-2 border-[#ff4a8a] text-[#ff4a8a] text-xs font-bold flex items-center gap-2">
+                          <AlertTriangle size={14} /> {signupError}
+                        </div>
+                      )}
+
                       <button
                         type="submit"
-                        className="w-full py-3 bg-[#1f1a0e] text-[#f5ecd4] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[4px_4px_0_#0e4dff] hover:bg-[#0e4dff] hover:text-white transition-all"
+                        disabled={signupLoading}
+                        className={`w-full py-3 font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[4px_4px_0_#0e4dff] transition-all ${
+                          signupLoading
+                            ? 'bg-[#eedcb4] text-[#5a4f30] cursor-not-allowed'
+                            : 'bg-[#1f1a0e] text-[#f5ecd4] hover:bg-[#0e4dff] hover:text-white'
+                        }`}
                       >
-                        Submit Pilot Application →
+                        {signupLoading ? 'Submitting...' : 'Submit Pilot Application →'}
                       </button>
                     </form>
                   </div>
@@ -899,14 +949,25 @@ export default function App() {
                 </div>
 
                 <div className="p-3 bg-[#eedcb4] border-2 border-dashed border-[#1f1a0e] text-xs font-['Crimson_Pro'] italic text-[#2a2515]">
-                  <strong>User-Initiated Transmission Only:</strong> This screen submits only what you explicitly type to <code>/api/pilot-feedback</code>. Screenshot uploads are omitted per Step 3.5.
+                  <strong>User-Initiated Transmission Only:</strong> This screen submits only what you explicitly type to Supabase. Screenshot uploads are omitted per Step 3.5.
                 </div>
+
+                {feedbackError && (
+                  <div className="p-3 bg-[#ff4a8a]/15 border-2 border-[#ff4a8a] text-[#ff4a8a] text-xs font-bold flex items-center gap-2">
+                    <AlertTriangle size={14} /> {feedbackError}
+                  </div>
+                )}
 
                 <button
                   type="submit"
-                  className="w-full py-3 bg-[#0e4dff] text-white font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] hover:bg-[#1f1a0e] transition-all"
+                  disabled={feedbackLoading}
+                  className={`w-full py-3 font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] transition-all ${
+                    feedbackLoading
+                      ? 'bg-[#eedcb4] text-[#5a4f30] cursor-not-allowed'
+                      : 'bg-[#0e4dff] text-white hover:bg-[#1f1a0e]'
+                  }`}
                 >
-                  Send Feedback to Maintainer →
+                  {feedbackLoading ? 'Sending...' : 'Send Feedback to Maintainer →'}
                 </button>
               </form>
             </div>
