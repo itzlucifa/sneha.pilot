@@ -126,63 +126,63 @@ export default function App() {
         <div className="absolute -bottom-10 right-1/4 w-72 h-72 rounded-full bg-[#ff7028]/15 blur-3xl mix-blend-multiply" />
       </div>
 
-      {/* Header with Hamburger Menu */}
-      <header className="sticky top-0 z-50 bg-[#1f1a0e] text-[#f5ecd4] border-b-4 border-[#1f1a0e] shadow-lg">
+{/* Header with Hamburger Menu */}
+      <header className="sticky top-0 z-50 bg-[#f5ecd4] text-[#1f1a0e] border-b-4 border-[#1f1a0e] shadow-lg">
         <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2">
-            <span className="bg-[#ff4a8a] text-[#1f1a0e] px-2 py-0.5 border border-[#f5ecd4] font-black text-sm">
+            <span className="bg-[#ff4a8a] text-[#1f1a0e] px-2 py-0.5 border-2 border-[#1f1a0e] font-black text-sm">
               SNEHA v0.9.4
             </span>
-            <span className="text-[#eedcb4] hidden sm:inline text-xs">
+            <span className="text-[#5a4f30] hidden sm:inline text-xs font-bold">
               // com.sneha.app · Min SDK 26 · Target SDK 35
             </span>
           </div>
 
-          {/* Hamburger Toggle */}
+          {/* Hamburger Toggle - visible on all screens, opens drawer */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden flex flex-col justify-center items-center w-10 h-10 bg-[#f5ecd4] border-2 border-[#f5ecd4] rounded"
+            className="flex flex-col justify-center items-center w-10 h-10 bg-[#ff4a8a] text-[#1f1a0e] border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#1f1a0e] transition-all"
             aria-label="Toggle menu"
             aria-expanded={menuOpen}
           >
-            {menuOpen ? <X size={20} className="text-[#1f1a0e]" /> : <Menu size={20} className="text-[#1f1a0e]" />}
+            {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
-
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-1.5">
-            <button onClick={() => setActiveTab('pilot-site')} className={`px-3 py-1 border transition-all ${activeTab === 'pilot-site' ? 'bg-[#ff4a8a] text-[#1f1a0e] border-[#f5ecd4] shadow-[2px_2px_0_#f5ecd4]' : 'bg-transparent text-[#eedcb4] border-transparent hover:text-white'}`}>
-              1. Pilot Site
-            </button>
-            <button onClick={() => setActiveTab('in-app-feedback')} className={`px-3 py-1 border transition-all ${activeTab === 'in-app-feedback' ? 'bg-[#0e4dff] text-white border-[#f5ecd4] shadow-[2px_2px_0_#f5ecd4]' : 'bg-transparent text-[#eedcb4] border-transparent hover:text-white'}`}>
-              2. App-Side Feedback
-            </button>
-            <button onClick={() => setActiveTab('privacy')} className={`px-3 py-1 border transition-all ${activeTab === 'privacy' ? 'bg-[#ff7028] text-[#1f1a0e] border-[#f5ecd4] shadow-[2px_2px_0_#f5ecd4]' : 'bg-transparent text-[#eedcb4] border-transparent hover:text-white'}`}>
-              3. Privacy Policy
-            </button>
-            <button onClick={() => setActiveTab('audit')} className={`px-3 py-1 border transition-all ${activeTab === 'audit' ? 'bg-[#eedcb4] text-[#1f1a0e] border-[#1f1a0e] shadow-[2px_2px_0_#f5ecd4]' : 'bg-transparent text-[#eedcb4] border-transparent hover:text-white'}`}>
-              4. Feature Audit
-            </button>
-          </nav>
         </div>
 
-        {/* Mobile Menu Drawer */}
+        {/* Menu Drawer - full overlay, matches website style */}
         {menuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-[#1f1a0e] border-b-4 border-[#1f1a0e] shadow-2xl z-50 animate-[fade-in_0.2s_ease-out]">
+          <div className="absolute top-full left-0 right-0 bg-[#f5ecd4] border-b-4 border-[#1f1a0e] shadow-2xl z-50 animate-[fade-in_0.2s_ease-out]">
             <div className="flex flex-col">
-              <button onClick={() => { setActiveTab('pilot-site'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#f5ecd4] font-bold border-b border-[#3a3320] hover:bg-[#ff4a8a] hover:text-[#1f1a0e] transition-all text-lg">
+              <button onClick={() => { setActiveTab('pilot-site'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#ff4a8a] hover:text-[#f5ecd4] transition-all">
                 1. Pilot Site
               </button>
-              <button onClick={() => { setActiveTab('in-app-feedback'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#f5ecd4] font-bold border-b border-[#3a3320] hover:bg-[#0e4dff] transition-all text-lg">
+              <button onClick={() => { setActiveTab('in-app-feedback'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#0e4dff] hover:text-white transition-all">
                 2. App-Side Feedback (Step 5)
               </button>
-              <button onClick={() => { setActiveTab('privacy'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#f5ecd4] font-bold border-b border-[#3a3320] hover:bg-[#ff7028] hover:text-[#1f1a0e] transition-all text-lg">
+              <button onClick={() => { setActiveTab('privacy'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#ff7028] hover:text-[#1f1a0e] transition-all">
                 3. Privacy Policy
               </button>
-              <button onClick={() => { setActiveTab('audit'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#f5ecd4] font-bold border-b border-[#3a3320] hover:bg-[#eedcb4] hover:text-[#1f1a0e] transition-all text-lg">
+              <button onClick={() => { setActiveTab('audit'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#eedcb4] hover:text-[#1f1a0e] transition-all">
                 4. Feature Audit (Step 2)
               </button>
-              <div className="px-5 py-3 bg-[#0e4dff] text-white font-bold text-center">
-                Viewport Testing: {viewportMode}
+
+              {/* Viewport Testing inside hamburger */}
+              <div className="px-5 py-4 border-b-3 border-[#1f1a0e]">
+                <span className="text-xs font-bold uppercase tracking-widest text-[#5a4f30] block mb-2">Live Viewport Testing</span>
+                <div className="grid grid-cols-2 gap-2">
+                  <button onClick={() => { setViewportMode('desktop'); setMenuOpen(false); }} className={`px-2.5 py-2 border-2 border-[#1f1a0e] font-bold text-xs uppercase transition-all ${viewportMode === 'desktop' ? 'bg-[#1f1a0e] text-[#f5ecd4]' : 'bg-[#eedcb4] hover:bg-white'}`}>
+                    Desktop
+                  </button>
+                  <button onClick={() => { setViewportMode('tablet'); setMenuOpen(false); }} className={`px-2.5 py-2 border-2 border-[#1f1a0e] font-bold text-xs uppercase transition-all ${viewportMode === 'tablet' ? 'bg-[#1f1a0e] text-[#f5ecd4]' : 'bg-[#eedcb4] hover:bg-white'}`}>
+                    Tablet
+                  </button>
+                  <button onClick={() => { setViewportMode('mobile'); setMenuOpen(false); }} className={`px-2.5 py-2 border-2 border-[#1f1a0e] font-bold text-xs uppercase transition-all ${viewportMode === 'mobile' ? 'bg-[#1f1a0e] text-[#f5ecd4]' : 'bg-[#eedcb4] hover:bg-white'}`}>
+                    Phone
+                  </button>
+                  <button onClick={() => { setViewportMode('compact'); setMenuOpen(false); }} className={`px-2.5 py-2 border-2 border-[#1f1a0e] font-bold text-xs uppercase transition-all ${viewportMode === 'compact' ? 'bg-[#1f1a0e] text-[#f5ecd4]' : 'bg-[#eedcb4] hover:bg-white'}`}>
+                    Compact
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -193,72 +193,12 @@ export default function App() {
       <main className="relative z-10">
         {activeTab === 'pilot-site' && (
           <div>
-            {/* Viewport preview selector bar */}
-            <div className="bg-[#eedcb4] border-b-2 border-[#1f1a0e] py-2 px-4 text-center text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 flex-wrap">
-              <span className="text-[#5a4f30]">Live Viewport Testing:</span>
-              <button
-                onClick={() => setViewportMode('desktop')}
-                className={`px-2.5 py-1 border border-[#1f1a0e] transition-all ${viewportMode === 'desktop' ? 'bg-[#1f1a0e] text-[#f5ecd4]' : 'bg-[#f5ecd4] hover:bg-white'}`}
-              >
-                Desktop (1280px)
-              </button>
-              <button
-                onClick={() => setViewportMode('tablet')}
-                className={`px-2.5 py-1 border border-[#1f1a0e] transition-all ${viewportMode === 'tablet' ? 'bg-[#1f1a0e] text-[#f5ecd4]' : 'bg-[#f5ecd4] hover:bg-white'}`}
-              >
-                Tablet (768px)
-              </button>
-              <button
-                onClick={() => setViewportMode('mobile')}
-                className={`px-2.5 py-1 border border-[#1f1a0e] transition-all ${viewportMode === 'mobile' ? 'bg-[#1f1a0e] text-[#f5ecd4]' : 'bg-[#f5ecd4] hover:bg-white'}`}
-              >
-                Phone (375px)
-              </button>
-              <button
-                onClick={() => setViewportMode('compact')}
-                className={`px-2.5 py-1 border border-[#1f1a0e] transition-all ${viewportMode === 'compact' ? 'bg-[#1f1a0e] text-[#f5ecd4]' : 'bg-[#f5ecd4] hover:bg-white'}`}
-              >
-                Compact (320px)
-              </button>
-            </div>
-
             <div className={`mx-auto transition-all ${
               viewportMode === 'compact' ? 'max-w-[320px] border-x-4 border-[#1f1a0e] shadow-2xl my-6 bg-[#f5ecd4]' :
               viewportMode === 'mobile' ? 'max-w-[375px] border-x-4 border-[#1f1a0e] shadow-2xl my-6 bg-[#f5ecd4]' :
               viewportMode === 'tablet' ? 'max-w-[768px] border-x-4 border-[#1f1a0e] shadow-2xl my-6 bg-[#f5ecd4]' :
               'w-full'
             }`}>
-              {/* Site Header */}
-              <header className="p-3 sm:p-5 border-b-3 border-[#1f1a0e] bg-[#f5ecd4] flex flex-wrap md:flex-nowrap items-center justify-between gap-3 sticky top-0 z-40">
-                <a href="#hero" className="font-['Bowlby_One'] text-2xl sm:text-3xl tracking-tight text-[#1f1a0e] uppercase shrink-0 order-1" data-reveal="brand">
-                  SNEHA<span className="text-[#ff4a8a] text-shadow-[2px_2px_0_#0e4dff]">.AI</span>
-                </a>
-
-                {/* Motto Banner replacing old nav: "AI THAT ACTUALLY CARES" */}
-                <div
-                  className="flex items-center justify-center gap-1.5 sm:gap-2.5 px-3 sm:px-4 py-1 sm:py-1.5 bg-[#eedcb4] border-2 sm:border-3 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] select-none order-3 md:order-2 w-full md:w-auto mx-auto my-1 md:my-0"
-                  aria-label="AI That Actually Cares"
-                  data-reveal="motto"
-                >
-                  <span className="text-[#ff7028] text-xs sm:text-sm animate-pulse select-none" aria-hidden="true">✦</span>
-                  <div className="font-['Bowlby_One'] text-xs sm:text-sm md:text-base tracking-tight uppercase text-[#1f1a0e] flex items-center gap-1 sm:gap-1.5 whitespace-nowrap">
-                    <span>AI THAT</span>
-                    <span className="inline-block px-1.5 sm:px-2 py-0.5 bg-[#ff4a8a] text-[#1f1a0e] border border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] -rotate-2 text-[10px] sm:text-xs md:text-sm leading-tight">
-                      ACTUALLY
-                    </span>
-                    <span className="text-[#0e4dff] drop-shadow-[1px_1px_0_#1f1a0e]">CARES</span>
-                  </div>
-                  <span className="text-[#ff7028] text-xs sm:text-sm animate-pulse select-none" aria-hidden="true">✦</span>
-                </div>
-
-                <a
-                  href="#signup"
-                  className="px-3 sm:px-4 py-1.5 sm:py-2 bg-[#ff4a8a] text-[#1f1a0e] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[5px_5px_0_#1f1a0e] transition-all shrink-0 order-2 md:order-3 ml-auto md:ml-0"
-                >
-                  Join Pilot →
-                </a>
-              </header>
-
               {/* Hero Section */}
               <section className="px-4 sm:px-8 py-10 sm:py-16 max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center" id="hero">
                 <div className="lg:col-span-7" data-reveal="hero-left">
