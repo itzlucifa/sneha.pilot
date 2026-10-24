@@ -131,7 +131,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2">
             <span className="bg-[#ff4a8a] text-[#1f1a0e] px-2 py-0.5 border-2 border-[#1f1a0e] font-black text-sm">
-              SNEHA v0.9.4
+              SNEHA.4U
             </span>
             <span className="text-[#5a4f30] hidden sm:inline text-xs font-bold">
               // com.sneha.app · Min SDK 26 · Target SDK 35
