@@ -14,15 +14,21 @@
   "headers": [
     {
       "source": "/pilot-site/(.*)",
-      "headers": {
-        "Cache-Control": "public, max-age=60, s-maxage=300"
-      }
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=60, s-maxage=300"
+        }
+      ]
     },
     {
       "source": "/assets/(.*)",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
   ]
 }
