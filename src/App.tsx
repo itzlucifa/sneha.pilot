@@ -200,13 +200,13 @@ export default function App() {
                 1. Pilot Site
               </button>
               <button onClick={() => { setActiveTab('in-app-feedback'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#0e4dff] hover:text-white transition-all">
-                2. App-Side Feedback (Step 5)
+                2. App-Side Feedback
               </button>
               <button onClick={() => { setActiveTab('privacy'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#ff7028] hover:text-[#1f1a0e] transition-all">
                 3. Privacy Policy
               </button>
               <button onClick={() => { setActiveTab('audit'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#eedcb4] hover:text-[#1f1a0e] transition-all">
-                4. Feature Audit (Step 2)
+                4. Feature Audit
               </button>
               <button onClick={() => { setActiveTab('changelog'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#0e4dff] hover:text-white transition-all">
                 5. Changelog
@@ -257,12 +257,12 @@ export default function App() {
               {/* Hero Section */}
               <section className="px-4 sm:px-8 py-10 sm:py-16 max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center" id="hero">
                 <div className="lg:col-span-7" data-reveal="hero-left">
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    <span className="inline-block px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest border-2 border-[#1f1a0e] bg-[#f5ecd4] shadow-[2px_2px_0_#1f1a0e] -rotate-1">
-                      Android 8.0+ // SDK 26–35
+                  <div className="flex flex-wrap gap-3 mb-6">
+                    <span className="inline-block px-4 py-1.5 text-[12px] sm:text-[14px] font-black uppercase tracking-tighter border-3 border-[#1f1a0e] bg-[#ff4a8a] text-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] -rotate-2 hover:shadow-[6px_6px_0_#0e4dff] hover:-translate-y-0.5 hover:-translate-x-0.5 transition-all font-['Bowlby_One']">
+                      THE AI WHICH ACTUALLY CARES
                     </span>
-                    <span className="inline-block px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest border-2 border-[#1f1a0e] bg-[#0e4dff] text-[#f5ecd4] shadow-[2px_2px_0_#1f1a0e] rotate-1">
-                      GPLv3 Open Source
+                    <span className="inline-block px-4 py-1.5 text-[12px] sm:text-[14px] font-black uppercase tracking-tighter border-3 border-[#1f1a0e] bg-[#0e4dff] text-[#f5ecd4] shadow-[4px_4px_0_#1f1a0e] rotate-2 hover:shadow-[6px_6px_0_#ff4a8a] hover:-translate-y-0.5 hover:-translate-x-0.5 transition-all font-['Bowlby_One']">
+                      BUILD WITH LOVE ❤️
                     </span>
                   </div>
 
@@ -1051,8 +1051,9 @@ export default function App() {
               Strict audit of all claims in the one-line pitch against code reality. Features marked MISSING are excluded from marketing; PARTIAL features display mandatory caveats.
             </p>
 
-            <div className="border-3 border-[#1f1a0e] shadow-[8px_8px_0_#1f1a0e] bg-[#f5ecd4] overflow-x-auto">
-              <table className="w-full text-left border-collapse text-xs">
+            <div className="border-3 border-[#1f1a0e] shadow-[8px_8px_0_#1f1a0e] bg-[#f5ecd4]">
+              <div className="overflow-x-auto max-w-full">
+                <table className="w-full text-left border-collapse text-xs min-w-[700px]">
                 <thead>
                   <tr className="bg-[#1f1a0e] text-[#f5ecd4] font-['Bowlby_One'] text-[11px] uppercase tracking-wider">
                     <th className="p-3 border-r border-[#3a3320]">Claim</th>
@@ -1106,6 +1107,7 @@ export default function App() {
                   </tr>
                 </tbody>
               </table>
+              </div>
             </div>
           </div>
         )}
@@ -1246,8 +1248,9 @@ export default function App() {
               </div>
             </div>
 
-            <div className="p-6 sm:p-8 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[8px_8px_0_#1f1a0e] overflow-x-auto">
-              <table className="w-full text-left border-collapse text-xs">
+            <div className="p-6 sm:p-8 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[8px_8px_0_#1f1a0e]">
+              <div className="overflow-x-auto max-w-full">
+                <table className="w-full text-left border-collapse text-xs min-w-[700px]">
                 <thead>
                   <tr className="bg-[#1f1a0e] text-[#f5ecd4] font-['Bowlby_One'] text-[11px] uppercase tracking-wider">
                     <th className="p-3 border-r border-[#3a3320]">Android Version</th>
@@ -1307,6 +1310,7 @@ export default function App() {
                   </tr>
                 </tbody>
               </table>
+              </div>
             </div>
 
             <div className="mt-6 p-4 bg-[#eedcb4] border-2 border-dashed border-[#1f1a0e] text-xs font-['Crimson_Pro'] italic text-[#2a2515]">
