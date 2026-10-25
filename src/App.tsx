@@ -487,7 +487,6 @@ export default function App() {
             <span className="bg-[#ff4a8a] text-[#1f1a0e] px-2 py-0.5 border-2 border-[#1f1a0e] font-black text-sm">
               SNEHA.4U
             </span>
-            <CopyableBadge text="com.sneha.app" label="// com.sneha.app · Min SDK 26 · Target SDK 35" className="text-[#5a4f30] hidden sm:inline-flex text-xs font-bold" />
           </div>
 
           {/* Hamburger Toggle - visible on all screens, opens drawer */}
@@ -568,28 +567,6 @@ export default function App() {
         <ErrorBoundary>
         {activeTab === 'pilot-site' && (
           <div>
-            {/* Viewport Sync Indicator Banner */}
-            <div className="bg-[#1f1a0e] text-[#f5ecd4] px-4 py-2 border-b-2 border-[#1f1a0e] flex flex-wrap items-center justify-between text-xs font-bold uppercase tracking-wider">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#ff4a8a] animate-pulse"></span>
-                <span>Active Viewport: <span className="text-[#ff7028]">{viewportMode.toUpperCase()}</span></span>
-                <span className="text-[#eedcb4]/70 hidden sm:inline">
-                  ({viewportMode === 'desktop' ? 'Full Width' : viewportMode === 'tablet' ? '768px' : viewportMode === 'mobile' ? '375px' : '320px'})
-                </span>
-              </div>
-              <div className="flex items-center gap-1.5 mt-1 sm:mt-0">
-                <span className="text-[10px] text-[#eedcb4]/80 mr-1">Switch:</span>
-                {(['desktop', 'tablet', 'mobile', 'compact'] as const).map((mode) => (
-                  <button
-                    key={mode}
-                    onClick={() => setViewportMode(mode)}
-                    className={`px-2 py-0.5 border text-[10px] transition-all ${viewportMode === mode ? 'bg-[#ff4a8a] text-[#1f1a0e] border-[#f5ecd4] font-black shadow-[1px_1px_0_#f5ecd4]' : 'bg-[#2a2515] text-[#eedcb4] border-[#eedcb4]/40 hover:bg-[#ff4a8a]/20'}`}
-                  >
-                    {mode}
-                  </button>
-                ))}
-              </div>
-            </div>
             <div className={`mx-auto transition-all ${
               viewportMode === 'compact' ? 'max-w-[320px] border-x-4 border-[#1f1a0e] shadow-2xl my-6 bg-[#f5ecd4]' :
               viewportMode === 'mobile' ? 'max-w-[375px] border-x-4 border-[#1f1a0e] shadow-2xl my-6 bg-[#f5ecd4]' :
@@ -611,7 +588,7 @@ export default function App() {
                   <h1 className="font-['Bowlby_One'] text-4xl sm:text-6xl md:text-7xl leading-[0.88] uppercase tracking-tight mb-6">
                     LOCAL,<br />
                     <span className="text-[#ff4a8a] drop-shadow-[2px_2px_0_#0e4dff]">PRIVATE,</span><br />
-                    <span className="text-transparent" style={{ WebkitTextStroke: '2.5px #1f1a0e' }}>ACTIVE.</span>
+                    <span className="text-transparent active-hero-stroke">ACTIVE.</span>
                     <em className="block font-['Crimson_Pro'] italic font-normal text-xl sm:text-2xl text-[#0e4dff] tracking-normal mt-2 lowercase">
                       — the AI companion that actually does things on your phone.
                     </em>

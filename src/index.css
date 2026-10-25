@@ -10,15 +10,6 @@
   --orange: #ff7028;
 }
 
-.dark {
-  --paper: #16120a;
-  --paper2: #241c10;
-  --ink: #f7f1e1;
-  --pink: #ff4a8a;
-  --blue: #3b74ff;
-  --orange: #ff8544;
-}
-
 body {
   background-color: var(--paper);
   color: var(--ink);
@@ -29,55 +20,209 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* Dark mode theme adaptations */
-.dark body,
-.dark .theme-bg-paper {
-  background-color: var(--paper);
-  color: var(--ink);
+/* Hero outline text "ACTIVE." */
+.active-hero-stroke {
+  -webkit-text-stroke: 2.5px #1f1a0e;
 }
 
-.dark .bg-\[\#f5ecd4\] {
+/* ========================================================
+   DARK MODE - CRISP, HIGH-CONTRAST NEO-BRUTALIST THEME
+   ======================================================== */
+.dark {
+  --paper: #120e07;        /* deep obsidian background */
+  --paper2: #1c170d;       /* rich dark card surface */
+  --ink: #fdfaf2;          /* crisp bright warm white text */
+  --ink-secondary: #e8deca; /* high-contrast secondary text */
+  --ink-muted: #cdbe9e;    /* clear muted text */
+  --pink: #ff4a8a;
+  --blue: #5489ff;         /* bright electric blue for dark mode */
+  --orange: #ff8544;       /* bright electric orange for dark mode */
+  --border-light: #f7f1e1; /* crisp white/cream border */
+}
+
+.dark body,
+.dark #root {
   background-color: var(--paper) !important;
   color: var(--ink) !important;
 }
 
-.dark .bg-\[\#eedcb4\] {
+/* Headings in dark mode: crisp white with clean contrast */
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6 {
+  color: var(--ink) !important;
+  text-shadow: none !important;
+}
+
+/* Hero stroke in dark mode */
+.dark .active-hero-stroke {
+  -webkit-text-stroke: 2.5px var(--ink) !important;
+}
+
+/* All cards with paper backgrounds switch to dark paper with crisp bright text */
+.dark .bg-\[\#f5ecd4\] {
   background-color: var(--paper2) !important;
   color: var(--ink) !important;
 }
 
-.dark .bg-\[\#eedcb4\]\/50 {
-  background-color: rgba(36, 28, 16, 0.6) !important;
+.dark .bg-\[\#eedcb4\] {
+  background-color: #271f13 !important;
   color: var(--ink) !important;
 }
 
+.dark .bg-\[\#eedcb4\]\/50,
+.dark .bg-\[\#eedcb4\]\/60 {
+  background-color: #221a0f !important;
+  color: var(--ink) !important;
+}
+
+/* Sticky Header in dark mode */
+.dark header {
+  background-color: #171108 !important;
+  border-bottom-color: var(--border-light) !important;
+}
+
+/* Universal text color mappings for dark mode */
 .dark .text-\[\#1f1a0e\] {
   color: var(--ink) !important;
 }
 
 .dark .text-\[\#2a2515\] {
-  color: #d6cbaf !important;
+  color: var(--ink-secondary) !important;
 }
 
 .dark .text-\[\#5a4f30\] {
-  color: #b8ac8c !important;
+  color: var(--ink-muted) !important;
+}
+
+.dark .text-\[\#0e4dff\] {
+  color: var(--blue) !important;
+}
+
+.dark .text-\[\#ff7028\] {
+  color: var(--orange) !important;
 }
 
 .dark .border-\[\#1f1a0e\] {
-  border-color: #f7f1e1 !important;
+  border-color: var(--border-light) !important;
 }
 
+/* All text within dark cards (paragraphs, strong, list items, labels) */
+.dark p,
+.dark label,
+.dark li,
+.dark td,
+.dark th,
+.dark strong,
+.dark b {
+  color: var(--ink);
+}
+
+.dark .text-\[\#eedcb4\] {
+  color: var(--ink-secondary) !important;
+}
+
+/* CRITICAL CONTRAST: Saturated badges, pills, and buttons (pink, orange, yellow)
+   MUST have solid black text in dark mode for maximum contrast ratio (> 11:1) */
+.dark span.bg-\[\#ff4a8a\],
+.dark button.bg-\[\#ff4a8a\],
+.dark a.bg-\[\#ff4a8a\],
+.dark .bg-\[\#ff4a8a\] * {
+  color: #0c0904 !important;
+}
+
+.dark span.bg-\[\#ff7028\],
+.dark button.bg-\[\#ff7028\],
+.dark a.bg-\[\#ff7028\],
+.dark .bg-\[\#ff7028\] * {
+  color: #0c0904 !important;
+}
+
+.dark span.bg-\[\#eedcb4\],
+.dark .bg-\[\#eedcb4\] > span {
+  color: #0c0904 !important;
+}
+
+/* Blue badges and buttons have crisp white text */
+.dark span.bg-\[\#0e4dff\],
+.dark button.bg-\[\#0e4dff\],
+.dark a.bg-\[\#0e4dff\],
+.dark .bg-\[\#0e4dff\] * {
+  color: #ffffff !important;
+}
+
+/* Pilot Sign-Up Section in dark mode:
+   Dark background with neon pink accent heading and crystal clear text */
+.dark section#signup {
+  background-color: #21160c !important;
+  border-top-color: var(--pink) !important;
+  color: var(--ink) !important;
+}
+
+.dark section#signup h2 {
+  color: var(--pink) !important;
+  text-shadow: none !important;
+}
+
+.dark section#signup p {
+  color: var(--ink-secondary) !important;
+}
+
+/* Form inputs, textareas, and dropdowns */
 .dark input,
 .dark textarea,
 .dark select {
-  background-color: #241c10 !important;
-  color: #f7f1e1 !important;
-  border-color: #f7f1e1 !important;
+  background-color: #1a140b !important;
+  color: #ffffff !important;
+  border-color: var(--border-light) !important;
 }
 
-.dark header {
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #9c8e75 !important;
+}
+
+.dark select option {
   background-color: #1a140b !important;
-  border-color: #f7f1e1 !important;
+  color: #ffffff !important;
+}
+
+/* Table in Device Compatibility */
+.dark table {
+  color: var(--ink) !important;
+}
+
+.dark tr.bg-\[\#1f1a0e\] {
+  background-color: #0b0804 !important;
+  color: var(--ink) !important;
+}
+
+.dark tr.border-b,
+.dark tbody tr {
+  border-color: #3b301d !important;
+}
+
+.dark tbody tr:hover {
+  background-color: #271e11 !important;
+}
+
+/* Background atmospheric riso bleeds in dark mode (no muddy black spots) */
+.dark .mix-blend-multiply {
+  mix-blend-mode: screen !important;
+  opacity: 0.12 !important;
+}
+
+/* Neo-brutalist shadows in dark mode */
+.dark .shadow-\[2px_2px_0_\#1f1a0e\],
+.dark .shadow-\[3px_3px_0_\#1f1a0e\],
+.dark .shadow-\[4px_4px_0_\#1f1a0e\],
+.dark .shadow-\[6px_6px_0_\#1f1a0e\],
+.dark .shadow-\[8px_8px_0_\#1f1a0e\],
+.dark .shadow-\[12px_12px_0_\#1f1a0e\] {
+  box-shadow: 4px 4px 0 #000000 !important;
 }
 
 /* Scroll reveal animations */

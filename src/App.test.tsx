@@ -195,16 +195,16 @@ describe('SNEHA Pilot Distribution App', () => {
     });
   });
 
-  describe('Live Viewport Sync Indicator', () => {
-    it('shows active viewport and updates when switched', () => {
+  describe('Live Viewport Testing in Menu', () => {
+    it('allows changing viewport mode inside hamburger menu', () => {
       render(<App />);
-      expect(screen.getByText(/Active Viewport:/i)).toBeInTheDocument();
-      expect(screen.getByText('DESKTOP')).toBeInTheDocument();
+      fireEvent.click(screen.getByLabelText('Toggle menu'));
+      expect(screen.getByText('Live Viewport Testing')).toBeInTheDocument();
 
-      const phoneBtn = screen.getAllByText('mobile')[0];
+      const phoneBtn = screen.getByText('Phone');
       fireEvent.click(phoneBtn);
-
-      expect(screen.getByText('MOBILE')).toBeInTheDocument();
+      // Hamburger closes on selection
+      expect(screen.queryByText('Live Viewport Testing')).not.toBeInTheDocument();
     });
   });
 
