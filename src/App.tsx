@@ -258,10 +258,10 @@ export default function App() {
               <section className="px-4 sm:px-8 py-10 sm:py-16 max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center" id="hero">
                 <div className="lg:col-span-7" data-reveal="hero-left">
                   <div className="flex flex-wrap gap-3 mb-6">
-                    <span className="inline-block px-4 py-1.5 text-[12px] sm:text-[14px] font-black uppercase tracking-tighter border-3 border-[#1f1a0e] bg-[#ff4a8a] text-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] -rotate-2 hover:shadow-[6px_6px_0_#0e4dff] hover:-translate-y-0.5 hover:-translate-x-0.5 transition-all font-['Bowlby_One']">
+                    <span className="inline-block px-4 py-1.5 text-[12px] sm:text-[14px] font-black uppercase tracking-tighter border-3 border-[#1f1a0e] bg-[#ff4a8a] text-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] -rotate-1 hover:shadow-[4px_4px_0_#0e4dff] transition-all font-['Bowlby_One']">
                       THE AI WHICH ACTUALLY CARES
                     </span>
-                    <span className="inline-block px-4 py-1.5 text-[12px] sm:text-[14px] font-black uppercase tracking-tighter border-3 border-[#1f1a0e] bg-[#0e4dff] text-[#f5ecd4] shadow-[4px_4px_0_#1f1a0e] rotate-2 hover:shadow-[6px_6px_0_#ff4a8a] hover:-translate-y-0.5 hover:-translate-x-0.5 transition-all font-['Bowlby_One']">
+                    <span className="inline-block px-4 py-1.5 text-[12px] sm:text-[14px] font-black uppercase tracking-tighter border-3 border-[#1f1a0e] bg-[#0e4dff] text-[#f5ecd4] shadow-[3px_3px_0_#1f1a0e] rotate-1 hover:shadow-[4px_4px_0_#ff4a8a] transition-all font-['Bowlby_One']">
                       BUILD WITH LOVE ❤️
                     </span>
                   </div>
