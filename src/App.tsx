@@ -36,9 +36,17 @@ import {
   Check,
   ChevronDown,
   ChevronUp,
-  Upload
+  Upload,
+  Lock,
+  Unlock,
+  RefreshCw,
+  Database,
+  DownloadCloud,
+  Trash2,
+  Search,
+  Filter
 } from 'lucide-react';
-import { supabaseInsert, isSupabaseConfigured } from './supabase';
+import { supabaseInsert, supabaseSelect, submitSignupUnified, submitFeedbackUnified, isSupabaseConfigured } from './supabase';
 
 // Reusable Copyable Badge with instant feedback
 export function CopyableBadge({
@@ -149,7 +157,7 @@ export class ErrorBoundary extends React.Component<
 }
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'pilot-site' | 'in-app-feedback' | 'privacy' | 'audit' | 'faq' | 'download' | 'compatibility' | 'changelog'>('pilot-site');
+  const [activeTab, setActiveTab] = useState<'pilot-site' | 'in-app-feedback' | 'privacy' | 'audit' | 'faq' | 'download' | 'compatibility' | 'changelog' | 'admin'>('pilot-site');
   const [viewportMode, setViewportMode] = useState<'desktop' | 'tablet' | 'mobile' | 'compact'>('desktop');
   const [menuOpen, setMenuOpen] = useState(false);
   const [darkMode, setDarkMode] = useState<boolean>(() => {
@@ -177,6 +185,25 @@ export default function App() {
   // Screenshots View Mode & Lightbox
   const [screenshotView, setScreenshotView] = useState<'duo' | 'screen-1' | 'screen-2'>('duo');
   const [lightboxImage, setLightboxImage] = useState<{ src: string; title: string; subtitle: string; caption: string } | null>(null);
+
+  // Admin Portal State (Section 4)
+  const [adminPin, setAdminPin] = useState('');
+  const [adminAuthError, setAdminAuthError] = useState('');
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(() => {
+    try {
+      return sessionStorage.getItem('sneha_admin_auth') === 'true';
+    } catch {
+      return false;
+    }
+  });
+  const [adminSignups, setAdminSignups] = useState<any[]>([]);
+  const [adminFeedback, setAdminFeedback] = useState<any[]>([]);
+  const [adminLoading, setAdminLoading] = useState(false);
+  const [adminActiveSubTab, setAdminActiveSubTab] = useState<'signups' | 'feedback' | 'offline'>('signups');
+  const [adminSearchQuery, setAdminSearchQuery] = useState('');
+  const [adminFeedbackRatingFilter, setAdminFeedbackRatingFilter] = useState<number | 'all'>('all');
+  const [adminOfflineQueue, setAdminOfflineQueue] = useState<{ signups: any[]; feedback: any[] }>({ signups: [], feedback: [] });
+  const [adminSyncNotice, setAdminSyncNotice] = useState('');
 
   // Scroll reveal animation
   useEffect(() => {
@@ -396,12 +423,7 @@ export default function App() {
 
     setSignupLoading(true);
     try {
-      await supabaseInsert('pilot_signups', {
-        name: signupForm.name.trim(),
-        email: signupForm.email.trim(),
-        android_version: signupForm.androidVersion,
-        device_model: signupForm.deviceModel.trim(),
-      });
+      await submitSignupUnified(signupForm);
       setSignupSuccess(true);
       setSignupOfflineNotice(false);
       setSignupForm({ name: '', email: '', androidVersion: 'Android 15 (Target SDK 35)', deviceModel: '' });
@@ -444,13 +466,13 @@ export default function App() {
 
     setFeedbackLoading(true);
     try {
-      await supabaseInsert('pilot_feedback', {
+      await submitFeedbackUnified({
         rating: feedbackRating,
-        what_worked: whatWorked.trim(),
-        what_broke: whatBroke.trim(),
-        what_to_add: whatToAdd.trim(),
-        tester_email: testerEmail.trim() || null,
-        tester_device: testerDevice.trim() || null,
+        whatWorked,
+        whatBroke,
+        whatToAdd,
+        testerEmail,
+        testerDevice,
       });
       setFeedbackSubmitted(true);
       setFeedbackOfflineNotice(false);
@@ -500,6 +522,219 @@ export default function App() {
       }
     }, 60);
   };
+
+  // -------------------------------------------------------------
+  // Admin Portal Logic (Section 4)
+  // -------------------------------------------------------------
+  const fetchAdminData = async (token?: string) => {
+    setAdminLoading(true);
+    setAdminAuthError('');
+    const authToken = token || (typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('sneha_admin_token') : null) || 'sneha2026';
+
+    try {
+      // 1. Load pending local offline queues
+      let offlineSignups: any[] = [];
+      let offlineFeedback: any[] = [];
+      try {
+        offlineSignups = JSON.parse(localStorage.getItem('sneha_pending_signups') || '[]');
+        offlineFeedback = JSON.parse(localStorage.getItem('sneha_pending_feedback') || '[]');
+      } catch {}
+      setAdminOfflineQueue({ signups: offlineSignups, feedback: offlineFeedback });
+
+      // 2. Try fetching from /api/admin/... first
+      let signupsData: any[] | null = null;
+      let feedbackData: any[] | null = null;
+
+      try {
+        const signupsRes = await fetch(`/api/admin/signups`, {
+          headers: { 'x-admin-token': authToken },
+        });
+        if (signupsRes.ok) {
+          signupsData = await signupsRes.json();
+        }
+
+        const feedbackRes = await fetch(`/api/admin/feedback`, {
+          headers: { 'x-admin-token': authToken },
+        });
+        if (feedbackRes.ok) {
+          feedbackData = await feedbackRes.json();
+        }
+      } catch {
+        // Express not running, fall back to direct Supabase select
+      }
+
+      // If Express wasn't available, fall back to direct Supabase REST
+      if (!signupsData && isSupabaseConfigured()) {
+        try {
+          signupsData = await supabaseSelect('pilot_signups');
+        } catch {
+          // Fall back gracefully to offline queue
+        }
+      }
+
+      if (!feedbackData && isSupabaseConfigured()) {
+        try {
+          feedbackData = await supabaseSelect('pilot_feedback');
+        } catch {
+          // Fall back gracefully to offline queue
+        }
+      }
+
+      setAdminSignups(signupsData || offlineSignups || []);
+      setAdminFeedback(feedbackData || offlineFeedback || []);
+    } catch (err: any) {
+      setAdminAuthError(err.message || 'Failed to load submissions.');
+    } finally {
+      setAdminLoading(false);
+    }
+  };
+
+  const handleAdminLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!adminPin.trim()) {
+      setAdminAuthError('Please enter maintainer PIN.');
+      return;
+    }
+    // Default maintainer PIN: sneha2026
+    if (adminPin.trim() === 'sneha2026' || adminPin.trim() === 'admin') {
+      try {
+        sessionStorage.setItem('sneha_admin_auth', 'true');
+        sessionStorage.setItem('sneha_admin_token', adminPin.trim());
+      } catch {}
+      setIsAdminAuthenticated(true);
+      fetchAdminData(adminPin.trim());
+    } else {
+      setAdminAuthError('Incorrect PIN. (Default PIN: sneha2026)');
+    }
+  };
+
+  const handleAdminLogout = () => {
+    try {
+      sessionStorage.removeItem('sneha_admin_auth');
+      sessionStorage.removeItem('sneha_admin_token');
+    } catch {}
+    setIsAdminAuthenticated(false);
+    setAdminPin('');
+    setAdminSignups([]);
+    setAdminFeedback([]);
+  };
+
+  const exportSignupsCSV = () => {
+    if (!adminSignups.length) return;
+    const headers = ['ID', 'Date', 'Name', 'Email', 'Android Version', 'Device Model'];
+    const rows = adminSignups.map((s, idx) => [
+      s.id || idx + 1,
+      `"${s.created_at || s.queued_at || ''}"`,
+      `"${(s.name || '').replace(/"/g, '""')}"`,
+      `"${(s.email || '').replace(/"/g, '""')}"`,
+      `"${(s.android_version || '').replace(/"/g, '""')}"`,
+      `"${(s.device_model || '').replace(/"/g, '""')}"`,
+    ]);
+    const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `sneha-signups-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const exportFeedbackCSV = () => {
+    if (!adminFeedback.length) return;
+    const headers = ['ID', 'Date', 'Rating', 'Device', 'Email', 'What Worked', 'What Broke', 'What to Add'];
+    const rows = adminFeedback.map((f, idx) => [
+      f.id || idx + 1,
+      `"${f.created_at || f.queued_at || ''}"`,
+      f.rating || 0,
+      `"${(f.tester_device || '').replace(/"/g, '""')}"`,
+      `"${(f.tester_email || '').replace(/"/g, '""')}"`,
+      `"${(f.what_worked || '').replace(/"/g, '""')}"`,
+      `"${(f.what_broke || '').replace(/"/g, '""')}"`,
+      `"${(f.what_to_add || '').replace(/"/g, '""')}"`,
+    ]);
+    const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `sneha-feedback-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const syncOfflineQueue = async () => {
+    let signups: any[] = [];
+    let feedback: any[] = [];
+    try {
+      signups = JSON.parse(localStorage.getItem('sneha_pending_signups') || '[]');
+      feedback = JSON.parse(localStorage.getItem('sneha_pending_feedback') || '[]');
+    } catch {}
+
+    if (!signups.length && !feedback.length) {
+      setAdminSyncNotice('No pending offline submissions to sync.');
+      return;
+    }
+
+    setAdminLoading(true);
+    let syncedCount = 0;
+
+    for (const s of signups) {
+      try {
+        await submitSignupUnified({
+          name: s.name,
+          email: s.email,
+          androidVersion: s.androidVersion || s.android_version,
+          deviceModel: s.deviceModel || s.device_model,
+        });
+        syncedCount++;
+      } catch {}
+    }
+
+    for (const f of feedback) {
+      try {
+        await submitFeedbackUnified({
+          rating: f.rating,
+          whatWorked: f.whatWorked || f.what_worked,
+          whatBroke: f.whatBroke || f.what_broke,
+          whatToAdd: f.whatToAdd || f.what_to_add,
+          testerEmail: f.testerEmail || f.tester_email,
+          testerDevice: f.testerDevice || f.tester_device,
+        });
+        syncedCount++;
+      } catch {}
+    }
+
+    try {
+      localStorage.removeItem('sneha_pending_signups');
+      localStorage.removeItem('sneha_pending_feedback');
+    } catch {}
+
+    setAdminSyncNotice(`Successfully synced ${syncedCount} offline items to database!`);
+    await fetchAdminData();
+  };
+
+  useEffect(() => {
+    if (activeTab === 'admin' && isAdminAuthenticated) {
+      fetchAdminData();
+    }
+  }, [activeTab, isAdminAuthenticated]);
+
+  const filteredSignups = adminSignups.filter((s) => {
+    if (!adminSearchQuery.trim()) return true;
+    const q = adminSearchQuery.toLowerCase();
+    return (
+      (s.name && String(s.name).toLowerCase().includes(q)) ||
+      (s.email && String(s.email).toLowerCase().includes(q)) ||
+      (s.device_model && String(s.device_model).toLowerCase().includes(q)) ||
+      (s.android_version && String(s.android_version).toLowerCase().includes(q))
+    );
+  });
+
+  const filteredFeedback = adminFeedback.filter((f) => {
+    if (adminFeedbackRatingFilter === 'all') return true;
+    return f.rating === adminFeedbackRatingFilter;
+  });
 
   return (
     <div className="min-h-screen bg-[#f5ecd4] text-[#1f1a0e] font-sans selection:bg-[#1f1a0e] selection:text-[#f5ecd4] relative">
@@ -572,6 +807,10 @@ export default function App() {
               </button>
               <button onClick={() => { setActiveTab('faq'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#eedcb4] hover:text-[#1f1a0e] transition-all">
                 8. FAQ
+              </button>
+              <button onClick={() => { setActiveTab('admin'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#0e4dff] hover:text-white transition-all flex items-center justify-between">
+                <span>9. Admin Portal</span>
+                <span className="text-[10px] font-mono uppercase bg-[#1f1a0e] text-[#f5ecd4] px-2 py-0.5 border border-[#1f1a0e]">Maintainer</span>
               </button>
 
               {/* Viewport Testing inside hamburger */}
@@ -1173,6 +1412,11 @@ export default function App() {
                       <li>
                         <button onClick={() => setActiveTab('privacy')} className="hover:text-[#ff4a8a] transition-colors text-left">
                           Plain-Language Privacy Policy
+                        </button>
+                      </li>
+                      <li>
+                        <button onClick={() => setActiveTab('admin')} className="hover:text-[#ff4a8a] transition-colors text-left flex items-center gap-1.5 cursor-pointer">
+                          <span>Admin Portal (Maintainer)</span>
                         </button>
                       </li>
                       <li>
@@ -1830,6 +2074,367 @@ export default function App() {
                 </a>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* Tab 9: Admin Portal (Section 4) */}
+        {activeTab === 'admin' && (
+          <div className="max-w-5xl mx-auto px-4 py-12" data-reveal="admin-section">
+            <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <span className="inline-block px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest border-2 border-[#1f1a0e] bg-[#ff4a8a] text-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] mb-2">
+                  Section 4 // Maintainer Access Gate
+                </span>
+                <h1 className="font-['Bowlby_One'] text-3xl sm:text-5xl uppercase tracking-tight">
+                  Admin <span className="text-[#0e4dff]">Portal</span>.
+                </h1>
+                <p className="font-['Crimson_Pro'] italic text-base text-[#2a2515] mt-1">
+                  Inspect verified device compatibility logs, tester reviews, and download metrics.
+                </p>
+              </div>
+
+              {isAdminAuthenticated && (
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => fetchAdminData()}
+                    disabled={adminLoading}
+                    className="px-3 py-1.5 bg-[#eedcb4] text-[#1f1a0e] border-2 border-[#1f1a0e] text-xs font-bold uppercase hover:bg-white flex items-center gap-1.5 transition-all cursor-pointer"
+                  >
+                    <RefreshCw size={14} className={adminLoading ? "animate-spin" : ""} />
+                    Refresh
+                  </button>
+                  <button
+                    onClick={handleAdminLogout}
+                    className="px-3 py-1.5 bg-[#1f1a0e] text-[#f5ecd4] border-2 border-[#1f1a0e] text-xs font-bold uppercase hover:bg-[#ff4a8a] hover:text-[#1f1a0e] flex items-center gap-1.5 transition-all cursor-pointer"
+                  >
+                    <Lock size={14} />
+                    Lock Portal
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {!isAdminAuthenticated ? (
+              /* PIN Lock Screen */
+              <div className="p-8 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[8px_8px_0_#1f1a0e] max-w-md mx-auto text-center">
+                <div className="w-16 h-16 mx-auto mb-4 bg-[#ff4a8a] border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] flex items-center justify-center text-[#1f1a0e]">
+                  <Lock size={32} />
+                </div>
+                <h2 className="font-['Bowlby_One'] text-2xl uppercase mb-2">Maintainer Lock</h2>
+                <p className="font-['Crimson_Pro'] italic text-sm text-[#5a4f30] mb-6">
+                  Enter your maintainer PIN to unlock the live submissions dashboard, bug reports, and CSV exports. (Default PIN: <code>sneha2026</code>)
+                </p>
+
+                <form onSubmit={handleAdminLogin} className="space-y-4">
+                  <div>
+                    <input
+                      type="password"
+                      value={adminPin}
+                      onChange={(e) => setAdminPin(e.target.value)}
+                      placeholder="Enter Admin PIN..."
+                      className="w-full p-3 bg-[#f5ecd4] border-2 border-[#1f1a0e] text-center font-mono font-bold tracking-widest text-lg shadow-[2px_2px_0_#1f1a0e] focus:border-[#0e4dff] focus:outline-none"
+                    />
+                  </div>
+
+                  {adminAuthError && (
+                    <div className="p-2.5 bg-[#ff4a8a]/15 border-2 border-[#ff4a8a] text-[#ff4a8a] text-xs font-bold flex items-center justify-center gap-1.5">
+                      <AlertTriangle size={14} /> {adminAuthError}
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    className="w-full py-3 bg-[#0e4dff] text-white font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] hover:bg-[#ff4a8a] hover:text-[#1f1a0e] transition-all cursor-pointer"
+                  >
+                    Unlock Admin Dashboard →
+                  </button>
+                </form>
+              </div>
+            ) : (
+              /* Authenticated Admin Dashboard */
+              <div className="space-y-6">
+                {/* 1. Metric Overview Cards */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="p-4 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#5a4f30] block mb-1">Total Registrations</span>
+                    <b className="font-['Bowlby_One'] text-3xl text-[#0e4dff]">{adminSignups.length}</b>
+                    <small className="block text-[10px] text-[#2a2515] mt-1 font-['Crimson_Pro'] italic">Tested handsets</small>
+                  </div>
+
+                  <div className="p-4 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#5a4f30] block mb-1">Feedback Reviews</span>
+                    <b className="font-['Bowlby_One'] text-3xl text-[#ff4a8a]">{adminFeedback.length}</b>
+                    <small className="block text-[10px] text-[#2a2515] mt-1 font-['Crimson_Pro'] italic">Audited test reports</small>
+                  </div>
+
+                  <div className="p-4 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#5a4f30] block mb-1">Average Rating</span>
+                    <b className="font-['Bowlby_One'] text-3xl text-[#ff7028]">
+                      {adminFeedback.length > 0
+                        ? (adminFeedback.reduce((sum, f) => sum + (f.rating || 0), 0) / adminFeedback.length).toFixed(1)
+                        : '5.0'} ★
+                    </b>
+                    <small className="block text-[10px] text-[#2a2515] mt-1 font-['Crimson_Pro'] italic">Overall satisfaction</small>
+                  </div>
+
+                  <div className="p-4 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#5a4f30] block mb-1">Offline Pending</span>
+                    <b className="font-['Bowlby_One'] text-3xl text-[#1f1a0e]">
+                      {adminOfflineQueue.signups.length + adminOfflineQueue.feedback.length}
+                    </b>
+                    <small className="block text-[10px] text-[#2a2515] mt-1 font-['Crimson_Pro'] italic">Browser queue items</small>
+                  </div>
+                </div>
+
+                {/* Sync notice banner */}
+                {adminSyncNotice && (
+                  <div className="p-3 bg-[#eedcb4] border-2 border-[#0e4dff] text-[#0e4dff] text-xs font-bold flex items-center justify-between">
+                    <span className="flex items-center gap-2"><CheckCircle2 size={16} /> {adminSyncNotice}</span>
+                    <button onClick={() => setAdminSyncNotice('')} className="underline text-xs cursor-pointer">Dismiss</button>
+                  </div>
+                )}
+
+                {/* Sub-nav & Action Bar */}
+                <div className="p-4 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[6px_6px_0_#1f1a0e] flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setAdminActiveSubTab('signups')}
+                      className={`px-3 py-1.5 border-2 border-[#1f1a0e] text-xs font-bold uppercase transition-all cursor-pointer ${
+                        adminActiveSubTab === 'signups'
+                          ? 'bg-[#0e4dff] text-white shadow-[2px_2px_0_#1f1a0e]'
+                          : 'bg-[#eedcb4] text-[#1f1a0e] hover:bg-white'
+                      }`}
+                    >
+                      Sign-ups ({adminSignups.length})
+                    </button>
+                    <button
+                      onClick={() => setAdminActiveSubTab('feedback')}
+                      className={`px-3 py-1.5 border-2 border-[#1f1a0e] text-xs font-bold uppercase transition-all cursor-pointer ${
+                        adminActiveSubTab === 'feedback'
+                          ? 'bg-[#ff4a8a] text-[#1f1a0e]'
+                          : 'bg-[#eedcb4] text-[#1f1a0e] hover:bg-white'
+                      }`}
+                    >
+                      Reviews & Bugs ({adminFeedback.length})
+                    </button>
+                    <button
+                      onClick={() => setAdminActiveSubTab('offline')}
+                      className={`px-3 py-1.5 border-2 border-[#1f1a0e] text-xs font-bold uppercase transition-all cursor-pointer ${
+                        adminActiveSubTab === 'offline'
+                          ? 'bg-[#ff7028] text-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e]'
+                          : 'bg-[#eedcb4] text-[#1f1a0e] hover:bg-white'
+                      }`}
+                    >
+                      Offline Queue ({adminOfflineQueue.signups.length + adminOfflineQueue.feedback.length})
+                    </button>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    {adminActiveSubTab === 'signups' && (
+                      <button
+                        onClick={exportSignupsCSV}
+                        className="px-3 py-1.5 bg-[#1f1a0e] text-[#f5ecd4] border-2 border-[#1f1a0e] text-xs font-bold uppercase hover:bg-[#0e4dff] hover:text-white flex items-center gap-1.5 transition-all cursor-pointer"
+                      >
+                        <Download size={14} /> Export Signups CSV
+                      </button>
+                    )}
+                    {adminActiveSubTab === 'feedback' && (
+                      <button
+                        onClick={exportFeedbackCSV}
+                        className="px-3 py-1.5 bg-[#1f1a0e] text-[#f5ecd4] border-2 border-[#1f1a0e] text-xs font-bold uppercase hover:bg-[#ff4a8a] hover:text-[#1f1a0e] flex items-center gap-1.5 transition-all cursor-pointer"
+                      >
+                        <Download size={14} /> Export Feedback CSV
+                      </button>
+                    )}
+                    {adminActiveSubTab === 'offline' && (
+                      <button
+                        onClick={syncOfflineQueue}
+                        disabled={adminLoading || (!adminOfflineQueue.signups.length && !adminOfflineQueue.feedback.length)}
+                        className="px-3 py-1.5 bg-[#ff7028] text-[#1f1a0e] border-2 border-[#1f1a0e] text-xs font-bold uppercase hover:bg-white flex items-center gap-1.5 transition-all disabled:opacity-50 cursor-pointer"
+                      >
+                        <Upload size={14} /> Sync All Offline Items
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Sub-view: Signups */}
+                {adminActiveSubTab === 'signups' && (
+                  <div className="p-6 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[8px_8px_0_#1f1a0e] space-y-4">
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="relative flex-1 max-w-sm">
+                        <input
+                          type="text"
+                          value={adminSearchQuery}
+                          onChange={(e) => setAdminSearchQuery(e.target.value)}
+                          placeholder="Search by name, email, or device..."
+                          className="w-full p-2 bg-[#f5ecd4] border-2 border-[#1f1a0e] text-xs focus:border-[#0e4dff] focus:outline-none"
+                        />
+                      </div>
+                      <span className="text-xs font-['Crimson_Pro'] italic text-[#5a4f30]">
+                        Showing {filteredSignups.length} of {adminSignups.length} entries
+                      </span>
+                    </div>
+
+                    <div className="overflow-x-auto border-2 border-[#1f1a0e]">
+                      <table className="w-full text-left border-collapse text-xs">
+                        <thead>
+                          <tr className="bg-[#1f1a0e] text-[#f5ecd4] font-['Bowlby_One'] text-[10px] uppercase">
+                            <th className="p-2.5 border-r border-[#3a3320]">Date</th>
+                            <th className="p-2.5 border-r border-[#3a3320]">Name</th>
+                            <th className="p-2.5 border-r border-[#3a3320]">Email Address</th>
+                            <th className="p-2.5 border-r border-[#3a3320]">Device Model</th>
+                            <th className="p-2.5">Android Target</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y border-t border-[#1f1a0e]">
+                          {filteredSignups.length === 0 ? (
+                            <tr>
+                              <td colSpan={5} className="p-6 text-center font-['Crimson_Pro'] italic text-sm text-[#5a4f30]">
+                                No pilot sign-ups found.
+                              </td>
+                            </tr>
+                          ) : (
+                            filteredSignups.map((s, idx) => (
+                              <tr key={s.id || idx} className="hover:bg-[#eedcb4]/50 transition-colors">
+                                <td className="p-2.5 border-r border-[#1f1a0e]/20 font-mono text-[10px]">
+                                  {(s.created_at || s.queued_at || '').slice(0, 10) || '2026-10-25'}
+                                </td>
+                                <td className="p-2.5 border-r border-[#1f1a0e]/20 font-bold">{s.name}</td>
+                                <td className="p-2.5 border-r border-[#1f1a0e]/20">
+                                  <CopyableBadge text={s.email} className="font-mono text-[11px]" />
+                                </td>
+                                <td className="p-2.5 border-r border-[#1f1a0e]/20 font-semibold">{s.device_model}</td>
+                                <td className="p-2.5 font-['Crimson_Pro'] italic">{s.android_version}</td>
+                              </tr>
+                            ))
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+
+                {/* Sub-view: Feedback */}
+                {adminActiveSubTab === 'feedback' && (
+                  <div className="p-6 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[8px_8px_0_#1f1a0e] space-y-4">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-bold uppercase tracking-wider text-[#1f1a0e]">Filter Rating:</span>
+                        {['all', 5, 4, 3, 2, 1].map((r) => (
+                          <button
+                            key={r}
+                            onClick={() => setAdminFeedbackRatingFilter(r as any)}
+                            className={`px-2 py-0.5 text-xs font-bold border border-[#1f1a0e] uppercase transition-all cursor-pointer ${
+                              adminFeedbackRatingFilter === r
+                                ? 'bg-[#ff4a8a] text-[#1f1a0e]'
+                                : 'bg-[#eedcb4] text-[#1f1a0e] hover:bg-white'
+                            }`}
+                          >
+                            {r === 'all' ? 'All' : `${r}★`}
+                          </button>
+                        ))}
+                      </div>
+                      <span className="text-xs font-['Crimson_Pro'] italic text-[#5a4f30]">
+                        {filteredFeedback.length} reviews matching filter
+                      </span>
+                    </div>
+
+                    <div className="space-y-3">
+                      {filteredFeedback.length === 0 ? (
+                        <div className="p-8 text-center font-['Crimson_Pro'] italic text-[#5a4f30] border-2 border-dashed border-[#1f1a0e]">
+                          No reviews found matching this filter.
+                        </div>
+                      ) : (
+                        filteredFeedback.map((f, idx) => (
+                          <div key={f.id || idx} className="p-4 bg-[#eedcb4]/40 border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] space-y-2">
+                            <div className="flex items-center justify-between border-b border-[#1f1a0e]/20 pb-2">
+                              <div className="flex items-center gap-2">
+                                <span className="px-2 py-0.5 bg-[#ff4a8a] text-[#1f1a0e] font-['Bowlby_One'] text-xs border border-[#1f1a0e]">
+                                  {f.rating} ★
+                                </span>
+                                <span className="font-bold text-xs uppercase text-[#1f1a0e]">
+                                  {f.tester_device || 'Unspecified Device'}
+                                </span>
+                              </div>
+                              <span className="text-[10px] font-mono text-[#5a4f30]">
+                                {(f.created_at || f.queued_at || '').slice(0, 10)}
+                              </span>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs pt-1">
+                              <div>
+                                <strong className="text-[#0e4dff] block mb-0.5 font-bold uppercase tracking-wider text-[10px]">What Worked Well:</strong>
+                                <p className="font-['Crimson_Pro'] italic text-[#2a2515]">{f.what_worked}</p>
+                              </div>
+                              <div>
+                                <strong className="text-[#ff4a8a] block mb-0.5 font-bold uppercase tracking-wider text-[10px]">What Broke / Failed:</strong>
+                                <p className="font-['Crimson_Pro'] italic text-[#2a2515]">{f.what_broke}</p>
+                              </div>
+                              <div>
+                                <strong className="text-[#ff7028] block mb-0.5 font-bold uppercase tracking-wider text-[10px]">What to Add:</strong>
+                                <p className="font-['Crimson_Pro'] italic text-[#2a2515]">{f.what_to_add}</p>
+                              </div>
+                            </div>
+
+                            {f.tester_email && (
+                              <div className="pt-2 text-[10px] text-[#5a4f30] flex items-center gap-1 border-t border-[#1f1a0e]/10">
+                                <span>Tester:</span>
+                                <CopyableBadge text={f.tester_email} className="font-mono text-[10px]" />
+                              </div>
+                            )}
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Sub-view: Offline Queue Inspector */}
+                {adminActiveSubTab === 'offline' && (
+                  <div className="p-6 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[8px_8px_0_#1f1a0e] space-y-4">
+                    <h3 className="font-['Bowlby_One'] text-base uppercase text-[#1f1a0e]">
+                      Local Storage Offline Queue Buffer
+                    </h3>
+                    <p className="text-xs font-['Crimson_Pro'] italic text-[#5a4f30]">
+                      Submissions recorded while disconnected from Supabase or during network interruptions. Stored safely inside browser memory.
+                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="p-3 bg-[#eedcb4] border-2 border-[#1f1a0e]">
+                        <h4 className="font-bold text-xs uppercase mb-2">Pending Sign-ups ({adminOfflineQueue.signups.length})</h4>
+                        {adminOfflineQueue.signups.length === 0 ? (
+                          <span className="text-xs font-['Crimson_Pro'] italic text-[#5a4f30]">No pending signups.</span>
+                        ) : (
+                          <ul className="text-xs space-y-1 font-mono">
+                            {adminOfflineQueue.signups.map((s, idx) => (
+                              <li key={idx} className="p-1.5 bg-[#f5ecd4] border border-[#1f1a0e]">
+                                {s.name} ({s.email}) — {s.deviceModel}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+
+                      <div className="p-3 bg-[#eedcb4] border-2 border-[#1f1a0e]">
+                        <h4 className="font-bold text-xs uppercase mb-2">Pending Feedback ({adminOfflineQueue.feedback.length})</h4>
+                        {adminOfflineQueue.feedback.length === 0 ? (
+                          <span className="text-xs font-['Crimson_Pro'] italic text-[#5a4f30]">No pending reviews.</span>
+                        ) : (
+                          <ul className="text-xs space-y-1 font-mono">
+                            {adminOfflineQueue.feedback.map((f, idx) => (
+                              <li key={idx} className="p-1.5 bg-[#f5ecd4] border border-[#1f1a0e]">
+                                {f.rating}★ — {f.what_worked?.slice(0, 30)}...
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
         </ErrorBoundary>

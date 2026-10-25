@@ -515,6 +515,28 @@ textarea {
   border-color: rgba(247, 241, 225, 0.3) !important;
 }
 
+/* ========================================================
+   ADMIN PORTAL TAB (Section 4)
+   ======================================================== */
+.dark [data-reveal="admin-section"] .bg-\[\#f5ecd4\] {
+  background-color: #1c150b !important;
+  border-color: var(--border-light) !important;
+}
+
+.dark [data-reveal="admin-section"] .bg-\[\#eedcb4\],
+.dark [data-reveal="admin-section"] .bg-\[\#eedcb4\]\/40 {
+  background-color: #241c10 !important;
+  border-color: var(--border-light) !important;
+  color: #fdfaf2 !important;
+}
+
+.dark [data-reveal="admin-section"] p,
+.dark [data-reveal="admin-section"] td,
+.dark [data-reveal="admin-section"] span.text-\[\#5a4f30\],
+.dark [data-reveal="admin-section"] small {
+  color: #cdbe9e !important;
+}
+
 /* Hamburger drawer menu */
 .dark #hamburger-drawer {
   background-color: #171108 !important;

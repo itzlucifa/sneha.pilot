@@ -289,4 +289,33 @@ describe('SNEHA Pilot Distribution App', () => {
       expect(document.body.style.overflow).toBe('');
     });
   });
+
+  describe('Admin Portal (Section 4)', () => {
+    it('shows PIN lock screen and authenticates with maintainer PIN', async () => {
+      sessionStorage.clear();
+      render(<App />);
+      fireEvent.click(screen.getByLabelText('Toggle menu'));
+
+      const adminTabBtn = screen.getByText(/9\. Admin Portal/i);
+      fireEvent.click(adminTabBtn);
+
+      expect(screen.getByText('Maintainer Lock')).toBeInTheDocument();
+      expect(screen.getByPlaceholderText('Enter Admin PIN...')).toBeInTheDocument();
+
+      // Submit incorrect PIN
+      const pinInput = screen.getByPlaceholderText('Enter Admin PIN...');
+      fireEvent.change(pinInput, { target: { value: 'wrongpin' } });
+      fireEvent.click(screen.getByText('Unlock Admin Dashboard →'));
+      expect(await screen.findByText(/Incorrect PIN/i)).toBeInTheDocument();
+
+      // Submit correct PIN
+      fireEvent.change(pinInput, { target: { value: 'sneha2026' } });
+      fireEvent.click(screen.getByText('Unlock Admin Dashboard →'));
+
+      // Dashboard unlocks
+      expect(await screen.findByText('Total Registrations')).toBeInTheDocument();
+      expect(screen.getByText('Feedback Reviews')).toBeInTheDocument();
+      expect(screen.getByText('Average Rating')).toBeInTheDocument();
+    });
+  });
 });
