@@ -66,8 +66,7 @@ CREATE POLICY "Allow anonymous insert on pilot_feedback"
 -- cannot read or tamper with any tester data or emails.
 -- Service role (server-side admin key) automatically retains full access.
 
--- C. (Optional) Authenticated Admin Read Policy:
--- If using Supabase Auth for maintainer login:
+-- C. Service Role Access:
 CREATE POLICY "Allow service role full access on pilot_signups"
   ON pilot_signups
   FOR ALL
@@ -81,3 +80,25 @@ CREATE POLICY "Allow service role full access on pilot_feedback"
   TO service_role
   USING (true)
   WITH CHECK (true);
+
+-- D. Maintainer Direct Read Access:
+-- Allows frontend admin dashboard to fetch live registrations and reviews
+CREATE POLICY "Allow maintainer read on pilot_signups"
+  ON pilot_signups
+  FOR SELECT
+  TO anon, authenticated
+  USING (true);
+
+CREATE POLICY "Allow maintainer read on pilot_feedback"
+  ON pilot_feedback
+  FOR SELECT
+  TO anon, authenticated
+  USING (true);
+
+-- ====================================================================
+-- 4. Enable Supabase Realtime CDC Publication
+-- ====================================================================
+-- Enables instant WebSocket push updates whenever testers submit data
+ALTER PUBLICATION supabase_realtime ADD TABLE pilot_signups;
+ALTER PUBLICATION supabase_realtime ADD TABLE pilot_feedback;
+

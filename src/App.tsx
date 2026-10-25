@@ -46,7 +46,16 @@ import {
   Search,
   Filter
 } from 'lucide-react';
-import { supabaseInsert, supabaseSelect, submitSignupUnified, submitFeedbackUnified, isSupabaseConfigured } from './supabase';
+import {
+  supabaseInsert,
+  supabaseSelect,
+  submitSignupUnified,
+  submitFeedbackUnified,
+  isSupabaseConfigured,
+  fetchLiveAdminData,
+  subscribeToSupabaseRealtime,
+  SUPABASE_URL
+} from './supabase';
 
 // Reusable Copyable Badge with instant feedback
 export function CopyableBadge({
@@ -204,6 +213,10 @@ export default function App() {
   const [adminFeedbackRatingFilter, setAdminFeedbackRatingFilter] = useState<number | 'all'>('all');
   const [adminOfflineQueue, setAdminOfflineQueue] = useState<{ signups: any[]; feedback: any[] }>({ signups: [], feedback: [] });
   const [adminSyncNotice, setAdminSyncNotice] = useState('');
+  const [adminRealtimeActive, setAdminRealtimeActive] = useState(true);
+  const [adminLastSyncedAt, setAdminLastSyncedAt] = useState<Date | null>(null);
+  const [adminDataSource, setAdminDataSource] = useState<'supabase' | 'offline'>('supabase');
+  const [adminWsStatus, setAdminWsStatus] = useState<'connected' | 'connecting' | 'disconnected'>('disconnected');
 
   // Scroll reveal animation
   useEffect(() => {
@@ -417,7 +430,9 @@ export default function App() {
       queueOfflineSubmission('sneha_pending_signups', signupForm);
       setSignupOfflineNotice(true);
       setSignupSuccess(true);
-      window.location.href = "mailto:sumitnawale123456@gmail.com?subject=" + encodeURIComponent("SNEHA Pilot Signup (" + signupForm.name + ")") + "&body=" + encodeURIComponent("Name: " + signupForm.name + "\nEmail: " + signupForm.email + "\nAndroid: " + signupForm.androidVersion + "\nDevice: " + signupForm.deviceModel);
+      try {
+        window.location.href = "mailto:sumitnawale123456@gmail.com?subject=" + encodeURIComponent("SNEHA Pilot Signup (" + signupForm.name + ")") + "&body=" + encodeURIComponent("Name: " + signupForm.name + "\nEmail: " + signupForm.email + "\nAndroid: " + signupForm.androidVersion + "\nDevice: " + signupForm.deviceModel);
+      } catch {}
       return;
     }
 
@@ -431,7 +446,9 @@ export default function App() {
       queueOfflineSubmission('sneha_pending_signups', signupForm);
       setSignupOfflineNotice(true);
       setSignupSuccess(true);
-      window.location.href = "mailto:sumitnawale123456@gmail.com?subject=" + encodeURIComponent("SNEHA Pilot Signup (" + signupForm.name + ")") + "&body=" + encodeURIComponent("Name: " + signupForm.name + "\nEmail: " + signupForm.email + "\nAndroid: " + signupForm.androidVersion + "\nDevice: " + signupForm.deviceModel);
+      try {
+        window.location.href = "mailto:sumitnawale123456@gmail.com?subject=" + encodeURIComponent("SNEHA Pilot Signup (" + signupForm.name + ")") + "&body=" + encodeURIComponent("Name: " + signupForm.name + "\nEmail: " + signupForm.email + "\nAndroid: " + signupForm.androidVersion + "\nDevice: " + signupForm.deviceModel);
+      } catch {}
     } finally {
       setSignupLoading(false);
     }
@@ -524,12 +541,13 @@ export default function App() {
   };
 
   // -------------------------------------------------------------
-  // Admin Portal Logic (Section 4)
+  // Admin Portal Logic (Section 4) - Direct Supabase Real-time
   // -------------------------------------------------------------
-  const fetchAdminData = async (token?: string) => {
-    setAdminLoading(true);
-    setAdminAuthError('');
-    const authToken = token || (typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('sneha_admin_token') : null) || 'Sneha@143';
+  const fetchAdminData = useCallback(async (isBackground: boolean = false) => {
+    if (!isBackground) {
+      setAdminLoading(true);
+      setAdminAuthError('');
+    }
 
     try {
       // 1. Load pending local offline queues
@@ -541,53 +559,85 @@ export default function App() {
       } catch {}
       setAdminOfflineQueue({ signups: offlineSignups, feedback: offlineFeedback });
 
-      // 2. Try fetching from /api/admin/... first
-      let signupsData: any[] | null = null;
-      let feedbackData: any[] | null = null;
-
-      try {
-        const signupsRes = await fetch(`/api/admin/signups`, {
-          headers: { 'x-admin-token': authToken },
-        });
-        if (signupsRes.ok) {
-          signupsData = await signupsRes.json();
-        }
-
-        const feedbackRes = await fetch(`/api/admin/feedback`, {
-          headers: { 'x-admin-token': authToken },
-        });
-        if (feedbackRes.ok) {
-          feedbackData = await feedbackRes.json();
-        }
-      } catch {
-        // Express not running, fall back to direct Supabase select
-      }
-
-      // If Express wasn't available, fall back to direct Supabase REST
-      if (!signupsData && isSupabaseConfigured()) {
-        try {
-          signupsData = await supabaseSelect('pilot_signups');
-        } catch {
-          // Fall back gracefully to offline queue
-        }
-      }
-
-      if (!feedbackData && isSupabaseConfigured()) {
-        try {
-          feedbackData = await supabaseSelect('pilot_feedback');
-        } catch {
-          // Fall back gracefully to offline queue
-        }
-      }
-
-      setAdminSignups(signupsData || offlineSignups || []);
-      setAdminFeedback(feedbackData || offlineFeedback || []);
+      // 2. Direct Supabase Query (Live Data)
+      const { signups, feedback, source } = await fetchLiveAdminData();
+      setAdminSignups(Array.isArray(signups) ? signups : []);
+      setAdminFeedback(Array.isArray(feedback) ? feedback : []);
+      setAdminDataSource(source === 'supabase' ? 'supabase' : 'offline');
+      setAdminLastSyncedAt(new Date());
     } catch (err: any) {
-      setAdminAuthError(err.message || 'Failed to load submissions.');
+      // Fallback gracefully to offline queue
+      let offlineSignups: any[] = [];
+      let offlineFeedback: any[] = [];
+      try {
+        offlineSignups = JSON.parse(localStorage.getItem('sneha_pending_signups') || '[]');
+        offlineFeedback = JSON.parse(localStorage.getItem('sneha_pending_feedback') || '[]');
+      } catch {}
+      setAdminSignups(offlineSignups);
+      setAdminFeedback(offlineFeedback);
+      setAdminDataSource('offline');
+      if (!isBackground) {
+        setAdminAuthError(err.message || 'Unable to connect to live Supabase.');
+      }
     } finally {
-      setAdminLoading(false);
+      if (!isBackground) {
+        setAdminLoading(false);
+      }
     }
-  };
+  }, []);
+
+  // Real-time live synchronization engine
+  useEffect(() => {
+    if (activeTab !== 'admin' || !isAdminAuthenticated) return;
+
+    // 1. Immediate live fetch
+    fetchAdminData(false);
+
+    // 2. Direct Supabase WebSocket Real-Time Subscription
+    let unsubscribeWs = () => {};
+    if (adminRealtimeActive) {
+      unsubscribeWs = subscribeToSupabaseRealtime(
+        ['pilot_signups', 'pilot_feedback'],
+        () => {
+          fetchAdminData(true);
+        },
+        (status) => {
+          setAdminWsStatus(status === 'connected' ? 'connected' : 'disconnected');
+        }
+      );
+    }
+
+    // 3. Real-time background sync interval (every 5 seconds)
+    let pollTimer: any = null;
+    if (adminRealtimeActive) {
+      pollTimer = setInterval(() => {
+        fetchAdminData(true);
+      }, 5000);
+    }
+
+    // 4. Tab Focus & Visibility sync
+    const handleSyncOnVisible = () => {
+      if (document.visibilityState === 'visible') {
+        fetchAdminData(true);
+      }
+    };
+    window.addEventListener('focus', handleSyncOnVisible);
+    document.addEventListener('visibilitychange', handleSyncOnVisible);
+
+    // 5. Custom event when tester signs up or submits feedback in this browser
+    const handleLocalDataChange = () => {
+      fetchAdminData(true);
+    };
+    window.addEventListener('sneha:data-updated', handleLocalDataChange);
+
+    return () => {
+      unsubscribeWs();
+      if (pollTimer) clearInterval(pollTimer);
+      window.removeEventListener('focus', handleSyncOnVisible);
+      document.removeEventListener('visibilitychange', handleSyncOnVisible);
+      window.removeEventListener('sneha:data-updated', handleLocalDataChange);
+    };
+  }, [activeTab, isAdminAuthenticated, adminRealtimeActive, fetchAdminData]);
 
   const handleAdminLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -602,7 +652,7 @@ export default function App() {
         sessionStorage.setItem('sneha_admin_token', adminPin.trim());
       } catch {}
       setIsAdminAuthenticated(true);
-      fetchAdminData(adminPin.trim());
+      fetchAdminData(false);
     } else {
       setAdminAuthError('Incorrect PIN. Please check and try again.');
     }
@@ -617,6 +667,8 @@ export default function App() {
     setAdminPin('');
     setAdminSignups([]);
     setAdminFeedback([]);
+    setAdminWsStatus('disconnected');
+    setAdminLastSyncedAt(null);
   };
 
   const exportSignupsCSV = () => {
@@ -2153,6 +2205,59 @@ export default function App() {
             ) : (
               /* Authenticated Admin Dashboard */
               <div className="space-y-6">
+                {/* Live Real-Time Connection Bar */}
+                <div className="p-3 bg-[#f5ecd4] dark:bg-[#2a2418] border-3 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[4px_4px_0_#1f1a0e] dark:shadow-[4px_4px_0_#000] flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center flex-wrap gap-2 sm:gap-3">
+                    <div className="flex items-center gap-2">
+                      <span className="relative flex h-3 w-3">
+                        {adminRealtimeActive && (
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        )}
+                        <span className={`relative inline-flex rounded-full h-3 w-3 ${adminRealtimeActive ? 'bg-emerald-500' : 'bg-gray-400'}`}></span>
+                      </span>
+                      <span className="font-['Bowlby_One'] text-xs uppercase tracking-wider text-[#1f1a0e] dark:text-[#f5ecd4]">
+                        {adminRealtimeActive ? 'Direct Supabase Real-Time' : 'Live Sync Paused'}
+                      </span>
+                    </div>
+
+                    <span className="hidden md:inline-block px-2 py-0.5 bg-[#eedcb4] dark:bg-[#3d3420] text-[#1f1a0e] dark:text-[#f5ecd4] border border-[#1f1a0e] dark:border-[#eedcb4]/30 font-mono text-[10px] font-bold">
+                      {SUPABASE_URL.replace('https://', '')}
+                    </span>
+
+                    {adminLastSyncedAt && (
+                      <span className="text-[11px] font-['Crimson_Pro'] italic text-[#5a4f30] dark:text-[#c4b998]">
+                        Synced {adminLastSyncedAt.toLocaleTimeString()}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setAdminRealtimeActive(!adminRealtimeActive)}
+                      className={`px-2.5 py-1 text-[10px] font-bold uppercase border-2 border-[#1f1a0e] dark:border-[#eedcb4]/40 transition-all cursor-pointer ${
+                        adminRealtimeActive
+                          ? 'bg-emerald-500 text-white shadow-[2px_2px_0_#1f1a0e]'
+                          : 'bg-[#eedcb4] dark:bg-[#3d3420] text-[#1f1a0e] dark:text-[#f5ecd4]'
+                      }`}
+                      title={adminRealtimeActive ? 'Click to pause auto-sync' : 'Click to enable real-time auto-sync'}
+                    >
+                      {adminRealtimeActive ? '● Real-Time: ON' : '○ Real-Time: OFF'}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => fetchAdminData(false)}
+                      disabled={adminLoading}
+                      className="px-3 py-1 bg-[#0e4dff] text-white border-2 border-[#1f1a0e] dark:border-[#eedcb4]/40 text-xs font-bold uppercase shadow-[2px_2px_0_#1f1a0e] hover:bg-[#ff4a8a] hover:text-[#1f1a0e] transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                      title="Fetch live records directly from Supabase"
+                    >
+                      <RefreshCw size={12} className={adminLoading ? 'animate-spin' : ''} />
+                      Sync Now
+                    </button>
+                  </div>
+                </div>
+
                 {/* 1. Metric Overview Cards */}
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                   <div className="p-4 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e]">
@@ -2298,7 +2403,12 @@ export default function App() {
                             filteredSignups.map((s, idx) => (
                               <tr key={s.id || idx} className="hover:bg-[#eedcb4]/50 transition-colors">
                                 <td className="p-2.5 border-r border-[#1f1a0e]/20 font-mono text-[10px]">
-                                  {(s.created_at || s.queued_at || '').slice(0, 10) || '2026-10-25'}
+                                  {s.id && (
+                                    <span className="mr-1.5 px-1 py-0.5 bg-[#0e4dff]/10 text-[#0e4dff] font-bold border border-[#0e4dff]/30 text-[9px]">
+                                      #{s.id}
+                                    </span>
+                                  )}
+                                  {s.created_at ? new Date(s.created_at).toLocaleDateString() : (s.queued_at || 'Recent')}
                                 </td>
                                 <td className="p-2.5 border-r border-[#1f1a0e]/20 font-bold">{s.name}</td>
                                 <td className="p-2.5 border-r border-[#1f1a0e]/20">
