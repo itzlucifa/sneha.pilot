@@ -199,8 +199,17 @@ export default function App() {
     return () => { clearTimeout(timer); observer.disconnect(); };
   }, [activeTab]);
 
-  // Close menu on route change
-  useEffect(() => { setMenuOpen(false); }, [activeTab]);
+  // Close menu on route change, scroll to top, and stop audio if leaving pilot-site
+  useEffect(() => {
+    setMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    if (activeTab !== 'pilot-site' && isPlayingSong) {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      setIsPlayingSong(false);
+    }
+  }, [activeTab]);
 
   // Dark mode class on document and local storage persistence
   useEffect(() => {
@@ -262,11 +271,19 @@ export default function App() {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [lightboxImage, menuOpen]);
 
-  // Focus modal close button when lightbox opens
+  // Lock body scroll and focus modal close button when lightbox opens
   useEffect(() => {
-    if (lightboxImage && modalCloseBtnRef.current) {
-      modalCloseBtnRef.current.focus();
+    if (lightboxImage) {
+      document.body.style.overflow = 'hidden';
+      if (modalCloseBtnRef.current) {
+        modalCloseBtnRef.current.focus();
+      }
+    } else {
+      document.body.style.overflow = '';
     }
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [lightboxImage]);
 
   const toggleSongPlayback = () => {
@@ -461,6 +478,9 @@ export default function App() {
   const handleCustomApkUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (customApkInfo?.url) {
+        URL.revokeObjectURL(customApkInfo.url);
+      }
       const url = URL.createObjectURL(file);
       const sizeMb = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
       setCustomApkInfo({
@@ -469,6 +489,16 @@ export default function App() {
         url,
       });
     }
+  };
+
+  const navigateToSection = (sectionId: string) => {
+    setActiveTab('pilot-site');
+    setTimeout(() => {
+      const el = document.getElementById(sectionId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 60);
   };
 
   return (
@@ -484,9 +514,14 @@ export default function App() {
       <header className="sticky top-0 z-50 bg-[#f5ecd4] text-[#1f1a0e] border-b-4 border-[#1f1a0e] shadow-lg">
         <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2">
-            <span className="bg-[#ff4a8a] text-[#1f1a0e] px-2 py-0.5 border-2 border-[#1f1a0e] font-black text-sm">
+            <button
+              type="button"
+              onClick={() => { setActiveTab('pilot-site'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className="bg-[#ff4a8a] text-[#1f1a0e] px-2 py-0.5 border-2 border-[#1f1a0e] font-black text-sm cursor-pointer hover:bg-[#ff7028] transition-colors"
+              title="Return to SNEHA Pilot Overview"
+            >
               SNEHA.4U
-            </span>
+            </button>
           </div>
 
           {/* Hamburger Toggle - visible on all screens, opens drawer */}
@@ -640,7 +675,7 @@ export default function App() {
                     {/* Audio element for Humdum song */}
                     <audio
                       ref={audioRef}
-                      src="/assets/aistudio/Humdum_-_Aditya_Rikhari_320_Kbps_2add91c3.mp3"
+                      src="./assets/aistudio/Humdum_-_Aditya_Rikhari_320_Kbps_2add91c3.mp3"
                       preload="auto"
                       onEnded={() => setIsPlayingSong(false)}
                     />
@@ -689,7 +724,7 @@ export default function App() {
                       {/* Full-resolution looping video */}
                       <div className="relative flex-1 w-full h-full overflow-hidden bg-black flex items-center justify-center">
                         <video
-                          src="/assets/aistudio/gemini_generated_video_0db2fe7e_8318c5ea.mp4"
+                          src="./assets/aistudio/gemini_generated_video_0db2fe7e_8318c5ea.mp4"
                           autoPlay
                           loop
                           muted
@@ -882,7 +917,7 @@ export default function App() {
                       {(screenshotView === 'duo' || screenshotView === 'screen-1') && (
                         <div
                           onClick={() => setLightboxImage({
-                            src: '/assets/aistudio/WhatsApp_Image_2026-10-24_at_12.50.46_PM_346a1911.jpeg',
+                            src: './assets/aistudio/WhatsApp_Image_2026-10-24_at_12.50.46_PM_346a1911.jpeg',
                             title: 'Screen 01 · Features',
                             subtitle: 'SCREEN 01 · FEATURES AUDIT',
                             caption: "Verified Features Dashboard: 'Today at a glance' pending tasks, intent automation, and conversational assistant. Audited against com.sneha.app codebase."
@@ -897,7 +932,7 @@ export default function App() {
                           </div>
                           <div className="relative flex-1 w-full h-full overflow-hidden bg-black">
                             <img
-                              src="/assets/aistudio/WhatsApp_Image_2026-10-24_at_12.50.46_PM_346a1911.jpeg"
+                              src="./assets/aistudio/WhatsApp_Image_2026-10-24_at_12.50.46_PM_346a1911.jpeg"
                               alt="SNEHA Android App - Screen 01: Features Dashboard"
                               className="w-full h-full object-cover object-top block"
                               loading="eager"
@@ -914,7 +949,7 @@ export default function App() {
                       {(screenshotView === 'duo' || screenshotView === 'screen-2') && (
                         <div
                           onClick={() => setLightboxImage({
-                            src: '/assets/aistudio/WhatsApp_Image_2026-10-24_at_12.51.04_PM_66268e2f.jpeg',
+                            src: './assets/aistudio/WhatsApp_Image_2026-10-24_at_12.51.04_PM_66268e2f.jpeg',
                             title: 'Screen 02 · Home',
                             subtitle: 'SCREEN 02 · HOME AUDIT',
                             caption: "Verified Home Dashboard: Offline Alarms & Timers, Nearby Bluetooth Chat, and Private Encrypted Journal. Audited against com.sneha.app codebase."
@@ -931,7 +966,7 @@ export default function App() {
                           </div>
                           <div className="relative flex-1 w-full h-full overflow-hidden bg-black">
                             <img
-                              src="/assets/aistudio/WhatsApp_Image_2026-10-24_at_12.51.04_PM_66268e2f.jpeg"
+                              src="./assets/aistudio/WhatsApp_Image_2026-10-24_at_12.51.04_PM_66268e2f.jpeg"
                               alt="SNEHA Android App - Screen 02: Home Dashboard"
                               className="w-full h-full object-cover object-top block"
                               loading="eager"
@@ -1120,10 +1155,10 @@ export default function App() {
                   <div>
                     <h5 className="font-bold text-[11px] text-[#ff4a8a] tracking-widest uppercase mb-3">// PAGES</h5>
                     <ul className="space-y-1.5 text-[#eedcb4]">
-                      <li><a href="#hero" className="hover:text-[#ff4a8a] transition-colors">Overview</a></li>
-                      <li><a href="#features" className="hover:text-[#ff4a8a] transition-colors">Verified Features</a></li>
-                      <li><a href="#screenshots" className="hover:text-[#ff4a8a] transition-colors">Screenshots</a></li>
-                      <li><a href="#signup" className="hover:text-[#ff4a8a] transition-colors">Pilot Sign-up</a></li>
+                      <li><button onClick={() => navigateToSection('hero')} className="hover:text-[#ff4a8a] transition-colors text-left cursor-pointer">Overview</button></li>
+                      <li><button onClick={() => navigateToSection('features')} className="hover:text-[#ff4a8a] transition-colors text-left cursor-pointer">Verified Features</button></li>
+                      <li><button onClick={() => navigateToSection('screenshots')} className="hover:text-[#ff4a8a] transition-colors text-left cursor-pointer">Screenshots</button></li>
+                      <li><button onClick={() => navigateToSection('signup')} className="hover:text-[#ff4a8a] transition-colors text-left cursor-pointer">Pilot Sign-up</button></li>
                     </ul>
                   </div>
 
@@ -1202,6 +1237,7 @@ export default function App() {
                       <button
                         type="button"
                         key={val}
+                        aria-label={`${val} Star${val > 1 ? 's' : ''}`}
                         onClick={() => setFeedbackRating(val)}
                         className={`p-3 border-2 border-[#1f1a0e] font-['Bowlby_One'] text-lg transition-all ${
                           feedbackRating === val

@@ -259,4 +259,34 @@ describe('SNEHA Pilot Distribution App', () => {
       spy.mockRestore();
     });
   });
+
+  describe('Navigation & Accessibility Polish', () => {
+    it('navigates to pilot site when clicking header logo', () => {
+      render(<App />);
+      // Switch to another tab first
+      fireEvent.click(screen.getByLabelText('Toggle menu'));
+      fireEvent.click(screen.getByText('8. FAQ'));
+      expect(screen.getByText(/Q1\. What is SNEHA\?/i)).toBeInTheDocument();
+
+      // Click top logo
+      const logoBtn = screen.getByTitle('Return to SNEHA Pilot Overview');
+      fireEvent.click(logoBtn);
+
+      // Verify returned to pilot site
+      expect(screen.getByText(/THE AI WHICH ACTUALLY CARES/i)).toBeInTheDocument();
+    });
+
+    it('locks body overflow when lightbox modal is opened', () => {
+      render(<App />);
+      const screen1Card = screen.getByText('01 · Features');
+      fireEvent.click(screen1Card);
+
+      expect(document.body.style.overflow).toBe('hidden');
+
+      const closeBtn = screen.getByText('✕ Close');
+      fireEvent.click(closeBtn);
+
+      expect(document.body.style.overflow).toBe('');
+    });
+  });
 });

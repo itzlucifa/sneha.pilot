@@ -1,5 +1,5 @@
 // SNEHA Pilot Companion Service Worker
-const CACHE_NAME = 'sneha-pilot-v1';
+const CACHE_NAME = 'sneha-pilot-v2';
 const PRECACHE_URLS = [
   './',
   './index.html',
@@ -31,12 +31,14 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
-  // Network-first with cache fallback for HTML/API, Cache-first for static assets
+  const url = new URL(event.request.url);
+
+  // Stale-while-revalidate for local assets and fonts
   event.respondWith(
     caches.match(event.request).then((cached) => {
       const fetchPromise = fetch(event.request)
         .then((response) => {
-          if (response && response.status === 200 && response.type === 'basic') {
+          if (response && response.status === 200 && (response.type === 'basic' || response.type === 'cors')) {
             const clone = response.clone();
             caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
           }
@@ -47,4 +49,3 @@ self.addEventListener('fetch', (event) => {
     })
   );
 });
-

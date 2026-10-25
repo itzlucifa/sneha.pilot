@@ -8,6 +8,9 @@ class MockIntersectionObserver {
 }
 window.IntersectionObserver = MockIntersectionObserver as any;
 
+// Mock window.scrollTo
+window.scrollTo = () => {};
+
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -22,4 +25,3 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: () => false,
   }),
 });
-

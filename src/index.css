@@ -10,6 +10,11 @@
   --orange: #ff7028;
 }
 
+html {
+  touch-action: pan-x pan-y;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   background-color: var(--paper);
   color: var(--ink);
@@ -17,7 +22,16 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  touch-action: pan-x pan-y;
+  -webkit-text-size-adjust: 100%;
   transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Ensure form inputs never trigger iOS automatic zoom by maintaining minimum 16px font */
+input,
+select,
+textarea {
+  font-size: 16px !important;
 }
 
 /* Hero outline text "ACTIVE." */
@@ -482,6 +496,23 @@ body {
 .dark #screenshots {
   background-color: #150f07 !important;
   border-color: var(--border-light) !important;
+}
+
+/* Lightbox modal in dark mode */
+.dark div[role="dialog"] > div {
+  background-color: #171108 !important;
+  border-color: var(--border-light) !important;
+}
+
+.dark div[role="dialog"] .bg-\[\#eedcb4\] {
+  background-color: #241c10 !important;
+  border-color: var(--border-light) !important;
+  color: #fdfaf2 !important;
+}
+
+/* Dashed borders in dark mode */
+.dark .border-dashed {
+  border-color: rgba(247, 241, 225, 0.3) !important;
 }
 
 /* Hamburger drawer menu */

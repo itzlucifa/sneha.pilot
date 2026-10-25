@@ -2,14 +2,14 @@
   "name": "SNEHA - Pilot Distribution",
   "short_name": "SNEHA Pilot",
   "description": "Privacy-first on-device AI companion pilot distribution for Android 8.0+",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#f5ecd4",
   "theme_color": "#1f1a0e",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/assets/aistudio/sneha-screen-01.jpg",
+      "src": "./assets/img/sneha-screen-01.jpg",
       "sizes": "512x512",
       "type": "image/jpeg"
     }
