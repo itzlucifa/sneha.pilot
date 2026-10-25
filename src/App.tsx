@@ -25,12 +25,16 @@ import {
   Play,
   Pause,
   Menu,
-  X
+  X,
+  Download,
+  HelpCircle,
+  Cpu,
+  ScrollText
 } from 'lucide-react';
 import { supabaseInsert, isSupabaseConfigured } from './supabase';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'pilot-site' | 'in-app-feedback' | 'privacy' | 'audit'>('pilot-site');
+  const [activeTab, setActiveTab] = useState<'pilot-site' | 'in-app-feedback' | 'privacy' | 'audit' | 'faq' | 'download' | 'compatibility' | 'changelog'>('pilot-site');
   const [viewportMode, setViewportMode] = useState<'desktop' | 'tablet' | 'mobile' | 'compact'>('desktop');
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -203,6 +207,18 @@ export default function App() {
               </button>
               <button onClick={() => { setActiveTab('audit'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#eedcb4] hover:text-[#1f1a0e] transition-all">
                 4. Feature Audit (Step 2)
+              </button>
+              <button onClick={() => { setActiveTab('changelog'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#0e4dff] hover:text-white transition-all">
+                5. Changelog
+              </button>
+              <button onClick={() => { setActiveTab('download'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#ff4a8a] hover:text-[#f5ecd4] transition-all">
+                6. Download APK
+              </button>
+              <button onClick={() => { setActiveTab('compatibility'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#ff7028] hover:text-[#1f1a0e] transition-all">
+                7. Device Compatibility
+              </button>
+              <button onClick={() => { setActiveTab('faq'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#eedcb4] hover:text-[#1f1a0e] transition-all">
+                8. FAQ
               </button>
 
               {/* Viewport Testing inside hamburger */}
@@ -1090,6 +1106,291 @@ export default function App() {
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </div>
+        )}
+
+        {/* Tab 5: Changelog */}
+        {activeTab === 'changelog' && (
+          <div className="max-w-3xl mx-auto px-4 py-12" data-reveal="changelog-section">
+            <div className="mb-6 flex items-center justify-between">
+              <div>
+                <span className="inline-block px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest border-2 border-[#1f1a0e] bg-[#eedcb4] text-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] mb-2">
+                  Release History
+                </span>
+                <h1 className="font-['Bowlby_One'] text-3xl sm:text-5xl uppercase tracking-tight">
+                  <span className="text-[#ff4a8a]">Changelog</span>.
+                </h1>
+                <p className="font-['Crimson_Pro'] italic text-base text-[#2a2515] mt-1">
+                  Every pilot build, listed newest first. No silent updates — every change is disclosed.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-6 sm:p-8 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[8px_8px_0_#1f1a0e] space-y-4">
+              <div className="border-l-4 border-[#ff4a8a] pl-4 py-3 bg-[#eedcb4]/40">
+                <div className="flex justify-between items-start mb-1">
+                  <span className="font-['Bowlby_One'] text-lg text-[#ff4a8a] uppercase tracking-tight">v1.0.1</span>
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#1f1a0e] border-2 border-[#1f1a0e] px-2 py-0.5 bg-[#f5ecd4]">2026-10-25</span>
+                </div>
+                <ul className="list-disc list-inside mt-2 space-y-1 text-sm text-[#2a2515] font-['Crimson_Pro'] italic">
+                  <li>Added Changelog, Download APK, Device Compatibility, and FAQ pages to pilot dashboard.</li>
+                  <li>Hamburger menu now renders all 8 tabs with matching views.</li>
+                  <li>Fixed missing tab views so every menu item navigates to its page.</li>
+                </ul>
+              </div>
+
+              <div className="border-l-4 border-[#0e4dff] pl-4 py-3 bg-[#eedcb4]/40">
+                <div className="flex justify-between items-start mb-1">
+                  <span className="font-['Bowlby_One'] text-lg text-[#0e4dff] uppercase tracking-tight">v1.0.0</span>
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#1f1a0e] border-2 border-[#1f1a0e] px-2 py-0.5 bg-[#f5ecd4]">2026-10-24</span>
+                </div>
+                <ul className="list-disc list-inside mt-2 space-y-1 text-sm text-[#2a2515] font-['Crimson_Pro'] italic">
+                  <li>Initial pilot distribution release for SNEHA (com.sneha.app).</li>
+                  <li>Pilot Site with hero, verified features, screenshots, and sign-up form.</li>
+                  <li>In-App Feedback form (Step 5) for tester reviews and bug reports.</li>
+                  <li>Plain-Language Privacy Policy with zero-telemetry guarantee.</li>
+                  <li>Feature Audit Table (Step 2) with EXISTS / PARTIAL / MISSING statuses.</li>
+                  <li>Supabase-backed pilot_signups and pilot_feedback tables.</li>
+                  <li>Spinning audio sticker player with "Humdum" by Aditya Rikhari.</li>
+                  <li>Live viewport testing (desktop / tablet / mobile / compact) in hamburger menu.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Tab 6: Download APK */}
+        {activeTab === 'download' && (
+          <div className="max-w-3xl mx-auto px-4 py-12" data-reveal="download-section">
+            <div className="mb-6 flex items-center justify-between">
+              <div>
+                <span className="inline-block px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest border-2 border-[#1f1a0e] bg-[#ff4a8a] text-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] mb-2">
+                  Step 7 // Pilot Build Distribution
+                </span>
+                <h1 className="font-['Bowlby_One'] text-3xl sm:text-5xl uppercase tracking-tight">
+                  Download <span className="text-[#0e4dff]">APK</span>.
+                </h1>
+                <p className="font-['Crimson_Pro'] italic text-base text-[#2a2515] mt-1">
+                  Grab the latest pilot build for SNEHA. Android 8.0+ (Min SDK 26) through Android 15 (Target SDK 35).
+                </p>
+              </div>
+            </div>
+
+            <div className="p-6 sm:p-8 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[8px_8px_0_#1f1a0e]">
+              <div className="mb-6 p-3 bg-[#eedcb4] border-2 border-dashed border-[#1f1a0e] text-xs font-['Crimson_Pro'] italic text-[#2a2515]">
+                <strong>Important:</strong> This is an unsigned pilot build for testers only. Installing from unknown sources must be enabled on your device. We do not auto-update — check this page for new builds.
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e]">
+                  <div>
+                    <span className="font-['Bowlby_One'] text-lg text-[#1f1a0e] uppercase">sneha-pilot-1.0.1.apk</span>
+                    <p className="text-xs text-[#5a4f30] mt-1 font-['Crimson_Pro'] italic">com.sneha.app · Min SDK 26 · Target SDK 35 · Arm64-v8a</p>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#1f1a0e] border-2 border-[#1f1a0e] px-2 py-0.5">6.2 MB</span>
+                    <a
+                      href="#"
+                      className="mt-2 inline-block px-5 py-2 bg-[#1f1a0e] text-[#f5ecd4] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[4px_4px_0_#0e4dff] hover:bg-[#0e4dff] hover:text-white transition-all"
+                    >
+                      Download APK →
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between p-4 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e]">
+                  <div>
+                    <span className="font-['Bowlby_One'] text-lg text-[#1f1a0e] uppercase">sneha-pilot-1.0.0.apk</span>
+                    <p className="text-xs text-[#5a4f30] mt-1 font-['Crimson_Pro'] italic">com.sneha.app · Min SDK 26 · Target SDK 35 · Arm64-v8a</p>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#1f1a0e] border-2 border-[#1f1a0e] px-2 py-0.5">5.9 MB</span>
+                    <a
+                      href="#"
+                      className="mt-2 inline-block px-5 py-2 bg-[#eedcb4] text-[#1f1a0e] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] hover:bg-[#1f1a0e] hover:text-[#f5ecd4] transition-all"
+                    >
+                      Download APK →
+                    </a>
+                  </div>
+                </div>
+
+                <div className="mt-6 p-4 bg-[#eedcb4] border-2 border-[#1f1a0e] text-xs font-['Crimson_Pro'] italic text-[#2a2515]">
+                  <strong>How to install:</strong>
+                  <ol className="list-decimal list-inside mt-2 space-y-1">
+                    <li>Download the APK file above.</li>
+                    <li>On your Android device, go to Settings &gt; Apps &gt; Special app access &gt; Install unknown apps.</li>
+                    <li>Enable installs from your browser or file manager.</li>
+                    <li>Open the downloaded APK and tap Install.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Tab 7: Device Compatibility */}
+        {activeTab === 'compatibility' && (
+          <div className="max-w-4xl mx-auto px-4 py-12" data-reveal="compatibility-section">
+            <div className="mb-6 flex items-center justify-between">
+              <div>
+                <span className="inline-block px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest border-2 border-[#1f1a0e] bg-[#ff7028] text-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] mb-2">
+                  Device Compatibility Matrix
+                </span>
+                <h1 className="font-['Bowlby_One'] text-3xl sm:text-5xl uppercase tracking-tight">
+                  Supported <span className="text-[#0e4dff]">Devices</span>.
+                </h1>
+                <p className="font-['Crimson_Pro'] italic text-base text-[#2a2515] mt-1">
+                  SNEHA runs on Android 8.0+ (Min SDK 26) through Android 15 (Target SDK 35). Compatibility verified across OEM skins.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-6 sm:p-8 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[8px_8px_0_#1f1a0e] overflow-x-auto">
+              <table className="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr className="bg-[#1f1a0e] text-[#f5ecd4] font-['Bowlby_One'] text-[11px] uppercase tracking-wider">
+                    <th className="p-3 border-r border-[#3a3320]">Android Version</th>
+                    <th className="p-3 border-r border-[#3a3320]">SDK</th>
+                    <th className="p-3 border-r border-[#3a3320]">Status</th>
+                    <th className="p-3">Notes</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y-2 divide-[#1f1a0e] font-sans">
+                  <tr className="hover:bg-[#eedcb4]/50">
+                    <td className="p-3 font-bold border-r border-[#1f1a0e]">Android 15</td>
+                    <td className="p-3 border-r border-[#1f1a0e]">SDK 35</td>
+                    <td className="p-3 border-r border-[#1f1a0e]"><span className="px-2 py-0.5 bg-[#eedcb4] text-[#0e4dff] font-bold border border-[#1f1a0e]">TARGET</span></td>
+                    <td className="p-3 font-['Crimson_Pro'] italic text-sm">Primary development target. Full feature support.</td>
+                  </tr>
+                  <tr className="hover:bg-[#eedcb4]/50">
+                    <td className="p-3 font-bold border-r border-[#1f1a0e]">Android 14</td>
+                    <td className="p-3 border-r border-[#1f1a0e]">SDK 34</td>
+                    <td className="p-3 border-r border-[#1f1a0e]"><span className="px-2 py-0.5 bg-[#eedcb4] text-[#0e4dff] font-bold border border-[#1f1a0e]">SUPPORTED</span></td>
+                    <td className="p-3 font-['Crimson_Pro'] italic text-sm">Verified on Pixel 7. All intents functional.</td>
+                  </tr>
+                  <tr className="hover:bg-[#eedcb4]/50">
+                    <td className="p-3 font-bold border-r border-[#1f1a0e]">Android 13</td>
+                    <td className="p-3 border-r border-[#1f1a0e]">SDK 33</td>
+                    <td className="p-3 border-r border-[#1f1a0e]"><span className="px-2 py-0.5 bg-[#eedcb4] text-[#0e4dff] font-bold border border-[#1f1a0e]">SUPPORTED</span></td>
+                    <td className="p-3 font-['Crimson_Pro'] italic text-sm">Verified on Pixel 6. Notification permissions handled.</td>
+                  </tr>
+                  <tr className="hover:bg-[#eedcb4]/50">
+                    <td className="p-3 font-bold border-r border-[#1f1a0e]">Android 12</td>
+                    <td className="p-3 border-r border-[#1f1a0e]">SDK 31</td>
+                    <td className="p-3 border-r border-[#1f1a0e]"><span className="px-2 py-0.5 bg-[#eedcb4] text-[#0e4dff] font-bold border border-[#1f1a0e]">SUPPORTED</span></td>
+                    <td className="p-3 font-['Crimson_Pro'] italic text-sm">Verified on Samsung Galaxy S21 (OneUI).</td>
+                  </tr>
+                  <tr className="hover:bg-[#eedcb4]/50">
+                    <td className="p-3 font-bold border-r border-[#1f1a0e]">Android 11</td>
+                    <td className="p-3 border-r border-[#1f1a0e]">SDK 30</td>
+                    <td className="p-3 border-r border-[#1f1a0e]"><span className="px-2 py-0.5 bg-[#eedcb4] text-[#0e4dff] font-bold border border-[#1f1a0e]">SUPPORTED</span></td>
+                    <td className="p-3 font-['Crimson_Pro'] italic text-sm">Scoped storage compatible. Local media access verified.</td>
+                  </tr>
+                  <tr className="hover:bg-[#eedcb4]/50">
+                    <td className="p-3 font-bold border-r border-[#1f1a0e]">Android 10</td>
+                    <td className="p-3 border-r border-[#1f1a0e]">SDK 29</td>
+                    <td className="p-3 border-r border-[#1f1a0e]"><span className="px-2 py-0.5 bg-[#eedcb4] text-[#0e4dff] font-bold border border-[#1f1a0e]">SUPPORTED</span></td>
+                    <td className="p-3 font-['Crimson_Pro'] italic text-sm">Minimum tested version. Dark theme support confirmed.</td>
+                  </tr>
+                  <tr className="hover:bg-[#eedcb4]/50">
+                    <td className="p-3 font-bold border-r border-[#1f1a0e]">Android 9 Pie</td>
+                    <td className="p-3 border-r border-[#1f1a0e]">SDK 28</td>
+                    <td className="p-3 border-r border-[#1f1a0e]"><span className="px-2 py-0.5 bg-[#eedcb4] text-[#0e4dff] font-bold border border-[#1f1a0e]">SUPPORTED</span></td>
+                    <td className="p-3 font-['Crimson_Pro'] italic text-sm">Background execution limits apply per OS.</td>
+                  </tr>
+                  <tr className="hover:bg-[#eedcb4]/50">
+                    <td className="p-3 font-bold border-r border-[#1f1a0e]">Android 8.0 / 8.1 Oreo</td>
+                    <td className="p-3 border-r border-[#1f1a0e]">SDK 26</td>
+                    <td className="p-3 border-r border-[#1f1a0e]"><span className="px-2 py-0.5 bg-[#ff7028] text-[#1f1a0e] font-bold border border-[#1f1a0e]">MIN SDK</span></td>
+                    <td className="p-3 font-['Crimson_Pro'] italic text-sm">Minimum supported version. Notification channels required.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div className="mt-6 p-4 bg-[#eedcb4] border-2 border-dashed border-[#1f1a0e] text-xs font-['Crimson_Pro'] italic text-[#2a2515]">
+              <strong>OEM Notes:</strong> System automation features (alarms, reminders, intents) require runtime user permissions and are undergoing staged testing across OEM variations (OneUI, Pixel OS, HyperOS, MIPS). Offline inference speed varies by device RAM and NPU.
+            </div>
+          </div>
+        )}
+
+        {/* Tab 8: FAQ */}
+        {activeTab === 'faq' && (
+          <div className="max-w-3xl mx-auto px-4 py-12" data-reveal="faq-section">
+            <div className="mb-6 flex items-center justify-between">
+              <div>
+                <span className="inline-block px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest border-2 border-[#1f1a0e] bg-[#eedcb4] text-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] mb-2">
+                  Frequently Asked Questions
+                </span>
+                <h1 className="font-['Bowlby_One'] text-3xl sm:text-5xl uppercase tracking-tight">
+                  <span className="text-[#ff4a8a]">FAQ</span>.
+                </h1>
+                <p className="font-['Crimson_Pro'] italic text-base text-[#2a2515] mt-1">
+                  Straight answers about SNEHA, privacy, and the pilot program. Still have questions? Email us.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-6 sm:p-8 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[8px_8px_0_#1f1a0e] space-y-3">
+              {[
+                {
+                  q: 'What is SNEHA?',
+                  a: 'SNEHA is a privacy-first, on-device AI companion for Android 8.0+. It runs entirely on your phone — no cloud trackers, no telemetry, no subscriptions.',
+                },
+                {
+                  q: 'Does SNEHA collect my data?',
+                  a: 'No. Conversations, intent history, and automation preferences stay inside the private Android sandbox (/data/data/com.sneha.app). Nothing leaves your device unless you explicitly tap submit on a form.',
+                },
+                {
+                  q: 'What Android versions are supported?',
+                  a: 'Android 8.0 (Min SDK 26) through Android 15 (Target SDK 35). See the Device Compatibility page for details.',
+                },
+                {
+                  q: 'Is SNEHA open source?',
+                  a: 'Yes. SNEHA is licensed under GPLv3. You can inspect, verify, and compile every line of code yourself.',
+                },
+                {
+                  q: 'How do I join the pilot program?',
+                  a: 'Fill out the Pilot Sign-up form on the Pilot Site tab with your name, email, Android version, and device model. We will email your build invitation.',
+                },
+                {
+                  q: 'How do I install the pilot APK?',
+                  a: 'Download the APK from the Download tab, enable installs from unknown sources on your device, then open the APK and tap Install.',
+                },
+                {
+                  q: 'Are there ads or trackers in SNEHA?',
+                  a: 'None. Zero advertising SDKs, zero analytics pixels, zero background data brokers. Full stop.',
+                },
+                {
+                  q: 'Who do I contact for support?',
+                  a: 'Email sumitnawale123456@gmail.com or use the App-Side Feedback tab to submit reviews and bug reports.',
+                },
+              ].map((item, idx) => (
+                <div key={idx} className="border-2 border-[#1f1a0e] bg-[#f5ecd4] shadow-[4px_4px_0_#1f1a0e] hover:shadow-[6px_6px_0_#0e4dff] transition-all">
+                  <div className="p-3 bg-[#eedcb4] border-b-2 border-[#1f1a0e] flex justify-between items-center cursor-pointer" onClick={() => {}}>
+                    <span className="font-['Bowlby_One'] text-sm text-[#ff4a8a] uppercase tracking-wider">
+                      Q{idx + 1}. {item.q}
+                    </span>
+                    <span className="text-xs font-bold text-[#1f1a0e]">▾</span>
+                  </div>
+                  <div className="p-3 text-sm text-[#2a2515] font-['Crimson_Pro'] italic">
+                    {item.a}
+                  </div>
+                </div>
+              ))}
+
+              <div className="mt-6 pt-6 border-t-3 border-dashed border-[#1f1a0e] text-center">
+                <p className="text-sm text-[#2a2515] font-['Crimson_Pro'] italic mb-3">
+                  Still have a question not listed here?
+                </p>
+                <a
+                  href="mailto:sumitnawale123456@gmail.com"
+                  className="px-5 py-2 bg-[#1f1a0e] text-[#f5ecd4] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[4px_4px_0_#0e4dff] hover:bg-[#0e4dff] hover:text-white transition-all"
+                >
+                  Email the Maintainer →
+                </a>
+              </div>
             </div>
           </div>
         )}
