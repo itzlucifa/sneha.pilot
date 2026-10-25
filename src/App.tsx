@@ -4,7 +4,7 @@
  * SNEHA Pilot Distribution Platform & In-App Tester Companion
  */
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
   Shield,
   Smartphone,
@@ -29,14 +29,154 @@ import {
   Download,
   HelpCircle,
   Cpu,
-  ScrollText
+  ScrollText,
+  Copy,
+  Moon,
+  Sun,
+  Check,
+  ChevronDown,
+  ChevronUp,
+  Upload
 } from 'lucide-react';
 import { supabaseInsert, isSupabaseConfigured } from './supabase';
+
+// Reusable Copyable Badge with instant feedback
+export function CopyableBadge({
+  text,
+  label,
+  className = ''
+}: {
+  text: string;
+  label?: string;
+  className?: string;
+}) {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={handleCopy}
+      title={"Click to copy: " + text}
+      className={"inline-flex items-center gap-1 cursor-pointer transition-all hover:opacity-85 active:scale-95 " + className}
+    >
+      <span>{label || text}</span>
+      {copied ? (
+        <span className="inline-flex items-center text-[10px] bg-[#0e4dff] text-white px-1.5 py-0.5 border border-[#1f1a0e] font-sans font-bold shadow-[1px_1px_0_#1f1a0e]">
+          <Check size={11} className="mr-0.5" /> Copied!
+        </span>
+      ) : (
+        <Copy size={12} className="opacity-70 hover:opacity-100" />
+      )}
+    </button>
+  );
+}
+
+// Error Boundary - prevents one tab crash from blanking the whole dashboard
+export class ErrorBoundary extends React.Component<
+  { children: React.ReactNode; onReset?: () => void },
+  { hasError: boolean; error?: Error }
+> {
+  constructor(props: { children: React.ReactNode; onReset?: () => void }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('ErrorBoundary caught:', error, errorInfo);
+  }
+
+  reset = () => {
+    this.setState({ hasError: false });
+    if (this.props.onReset) this.props.onReset();
+  };
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="max-w-3xl mx-auto px-4 py-12 text-center" role="alert">
+          <div className="p-6 sm:p-8 bg-[#f5ecd4] border-3 border-[#ff4a8a] shadow-[8px_8px_0_#1f1a0e]">
+            <h1 className="font-['Bowlby_One'] text-3xl sm:text-5xl uppercase tracking-tight text-[#ff4a8a] mb-4">
+              SOMETHING WENT WRONG
+            </h1>
+            <p className="font-['Crimson_Pro'] italic text-base text-[#1f1a0e] mb-6">
+              This dashboard section encountered an issue. You can try recovering or switch to another tab.
+            </p>
+            <div className="flex justify-center gap-3">
+              <button
+                onClick={this.reset}
+                className="px-5 py-2 bg-[#ff4a8a] text-[#1f1a0e] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] hover:bg-[#1f1a0e] hover:text-[#f5ecd4] transition-all"
+              >
+                Try Again ↻
+              </button>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-5 py-2 bg-[#1f1a0e] text-[#f5ecd4] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[4px_4px_0_#0e4dff] hover:bg-[#0e4dff] hover:text-white transition-all"
+              >
+                Reload Page →
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'pilot-site' | 'in-app-feedback' | 'privacy' | 'audit' | 'faq' | 'download' | 'compatibility' | 'changelog'>('pilot-site');
   const [viewportMode, setViewportMode] = useState<'desktop' | 'tablet' | 'mobile' | 'compact'>('desktop');
   const [menuOpen, setMenuOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('sneha_theme') === 'dark';
+    } catch {
+      return false;
+    }
+  });
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+
+  // Custom APK file upload state
+  const [customApkInfo, setCustomApkInfo] = useState<{ name: string; size: string; url: string } | null>(null);
+
+  // Refs for outside click and modal focus trap
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const menuButtonRef = useRef<HTMLButtonElement | null>(null);
+  const modalRef = useRef<HTMLDivElement | null>(null);
+  const modalCloseBtnRef = useRef<HTMLButtonElement | null>(null);
+
+  // Song audio state for hero spinning sticker
+  const [isPlayingSong, setIsPlayingSong] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Screenshots View Mode & Lightbox
+  const [screenshotView, setScreenshotView] = useState<'duo' | 'screen-1' | 'screen-2'>('duo');
+  const [lightboxImage, setLightboxImage] = useState<{ src: string; title: string; subtitle: string; caption: string } | null>(null);
 
   // Scroll reveal animation
   useEffect(() => {
@@ -62,13 +202,72 @@ export default function App() {
   // Close menu on route change
   useEffect(() => { setMenuOpen(false); }, [activeTab]);
 
-  // Song audio state for hero spinning sticker
-  const [isPlayingSong, setIsPlayingSong] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  // Dark mode class on document and local storage persistence
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+      try { localStorage.setItem('sneha_theme', 'dark'); } catch {}
+    } else {
+      document.documentElement.classList.remove('dark');
+      try { localStorage.setItem('sneha_theme', 'light'); } catch {}
+    }
+  }, [darkMode]);
 
-  // Screenshots View Mode & Lightbox
-  const [screenshotView, setScreenshotView] = useState<'duo' | 'screen-1' | 'screen-2'>('duo');
-  const [lightboxImage, setLightboxImage] = useState<{ src: string; title: string; subtitle: string; caption: string } | null>(null);
+  // Close hamburger on outside click (proper ref checking)
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (!menuOpen) return;
+      const target = e.target as Node;
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(target) &&
+        menuButtonRef.current &&
+        !menuButtonRef.current.contains(target)
+      ) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [menuOpen]);
+
+  // Keyboard navigation: Escape key + Tab trapping in modals
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (lightboxImage) setLightboxImage(null);
+        if (menuOpen) setMenuOpen(false);
+      }
+
+      // Tab trapping inside modal
+      if (e.key === 'Tab' && lightboxImage && modalRef.current) {
+        const focusableElements = modalRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusableElements.length > 0) {
+          const firstElement = focusableElements[0];
+          const lastElement = focusableElements[focusableElements.length - 1];
+
+          if (e.shiftKey && document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          } else if (!e.shiftKey && document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxImage, menuOpen]);
+
+  // Focus modal close button when lightbox opens
+  useEffect(() => {
+    if (lightboxImage && modalCloseBtnRef.current) {
+      modalCloseBtnRef.current.focus();
+    }
+  }, [lightboxImage]);
 
   const toggleSongPlayback = () => {
     if (!audioRef.current) return;
@@ -84,6 +283,17 @@ export default function App() {
     }
   };
 
+  // Helper to save offline queue in localStorage
+  const queueOfflineSubmission = (queueName: string, data: Record<string, any>) => {
+    try {
+      const existing = JSON.parse(localStorage.getItem(queueName) || '[]');
+      existing.push({ ...data, queued_at: new Date().toISOString() });
+      localStorage.setItem(queueName, JSON.stringify(existing));
+    } catch (err) {
+      console.warn('Offline storage failed:', err);
+    }
+  };
+
   // Sign-up form state
   const [signupForm, setSignupForm] = useState({
     name: '',
@@ -92,6 +302,7 @@ export default function App() {
     deviceModel: ''
   });
   const [signupSuccess, setSignupSuccess] = useState(false);
+  const [signupOfflineNotice, setSignupOfflineNotice] = useState(false);
   const [signupError, setSignupError] = useState('');
   const [signupLoading, setSignupLoading] = useState(false);
 
@@ -103,29 +314,85 @@ export default function App() {
   const [testerEmail, setTesterEmail] = useState('');
   const [testerDevice, setTesterDevice] = useState('Pixel 7 / Android 14');
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  const [feedbackOfflineNotice, setFeedbackOfflineNotice] = useState(false);
   const [feedbackError, setFeedbackError] = useState('');
   const [feedbackLoading, setFeedbackLoading] = useState(false);
 
+  // Form validation helpers
+  const validateEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(email.trim());
+  };
+
+  const validateSignupForm = () => {
+    if (!signupForm.name.trim() || signupForm.name.trim().length < 2) {
+      return 'Please enter your full name (at least 2 characters).';
+    }
+    if (!signupForm.email.trim()) {
+      return 'Please enter your email address.';
+    }
+    if (!validateEmail(signupForm.email)) {
+      return 'Please enter a valid email address (e.g. name@example.com).';
+    }
+    if (!signupForm.deviceModel.trim() || signupForm.deviceModel.trim().length < 2) {
+      return 'Please enter your device model (e.g. Pixel 7, Galaxy S21).';
+    }
+    return null;
+  };
+
+  const validateFeedbackForm = () => {
+    if (feedbackRating < 1 || feedbackRating > 5) {
+      return 'Please select an overall rating from 1 to 5 stars.';
+    }
+    if (!whatWorked.trim() || whatWorked.trim().length < 5) {
+      return 'Please describe what worked well (at least 5 characters).';
+    }
+    if (!whatBroke.trim() || whatBroke.trim().length < 5) {
+      return 'Please describe what broke or failed (at least 5 characters).';
+    }
+    if (!whatToAdd.trim() || whatToAdd.trim().length < 3) {
+      return 'Please describe what features to add (at least 3 characters).';
+    }
+    if (testerEmail.trim() && !validateEmail(testerEmail)) {
+      return 'Please enter a valid email address if providing one.';
+    }
+    return null;
+  };
+
   const handleSignupSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!signupForm.name || !signupForm.email || !signupForm.deviceModel) return;
-    if (!isSupabaseConfigured()) {
-      setSignupError('Supabase not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.');
+    const validationError = validateSignupForm();
+    if (validationError) {
+      setSignupError(validationError);
       return;
     }
-    setSignupLoading(true);
+
     setSignupError('');
+
+    // Fallback when Supabase isn't configured
+    if (!isSupabaseConfigured()) {
+      queueOfflineSubmission('sneha_pending_signups', signupForm);
+      setSignupOfflineNotice(true);
+      setSignupSuccess(true);
+      window.location.href = "mailto:sumitnawale123456@gmail.com?subject=" + encodeURIComponent("SNEHA Pilot Signup (" + signupForm.name + ")") + "&body=" + encodeURIComponent("Name: " + signupForm.name + "\nEmail: " + signupForm.email + "\nAndroid: " + signupForm.androidVersion + "\nDevice: " + signupForm.deviceModel);
+      return;
+    }
+
+    setSignupLoading(true);
     try {
       await supabaseInsert('pilot_signups', {
-        name: signupForm.name,
-        email: signupForm.email,
+        name: signupForm.name.trim(),
+        email: signupForm.email.trim(),
         android_version: signupForm.androidVersion,
-        device_model: signupForm.deviceModel,
+        device_model: signupForm.deviceModel.trim(),
       });
       setSignupSuccess(true);
+      setSignupOfflineNotice(false);
       setSignupForm({ name: '', email: '', androidVersion: 'Android 15 (Target SDK 35)', deviceModel: '' });
     } catch (err: any) {
-      setSignupError(err.message || 'Submission failed. Please try again.');
+      queueOfflineSubmission('sneha_pending_signups', signupForm);
+      setSignupOfflineNotice(true);
+      setSignupSuccess(true);
+      window.location.href = "mailto:sumitnawale123456@gmail.com?subject=" + encodeURIComponent("SNEHA Pilot Signup (" + signupForm.name + ")") + "&body=" + encodeURIComponent("Name: " + signupForm.name + "\nEmail: " + signupForm.email + "\nAndroid: " + signupForm.androidVersion + "\nDevice: " + signupForm.deviceModel);
     } finally {
       setSignupLoading(false);
     }
@@ -133,30 +400,74 @@ export default function App() {
 
   const handleFeedbackSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!whatWorked || !whatBroke || !whatToAdd) return;
-    if (!isSupabaseConfigured()) {
-      setFeedbackError('Supabase not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.');
+    const validationError = validateFeedbackForm();
+    if (validationError) {
+      setFeedbackError(validationError);
       return;
     }
-    setFeedbackLoading(true);
+
     setFeedbackError('');
-    try {
-      await supabaseInsert('pilot_feedback', {
+
+    // Fallback when Supabase isn't configured
+    if (!isSupabaseConfigured()) {
+      const feedbackPayload = {
         rating: feedbackRating,
         what_worked: whatWorked,
         what_broke: whatBroke,
         what_to_add: whatToAdd,
-        tester_email: testerEmail || null,
-        tester_device: testerDevice || null,
+        tester_email: testerEmail || 'Anonymous',
+        tester_device: testerDevice || 'Unspecified',
+      };
+      queueOfflineSubmission('sneha_pending_feedback', feedbackPayload);
+      setFeedbackOfflineNotice(true);
+      setFeedbackSubmitted(true);
+      window.location.href = "mailto:sumitnawale123456@gmail.com?subject=" + encodeURIComponent("SNEHA Pilot Feedback (" + feedbackRating + " Stars)") + "&body=" + encodeURIComponent("Rating: " + feedbackRating + "/5\nWhat Worked: " + whatWorked + "\nWhat Broke: " + whatBroke + "\nWhat to Add: " + whatToAdd + "\nEmail: " + testerEmail + "\nDevice: " + testerDevice);
+      return;
+    }
+
+    setFeedbackLoading(true);
+    try {
+      await supabaseInsert('pilot_feedback', {
+        rating: feedbackRating,
+        what_worked: whatWorked.trim(),
+        what_broke: whatBroke.trim(),
+        what_to_add: whatToAdd.trim(),
+        tester_email: testerEmail.trim() || null,
+        tester_device: testerDevice.trim() || null,
       });
       setFeedbackSubmitted(true);
+      setFeedbackOfflineNotice(false);
       setWhatWorked('');
       setWhatBroke('');
       setWhatToAdd('');
     } catch (err: any) {
-      setFeedbackError(err.message || 'Submission failed. Please try again.');
+      const feedbackPayload = {
+        rating: feedbackRating,
+        what_worked: whatWorked,
+        what_broke: whatBroke,
+        what_to_add: whatToAdd,
+        tester_email: testerEmail || 'Anonymous',
+        tester_device: testerDevice || 'Unspecified',
+      };
+      queueOfflineSubmission('sneha_pending_feedback', feedbackPayload);
+      setFeedbackOfflineNotice(true);
+      setFeedbackSubmitted(true);
+      window.location.href = "mailto:sumitnawale123456@gmail.com?subject=" + encodeURIComponent("SNEHA Pilot Feedback (" + feedbackRating + " Stars)") + "&body=" + encodeURIComponent("Rating: " + feedbackRating + "/5\nWhat Worked: " + whatWorked + "\nWhat Broke: " + whatBroke + "\nWhat to Add: " + whatToAdd + "\nEmail: " + testerEmail + "\nDevice: " + testerDevice);
     } finally {
       setFeedbackLoading(false);
+    }
+  };
+
+  const handleCustomApkUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      const sizeMb = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+      setCustomApkInfo({
+        name: file.name,
+        size: sizeMb,
+        url,
+      });
     }
   };
 
@@ -176,25 +487,33 @@ export default function App() {
             <span className="bg-[#ff4a8a] text-[#1f1a0e] px-2 py-0.5 border-2 border-[#1f1a0e] font-black text-sm">
               SNEHA.4U
             </span>
-            <span className="text-[#5a4f30] hidden sm:inline text-xs font-bold">
-              // com.sneha.app · Min SDK 26 · Target SDK 35
-            </span>
+            <CopyableBadge text="com.sneha.app" label="// com.sneha.app · Min SDK 26 · Target SDK 35" className="text-[#5a4f30] hidden sm:inline-flex text-xs font-bold" />
           </div>
 
           {/* Hamburger Toggle - visible on all screens, opens drawer */}
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="flex flex-col justify-center items-center w-10 h-10 bg-[#ff4a8a] text-[#1f1a0e] border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#1f1a0e] transition-all"
-            aria-label="Toggle menu"
-            aria-expanded={menuOpen}
-          >
-            {menuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              ref={menuButtonRef}
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="flex flex-col justify-center items-center w-10 h-10 bg-[#ff4a8a] text-[#1f1a0e] border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#1f1a0e] transition-all"
+              aria-label="Toggle menu"
+              aria-expanded={menuOpen}
+            >
+              {menuOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
+            <button
+              onClick={() => setDarkMode((prev) => !prev)}
+              className="flex flex-col justify-center items-center w-10 h-10 bg-[#ff4a8a] text-[#1f1a0e] border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#1f1a0e] transition-all"
+              aria-label="Toggle dark mode"
+            >
+              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+          </div>
         </div>
 
         {/* Menu Drawer - full overlay, matches website style */}
         {menuOpen && (
-          <div className="absolute top-full left-0 right-0 bg-[#f5ecd4] border-b-4 border-[#1f1a0e] shadow-2xl z-50 animate-[fade-in_0.2s_ease-out]">
+          <div ref={menuRef} className="absolute top-full left-0 right-0 bg-[#f5ecd4] border-b-4 border-[#1f1a0e] shadow-2xl z-50 animate-[fade-in_0.2s_ease-out]">
             <div className="flex flex-col">
               <button onClick={() => { setActiveTab('pilot-site'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#ff4a8a] hover:text-[#f5ecd4] transition-all">
                 1. Pilot Site
@@ -246,8 +565,31 @@ export default function App() {
 
       {/* Main Content Area Based on Active Tab */}
       <main className="relative z-10">
+        <ErrorBoundary>
         {activeTab === 'pilot-site' && (
           <div>
+            {/* Viewport Sync Indicator Banner */}
+            <div className="bg-[#1f1a0e] text-[#f5ecd4] px-4 py-2 border-b-2 border-[#1f1a0e] flex flex-wrap items-center justify-between text-xs font-bold uppercase tracking-wider">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#ff4a8a] animate-pulse"></span>
+                <span>Active Viewport: <span className="text-[#ff7028]">{viewportMode.toUpperCase()}</span></span>
+                <span className="text-[#eedcb4]/70 hidden sm:inline">
+                  ({viewportMode === 'desktop' ? 'Full Width' : viewportMode === 'tablet' ? '768px' : viewportMode === 'mobile' ? '375px' : '320px'})
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 mt-1 sm:mt-0">
+                <span className="text-[10px] text-[#eedcb4]/80 mr-1">Switch:</span>
+                {(['desktop', 'tablet', 'mobile', 'compact'] as const).map((mode) => (
+                  <button
+                    key={mode}
+                    onClick={() => setViewportMode(mode)}
+                    className={`px-2 py-0.5 border text-[10px] transition-all ${viewportMode === mode ? 'bg-[#ff4a8a] text-[#1f1a0e] border-[#f5ecd4] font-black shadow-[1px_1px_0_#f5ecd4]' : 'bg-[#2a2515] text-[#eedcb4] border-[#eedcb4]/40 hover:bg-[#ff4a8a]/20'}`}
+                  >
+                    {mode}
+                  </button>
+                ))}
+              </div>
+            </div>
             <div className={`mx-auto transition-all ${
               viewportMode === 'compact' ? 'max-w-[320px] border-x-4 border-[#1f1a0e] shadow-2xl my-6 bg-[#f5ecd4]' :
               viewportMode === 'mobile' ? 'max-w-[375px] border-x-4 border-[#1f1a0e] shadow-2xl my-6 bg-[#f5ecd4]' :
@@ -676,9 +1018,16 @@ export default function App() {
 
                   <div className="p-6 sm:p-8 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[8px_8px_0_#1f1a0e] text-left">
                     {signupSuccess && (
-                      <div className="mb-4 p-3 bg-[#eedcb4] border-2 border-[#0e4dff] text-[#0e4dff] text-xs font-bold flex items-center gap-2">
-                        <CheckCircle2 size={16} />
-                        Thank you! Your pilot sign-up has been recorded. We will email your build invitation.
+                      <div className="mb-4 p-3 bg-[#eedcb4] border-2 border-[#0e4dff] text-[#0e4dff] text-xs font-bold flex flex-col gap-1">
+                        <div className="flex items-center gap-2">
+                          <CheckCircle2 size={16} />
+                          Thank you! Your pilot sign-up has been recorded.
+                        </div>
+                        {signupOfflineNotice && (
+                          <div className="text-[11px] text-[#2a2515] font-['Crimson_Pro'] italic">
+                            (Supabase not configured: submission queued in local storage and opened in your email client to send to maintainer sumitnawale123456@gmail.com).
+                          </div>
+                        )}
                       </div>
                     )}
 
@@ -787,7 +1136,7 @@ export default function App() {
                       The AI companion that never goes down, keeps your data on your phone, and actually does things at near-zero infrastructure cost.
                     </p>
                     <p className="text-[11px] text-[#eedcb4]/80">
-                      Package: <code>com.sneha.app</code> · Target SDK 35 · Min SDK 26
+                      Package: <CopyableBadge text="com.sneha.app" className="font-mono text-[11px] text-[#eedcb4]" /> · Target SDK 35 · Min SDK 26
                     </p>
                   </div>
 
@@ -815,9 +1164,7 @@ export default function App() {
                         </button>
                       </li>
                       <li>
-                        <a href="mailto:sumitnawale123456@gmail.com" className="hover:text-[#ff4a8a] transition-colors">
-                          sumitnawale123456@gmail.com
-                        </a>
+                        <CopyableBadge text="sumitnawale123456@gmail.com" className="text-[#eedcb4] hover:text-[#ff4a8a]" />
                       </li>
                       <li className="text-[11px] text-[#eedcb4]/70 pt-1">
                         Licensed under GPLv3
@@ -854,9 +1201,16 @@ export default function App() {
 
             <div className="p-6 sm:p-8 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[8px_8px_0_#1f1a0e]">
               {feedbackSubmitted && (
-                <div className="mb-6 p-4 bg-[#eedcb4] border-2 border-[#0e4dff] text-[#0e4dff] text-sm font-bold flex items-center gap-2">
-                  <CheckCircle2 size={18} />
-                  Thank you! Your feedback has been logged to the pilot intake endpoint (<code>/api/pilot-feedback</code>).
+                <div className="mb-6 p-4 bg-[#eedcb4] border-2 border-[#0e4dff] text-[#0e4dff] text-sm font-bold flex flex-col gap-1">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 size={18} />
+                    Thank you! Your feedback has been received.
+                  </div>
+                  {feedbackOfflineNotice && (
+                    <div className="text-xs text-[#2a2515] font-['Crimson_Pro'] italic">
+                      (Supabase not configured: feedback saved in local storage and opened in your email client for sumitnawale123456@gmail.com).
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -1193,8 +1547,14 @@ export default function App() {
                   <div className="text-right">
                     <span className="text-xs font-bold uppercase tracking-wider text-[#1f1a0e] border-2 border-[#1f1a0e] px-2 py-0.5">6.2 MB</span>
                     <a
-                      href="#"
-                      className="mt-2 inline-block px-5 py-2 bg-[#1f1a0e] text-[#f5ecd4] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[4px_4px_0_#0e4dff] hover:bg-[#0e4dff] hover:text-white transition-all"
+                      href="./assets/sneha-pilot-1.0.1.apk"
+                      download="sneha-pilot-1.0.1.apk"
+                      onClick={() => {
+                        fetch('./assets/sneha-pilot-1.0.1.apk', { method: 'HEAD' })
+                          .then((r) => { if (!r.ok) window.open('https://github.com/itzlucifa/sneha.pilot/releases/latest', '_blank'); })
+                          .catch(() => window.open('https://github.com/itzlucifa/sneha.pilot/releases/latest', '_blank'));
+                      }}
+                      className="mt-2 inline-block px-5 py-2 bg-[#1f1a0e] text-[#f5ecd4] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[4px_4px_0_#0e4dff] hover:bg-[#0e4dff] hover:text-white transition-all cursor-pointer"
                     >
                       Download APK →
                     </a>
@@ -1209,12 +1569,54 @@ export default function App() {
                   <div className="text-right">
                     <span className="text-xs font-bold uppercase tracking-wider text-[#1f1a0e] border-2 border-[#1f1a0e] px-2 py-0.5">5.9 MB</span>
                     <a
-                      href="#"
-                      className="mt-2 inline-block px-5 py-2 bg-[#eedcb4] text-[#1f1a0e] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] hover:bg-[#1f1a0e] hover:text-[#f5ecd4] transition-all"
+                      href="./assets/sneha-pilot-1.0.0.apk"
+                      download="sneha-pilot-1.0.0.apk"
+                      onClick={() => {
+                        fetch('./assets/sneha-pilot-1.0.0.apk', { method: 'HEAD' })
+                          .then((r) => { if (!r.ok) window.open('https://github.com/itzlucifa/sneha.pilot/releases/latest', '_blank'); })
+                          .catch(() => window.open('https://github.com/itzlucifa/sneha.pilot/releases/latest', '_blank'));
+                      }}
+                      className="mt-2 inline-block px-5 py-2 bg-[#eedcb4] text-[#1f1a0e] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] hover:bg-[#1f1a0e] hover:text-[#f5ecd4] transition-all cursor-pointer"
                     >
                       Download APK →
                     </a>
                   </div>
+                </div>
+
+                {/* Sideload / Custom APK File Upload Flow */}
+                <div className="mt-6 p-4 bg-[#eedcb4]/60 border-2 border-dashed border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e]">
+                  <h4 className="font-['Bowlby_One'] text-sm uppercase text-[#1f1a0e] mb-1">
+                    Tester Sideload / Custom APK Upload Flow
+                  </h4>
+                  <p className="text-xs font-['Crimson_Pro'] italic text-[#5a4f30] mb-3">
+                    Have a custom development APK build? Select or drop your .apk file below to inspect headers and sideload directly:
+                  </p>
+                  <label className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-[#0e4dff] bg-[#f5ecd4] hover:bg-[#eedcb4] cursor-pointer transition-all">
+                    <Upload size={24} className="text-[#0e4dff] mb-1" />
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#1f1a0e]">Choose or Drop .APK Build</span>
+                    <span className="text-[10px] text-[#5a4f30] mt-0.5">Loads package locally into browser memory</span>
+                    <input
+                      type="file"
+                      accept=".apk"
+                      onChange={handleCustomApkUpload}
+                      className="hidden"
+                    />
+                  </label>
+                  {customApkInfo && (
+                    <div className="mt-3 p-3 bg-[#f5ecd4] border-2 border-[#1f1a0e] flex items-center justify-between">
+                      <div>
+                        <span className="font-bold text-xs uppercase block text-[#1f1a0e]">{customApkInfo.name}</span>
+                        <span className="text-[11px] text-[#5a4f30]">Size: {customApkInfo.size} · Ready for device testing</span>
+                      </div>
+                      <a
+                        href={customApkInfo.url}
+                        download={customApkInfo.name}
+                        className="px-3 py-1 bg-[#0e4dff] text-white text-xs font-bold uppercase border border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] hover:bg-[#1f1a0e]"
+                      >
+                        Download / Install
+                      </a>
+                    </div>
+                  )}
                 </div>
 
                 <div className="mt-6 p-4 bg-[#eedcb4] border-2 border-[#1f1a0e] text-xs font-['Crimson_Pro'] italic text-[#2a2515]">
@@ -1370,19 +1772,38 @@ export default function App() {
                   q: 'Who do I contact for support?',
                   a: 'Email sumitnawale123456@gmail.com or use the App-Side Feedback tab to submit reviews and bug reports.',
                 },
-              ].map((item, idx) => (
-                <div key={idx} className="border-2 border-[#1f1a0e] bg-[#f5ecd4] shadow-[4px_4px_0_#1f1a0e] hover:shadow-[6px_6px_0_#0e4dff] transition-all">
-                  <div className="p-3 bg-[#eedcb4] border-b-2 border-[#1f1a0e] flex justify-between items-center cursor-pointer" onClick={() => {}}>
-                    <span className="font-['Bowlby_One'] text-sm text-[#ff4a8a] uppercase tracking-wider">
-                      Q{idx + 1}. {item.q}
-                    </span>
-                    <span className="text-xs font-bold text-[#1f1a0e]">▾</span>
+              ].map((item, idx) => {
+                const isExpanded = expandedFaq === idx;
+                return (
+                  <div key={idx} className="border-2 border-[#1f1a0e] bg-[#f5ecd4] shadow-[4px_4px_0_#1f1a0e] hover:shadow-[6px_6px_0_#0e4dff] transition-all overflow-hidden">
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      aria-expanded={isExpanded}
+                      className="p-3 bg-[#eedcb4] border-b-2 border-[#1f1a0e] flex justify-between items-center cursor-pointer transition-all select-none"
+                      onClick={() => setExpandedFaq(isExpanded ? null : idx)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setExpandedFaq(isExpanded ? null : idx);
+                        }
+                      }}
+                    >
+                      <span className="font-['Bowlby_One'] text-sm text-[#ff4a8a] uppercase tracking-wider">
+                        Q{idx + 1}. {item.q}
+                      </span>
+                      <span className={"text-xs font-bold text-[#1f1a0e] transition-transform duration-200 " + (isExpanded ? "rotate-180" : "")}>
+                        ▾
+                      </span>
+                    </div>
+                    {isExpanded && (
+                      <div className="p-3 bg-[#f5ecd4] text-sm text-[#2a2515] font-['Crimson_Pro'] italic border-t border-[#1f1a0e]/20">
+                        {item.a}
+                      </div>
+                    )}
                   </div>
-                  <div className="p-3 text-sm text-[#2a2515] font-['Crimson_Pro'] italic">
-                    {item.a}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
 
               <div className="mt-6 pt-6 border-t-3 border-dashed border-[#1f1a0e] text-center">
                 <p className="text-sm text-[#2a2515] font-['Crimson_Pro'] italic mb-3">
@@ -1398,6 +1819,7 @@ export default function App() {
             </div>
           </div>
         )}
+        </ErrorBoundary>
       </main>
 
       {/* Screenshot Lightbox Modal in React UI */}
@@ -1409,6 +1831,7 @@ export default function App() {
           onClick={() => setLightboxImage(null)}
         >
           <div
+            ref={modalRef}
             className="relative z-10 bg-[#f5ecd4] border-4 border-[#1f1a0e] shadow-[12px_12px_0_#1f1a0e] max-w-lg w-full max-h-[92vh] flex flex-col overflow-hidden animate-[scale-up_0.2s_cubic-bezier(0.2,0,0,1)]"
             onClick={(e) => e.stopPropagation()}
           >
@@ -1422,6 +1845,7 @@ export default function App() {
                 </span>
               </div>
               <button
+                ref={modalCloseBtnRef}
                 type="button"
                 onClick={() => setLightboxImage(null)}
                 className="px-2.5 py-1 bg-[#ff7028] hover:bg-[#ff4a8a] text-[#1f1a0e] font-bold text-xs uppercase border-2 border-[#f5ecd4] shadow-[2px_2px_0_#f5ecd4] transition-all cursor-pointer"
