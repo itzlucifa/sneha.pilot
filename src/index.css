@@ -73,6 +73,7 @@ body {
   color: var(--ink) !important;
 }
 
+.dark .bg-\[\#eedcb4\]\/40,
 .dark .bg-\[\#eedcb4\]\/50,
 .dark .bg-\[\#eedcb4\]\/60 {
   background-color: #221a0f !important;
@@ -94,6 +95,10 @@ body {
   color: var(--ink-secondary) !important;
 }
 
+.dark .text-\[\#3a3320\] {
+  color: var(--ink-secondary) !important;
+}
+
 .dark .text-\[\#5a4f30\] {
   color: var(--ink-muted) !important;
 }
@@ -106,11 +111,15 @@ body {
   color: var(--orange) !important;
 }
 
+.dark .text-\[\#eedcb4\] {
+  color: var(--ink-secondary) !important;
+}
+
 .dark .border-\[\#1f1a0e\] {
   border-color: var(--border-light) !important;
 }
 
-/* All text within dark cards (paragraphs, strong, list items, labels) */
+/* All standard text within dark cards */
 .dark p,
 .dark label,
 .dark li,
@@ -121,54 +130,399 @@ body {
   color: var(--ink);
 }
 
-.dark .text-\[\#eedcb4\] {
-  color: var(--ink-secondary) !important;
-}
+/* ========================================================
+   SMALL BADGE BOXES & PILLS (EXISTS, PARTIAL, TARGET, etc.)
+   ======================================================== */
 
-/* CRITICAL CONTRAST: Saturated badges, pills, and buttons (pink, orange, yellow)
-   MUST have solid black text in dark mode for maximum contrast ratio (> 11:1) */
-.dark span.bg-\[\#ff4a8a\],
-.dark button.bg-\[\#ff4a8a\],
-.dark a.bg-\[\#ff4a8a\],
-.dark .bg-\[\#ff4a8a\] * {
-  color: #0c0904 !important;
-}
-
-.dark span.bg-\[\#ff7028\],
-.dark button.bg-\[\#ff7028\],
-.dark a.bg-\[\#ff7028\],
-.dark .bg-\[\#ff7028\] * {
-  color: #0c0904 !important;
-}
-
-.dark span.bg-\[\#eedcb4\],
-.dark .bg-\[\#eedcb4\] > span {
-  color: #0c0904 !important;
-}
-
-/* Blue badges and buttons have crisp white text */
-.dark span.bg-\[\#0e4dff\],
-.dark button.bg-\[\#0e4dff\],
-.dark a.bg-\[\#0e4dff\],
-.dark .bg-\[\#0e4dff\] * {
+/* 1. BLUE BADGES (EXISTS · Verified, EXISTS · Protected, EXISTS, TARGET, SUPPORTED)
+   Electric blue background with crisp pure white bold text */
+.dark span.bg-\[\#eedcb4\].text-\[\#0e4dff\],
+.dark span[class*="text-[#0e4dff]"][class*="bg-[#eedcb4]"],
+.dark span.bg-\[\#0e4dff\] {
+  background-color: #0e4dff !important;
   color: #ffffff !important;
-}
-
-/* Pilot Sign-Up Section in dark mode:
-   Dark background with neon pink accent heading and crystal clear text */
-.dark section#signup {
-  background-color: #21160c !important;
-  border-top-color: var(--pink) !important;
-  color: var(--ink) !important;
-}
-
-.dark section#signup h2 {
-  color: var(--pink) !important;
+  border-color: #ffffff !important;
+  font-weight: 800 !important;
   text-shadow: none !important;
 }
 
+/* 2. ORANGE BADGES (PARTIAL PILOT STATUS, PARTIAL, MIN SDK)
+   Bright electric orange background with solid black bold text */
+.dark span.bg-\[\#ff7028\],
+.dark span[class*="bg-[#ff7028]"] {
+  background-color: #ff7028 !important;
+  color: #0c0904 !important;
+  border-color: #ffffff !important;
+  font-weight: 800 !important;
+  text-shadow: none !important;
+}
+
+/* 3. PINK BADGES (PILOT, MISSING, GPLv3 AUDITED)
+   Bright neon pink background with solid black bold text */
+.dark span.bg-\[\#ff4a8a\],
+.dark span[class*="bg-[#ff4a8a]"] {
+  background-color: #ff4a8a !important;
+  color: #0c0904 !important;
+  border-color: #ffffff !important;
+  font-weight: 800 !important;
+  text-shadow: none !important;
+}
+
+/* 4. GENERAL STATUS BADGES & RELEASE HISTORY PILLS (bg-[#eedcb4] or bg-[#f5ecd4] with dark text)
+   Dark panel background with crisp white text and white/cream border */
+.dark span.bg-\[\#eedcb4\].text-\[\#1f1a0e\],
+.dark span[class*="bg-[#eedcb4]"][class*="text-[#1f1a0e]"],
+.dark span.border-2.bg-\[\#eedcb4\],
+.dark span.border.bg-\[\#eedcb4\],
+.dark span.border-2.bg-\[\#f5ecd4\],
+.dark span.px-2.py-0\.5:not([class*="bg-[#ff4a8a]"]):not([class*="bg-[#ff7028]"]):not([class*="text-[#0e4dff]"]) {
+  background-color: #271f13 !important;
+  color: #fdfaf2 !important;
+  border-color: var(--border-light) !important;
+  font-weight: 700 !important;
+}
+
+/* Small info/stat boxes in hero (26 Min SDK, 35 Target SDK, etc.) */
+.dark div.bg-\[\#eedcb4\]\/50 {
+  background-color: #241c10 !important;
+  border-color: var(--border-light) !important;
+  color: #fdfaf2 !important;
+}
+
+/* ========================================================
+   JOIN THE SNEHA PILOT FORM (#signup) - CRYSTAL CLEAR TEXT
+   ======================================================== */
+.dark #signup,
+.dark section#signup {
+  background-color: #171108 !important;
+  border-top-color: #ff4a8a !important;
+  color: #fdfaf2 !important;
+}
+
+.dark #signup h2,
+.dark section#signup h2 {
+  color: #ff4a8a !important;
+  text-shadow: none !important;
+  filter: drop-shadow(2px 2px 0px #000000) !important;
+}
+
+.dark #signup p,
 .dark section#signup p {
-  color: var(--ink-secondary) !important;
+  color: #e5dac1 !important;
+}
+
+.dark #signup .bg-\[\#f5ecd4\],
+.dark section#signup .bg-\[\#f5ecd4\] {
+  background-color: #1c150b !important;
+  border-color: var(--border-light) !important;
+  box-shadow: 8px 8px 0 #000000 !important;
+  color: #fdfaf2 !important;
+}
+
+.dark #signup label,
+.dark section#signup label {
+  color: #fdfaf2 !important;
+  font-weight: 700 !important;
+}
+
+.dark #signup input,
+.dark #signup select,
+.dark #signup textarea,
+.dark section#signup input,
+.dark section#signup select,
+.dark section#signup textarea {
+  background-color: #261d10 !important;
+  color: #ffffff !important;
+  border-color: var(--border-light) !important;
+}
+
+.dark #signup input::placeholder,
+.dark #signup textarea::placeholder,
+.dark section#signup input::placeholder,
+.dark section#signup textarea::placeholder {
+  color: #a3957c !important;
+}
+
+.dark #signup select option,
+.dark section#signup select option {
+  background-color: #261d10 !important;
+  color: #ffffff !important;
+}
+
+.dark #signup span,
+.dark section#signup span {
+  color: #d1c5ae !important;
+}
+
+.dark #signup .bg-\[\#eedcb4\],
+.dark section#signup .bg-\[\#eedcb4\] {
+  background-color: #261d10 !important;
+  border-color: var(--border-light) !important;
+  color: #fdfaf2 !important;
+}
+
+.dark #signup .bg-\[\#eedcb4\] strong,
+.dark section#signup .bg-\[\#eedcb4\] strong {
+  color: #ff8544 !important;
+}
+
+.dark #signup button[type="submit"],
+.dark section#signup button[type="submit"] {
+  background-color: #ff4a8a !important;
+  color: #0c0904 !important;
+  font-weight: 800 !important;
+  border-color: var(--border-light) !important;
+  box-shadow: 4px 4px 0 #0e4dff !important;
+}
+
+.dark #signup button[type="submit"]:hover,
+.dark section#signup button[type="submit"]:hover {
+  background-color: #0e4dff !important;
+  color: #ffffff !important;
+}
+
+/* ========================================================
+   FAQ SECTION ACCORDION - FULL CONTRAST
+   ======================================================== */
+.dark [data-reveal="faq-section"] .bg-\[\#f5ecd4\] {
+  background-color: #171108 !important;
+  border-color: var(--border-light) !important;
+}
+
+.dark div[role="button"][class*="bg-[#eedcb4]"],
+.dark [data-reveal="faq-section"] [role="button"],
+.dark [data-reveal="faq-section"] .bg-\[\#eedcb4\] {
+  background-color: #251c10 !important;
+  border-bottom-color: var(--border-light) !important;
+}
+
+.dark div[role="button"][class*="bg-[#eedcb4]"]:hover,
+.dark [data-reveal="faq-section"] [role="button"]:hover {
+  background-color: #2e2315 !important;
+}
+
+.dark div[role="button"][class*="bg-[#eedcb4]"] span[class*="text-[#ff4a8a]"],
+.dark [data-reveal="faq-section"] [role="button"] span.text-\[\#ff4a8a\] {
+  color: #ff5c98 !important;
+  font-weight: 700 !important;
+}
+
+.dark div[role="button"][class*="bg-[#eedcb4]"] span[class*="text-[#1f1a0e]"],
+.dark [data-reveal="faq-section"] [role="button"] span.text-\[\#1f1a0e\] {
+  color: #fdfaf2 !important;
+}
+
+.dark [data-reveal="faq-section"] .font-\[\'Crimson_Pro\'\],
+.dark .font-\[\'Crimson_Pro\'\].text-\[\#2a2515\] {
+  color: #fdfaf2 !important;
+}
+
+.dark [data-reveal="faq-section"] p {
+  color: #e5dac1 !important;
+}
+
+/* ========================================================
+   CHANGELOG SECTION - FULL CONTRAST
+   ======================================================== */
+.dark [data-reveal="changelog-section"] .bg-\[\#f5ecd4\] {
+  background-color: #171108 !important;
+  border-color: var(--border-light) !important;
+}
+
+.dark div[class*="bg-[#eedcb4]/40"],
+.dark [data-reveal="changelog-section"] .bg-\[\#eedcb4\]\/40 {
+  background-color: #22190f !important;
+  border-color: var(--border-light) !important;
+}
+
+.dark div[class*="bg-[#eedcb4]/40"] span.font-\[\'Bowlby_One\'\][class*="text-[#ff4a8a]"],
+.dark [data-reveal="changelog-section"] span.text-\[\#ff4a8a\] {
+  color: #ff5c98 !important;
+}
+
+.dark div[class*="bg-[#eedcb4]/40"] span.font-\[\'Bowlby_One\'\][class*="text-[#0e4dff]"],
+.dark [data-reveal="changelog-section"] span.text-\[\#0e4dff\] {
+  color: #60a5fa !important;
+}
+
+.dark [data-reveal="changelog-section"] span.bg-\[\#f5ecd4\] {
+  background-color: #2e2417 !important;
+  color: #fdfaf2 !important;
+  border-color: var(--border-light) !important;
+}
+
+.dark div[class*="bg-[#eedcb4]/40"] ul li,
+.dark [data-reveal="changelog-section"] ul li {
+  color: #fdfaf2 !important;
+}
+
+.dark [data-reveal="changelog-section"] p {
+  color: #e5dac1 !important;
+}
+
+/* ========================================================
+   WHAT SNEHA DOES - FEATURE CARDS (01 - 06)
+   ======================================================== */
+.dark #features .bg-\[\#f5ecd4\] {
+  background-color: #1c150b !important;
+  border-color: var(--border-light) !important;
+}
+
+.dark #features h3 {
+  color: #fdfaf2 !important;
+}
+
+.dark #features p {
+  color: #e5dac1 !important;
+}
+
+.dark #features .text-\[10px\].font-bold {
+  color: #c9bea9 !important;
+}
+
+.dark #features .bg-\[\#ff7028\]\/15 {
+  background-color: rgba(255, 112, 40, 0.18) !important;
+  border-left-color: #ff7028 !important;
+  color: #fdfaf2 !important;
+}
+
+.dark #features .bg-\[\#ff7028\]\/15 strong {
+  color: #ff8544 !important;
+}
+
+/* ========================================================
+   DOWNLOAD APK TAB & SIDELOAD FLOW
+   ======================================================== */
+.dark [data-reveal="download-section"] .bg-\[\#f5ecd4\] {
+  background-color: #1c150b !important;
+  border-color: var(--border-light) !important;
+}
+
+.dark [data-reveal="download-section"] .bg-\[\#eedcb4\],
+.dark [data-reveal="download-section"] .bg-\[\#eedcb4\]\/60 {
+  background-color: #241c10 !important;
+  border-color: var(--border-light) !important;
+  color: #fdfaf2 !important;
+}
+
+.dark [data-reveal="download-section"] label {
+  background-color: #171108 !important;
+  border-color: #5489ff !important;
+}
+
+.dark [data-reveal="download-section"] p,
+.dark [data-reveal="download-section"] span.text-\[\#5a4f30\] {
+  color: #cdbe9e !important;
+}
+
+/* ========================================================
+   IN-APP FEEDBACK TAB
+   ======================================================== */
+.dark [data-reveal="feedback-section"] .bg-\[\#f5ecd4\] {
+  background-color: #1c150b !important;
+  border-color: var(--border-light) !important;
+}
+
+.dark [data-reveal="feedback-section"] label {
+  color: #fdfaf2 !important;
+}
+
+.dark [data-reveal="feedback-section"] .bg-\[\#eedcb4\] {
+  background-color: #241c10 !important;
+  border-color: var(--border-light) !important;
+  color: #fdfaf2 !important;
+}
+
+.dark [data-reveal="feedback-section"] button.bg-\[\#f5ecd4\] {
+  background-color: #241c10 !important;
+  color: #fdfaf2 !important;
+  border-color: var(--border-light) !important;
+}
+
+.dark [data-reveal="feedback-section"] button.bg-\[\#ff4a8a\] {
+  background-color: #ff4a8a !important;
+  color: #0c0904 !important;
+  font-weight: 800 !important;
+}
+
+/* ========================================================
+   PRIVACY POLICY & FEATURE AUDIT TABS
+   ======================================================== */
+.dark [data-reveal="privacy-section"] .bg-\[\#f5ecd4\] {
+  background-color: #1c150b !important;
+  border-color: var(--border-light) !important;
+}
+
+.dark [data-reveal="privacy-section"] .bg-\[\#eedcb4\]\/50 {
+  background-color: #241c10 !important;
+  border-color: var(--border-light) !important;
+  color: #fdfaf2 !important;
+}
+
+/* Tables in Device Compatibility and Feature Audit */
+.dark table {
+  color: var(--ink) !important;
+}
+
+.dark tr.bg-\[\#1f1a0e\] {
+  background-color: #0b0804 !important;
+  color: var(--ink) !important;
+}
+
+.dark tr.border-b,
+.dark tbody tr {
+  border-color: #3b301d !important;
+}
+
+.dark tbody tr:hover {
+  background-color: #271e11 !important;
+}
+
+/* Screenshots Showcase Section in dark mode */
+.dark #screenshots {
+  background-color: #150f07 !important;
+  border-color: var(--border-light) !important;
+}
+
+/* Hamburger drawer menu */
+.dark #hamburger-drawer {
+  background-color: #171108 !important;
+  border-color: var(--border-light) !important;
+}
+
+.dark #hamburger-drawer button {
+  color: var(--ink) !important;
+  border-color: #3b301d !important;
+}
+
+.dark #hamburger-drawer button:hover {
+  background-color: #271f13 !important;
+}
+
+/* General button and link colors */
+.dark button.bg-\[\#0e4dff\],
+.dark a.bg-\[\#0e4dff\] {
+  background-color: #0e4dff !important;
+  color: #ffffff !important;
+}
+
+.dark button.bg-\[\#ff4a8a\],
+.dark a.bg-\[\#ff4a8a\] {
+  background-color: #ff4a8a !important;
+  color: #0c0904 !important;
+}
+
+.dark button.bg-\[\#ff7028\],
+.dark a.bg-\[\#ff7028\] {
+  background-color: #ff7028 !important;
+  color: #0c0904 !important;
+}
+
+.dark button.bg-\[\#1f1a0e\],
+.dark a.bg-\[\#1f1a0e\] {
+  background-color: #0e4dff !important;
+  color: #ffffff !important;
+  border-color: var(--border-light) !important;
 }
 
 /* Form inputs, textareas, and dropdowns */
@@ -190,26 +544,7 @@ body {
   color: #ffffff !important;
 }
 
-/* Table in Device Compatibility */
-.dark table {
-  color: var(--ink) !important;
-}
-
-.dark tr.bg-\[\#1f1a0e\] {
-  background-color: #0b0804 !important;
-  color: var(--ink) !important;
-}
-
-.dark tr.border-b,
-.dark tbody tr {
-  border-color: #3b301d !important;
-}
-
-.dark tbody tr:hover {
-  background-color: #271e11 !important;
-}
-
-/* Background atmospheric riso bleeds in dark mode (no muddy black spots) */
+/* Background atmospheric riso bleeds in dark mode */
 .dark .mix-blend-multiply {
   mix-blend-mode: screen !important;
   opacity: 0.12 !important;
