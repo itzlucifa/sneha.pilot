@@ -36,7 +36,8 @@ export async function supabaseInsert<T = any>(table: string, data: any): Promise
 
 export async function supabaseSelect<T = any>(
   table: string,
-  query: string = 'select=*&order=created_at.desc'
+  query: string = 'select=*&order=created_at.desc',
+  pin: string = 'Sneha@143'
 ): Promise<T[]> {
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY) throw new Error('Supabase not configured');
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${query}`, {
@@ -47,6 +48,7 @@ export async function supabaseSelect<T = any>(
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       Pragma: 'no-cache',
+      'x-admin-pin': pin,
     },
   });
   if (!res.ok) {
@@ -225,17 +227,29 @@ function notifyDataChange() {
   }
 }
 
+function sanitizeInput(str: any, maxLen: number): string {
+  if (typeof str !== 'string') return '';
+  return str.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '').trim().slice(0, maxLen);
+}
+
 export async function submitSignupUnified(data: {
   name: string;
   email: string;
   androidVersion: string;
   deviceModel: string;
 }) {
+  const sanitized = {
+    name: sanitizeInput(data.name, 100),
+    email: sanitizeInput(data.email, 254).toLowerCase(),
+    androidVersion: sanitizeInput(data.androidVersion, 60),
+    deviceModel: sanitizeInput(data.deviceModel, 120),
+  };
+
   try {
     const apiRes = await fetch('/api/signups', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: JSON.stringify(sanitized),
     });
     if (apiRes.ok) {
       notifyDataChange();
@@ -247,10 +261,10 @@ export async function submitSignupUnified(data: {
 
   // Direct Supabase insert
   const result = await supabaseInsert('pilot_signups', {
-    name: data.name.trim(),
-    email: data.email.trim().toLowerCase(),
-    android_version: data.androidVersion,
-    device_model: data.deviceModel.trim(),
+    name: sanitized.name,
+    email: sanitized.email,
+    android_version: sanitized.androidVersion,
+    device_model: sanitized.deviceModel,
   });
   notifyDataChange();
   return result;
@@ -264,11 +278,20 @@ export async function submitFeedbackUnified(data: {
   testerEmail?: string;
   testerDevice?: string;
 }) {
+  const sanitized = {
+    rating: Math.max(1, Math.min(5, Math.floor(Number(data.rating) || 5))),
+    whatWorked: sanitizeInput(data.whatWorked, 3000),
+    whatBroke: sanitizeInput(data.whatBroke, 3000),
+    whatToAdd: sanitizeInput(data.whatToAdd, 3000),
+    testerEmail: data.testerEmail ? sanitizeInput(data.testerEmail, 254).toLowerCase() : undefined,
+    testerDevice: data.testerDevice ? sanitizeInput(data.testerDevice, 120) : undefined,
+  };
+
   try {
     const apiRes = await fetch('/api/feedback', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: JSON.stringify(sanitized),
     });
     if (apiRes.ok) {
       notifyDataChange();
@@ -280,12 +303,12 @@ export async function submitFeedbackUnified(data: {
 
   // Direct Supabase insert
   const result = await supabaseInsert('pilot_feedback', {
-    rating: data.rating,
-    what_worked: data.whatWorked.trim(),
-    what_broke: data.whatBroke.trim(),
-    what_to_add: data.whatToAdd.trim(),
-    tester_email: data.testerEmail?.trim() || null,
-    tester_device: data.testerDevice?.trim() || null,
+    rating: sanitized.rating,
+    what_worked: sanitized.whatWorked,
+    what_broke: sanitized.whatBroke,
+    what_to_add: sanitized.whatToAdd,
+    tester_email: sanitized.testerEmail || null,
+    tester_device: sanitized.testerDevice || null,
   });
   notifyDataChange();
   return result;

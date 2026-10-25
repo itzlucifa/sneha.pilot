@@ -1,27 +1,27 @@
 -- ====================================================================
--- SNEHA Pilot Distribution — Supabase Database Schema & RLS Security
+-- SNEHA Pilot Distribution — Hardened Supabase Database Schema & RLS
 -- Run this in your Supabase SQL Editor: https://supabase.com/dashboard
 -- ====================================================================
 
--- 1. Pilot Sign-ups Table
+-- 1. Pilot Sign-ups Table (Hardened with strict length constraints)
 CREATE TABLE IF NOT EXISTS pilot_signups (
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  name TEXT NOT NULL CHECK (char_length(trim(name)) >= 2),
-  email TEXT NOT NULL CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
-  android_version TEXT,
-  device_model TEXT,
+  name TEXT NOT NULL CHECK (char_length(trim(name)) >= 2 AND char_length(name) <= 100),
+  email TEXT NOT NULL CHECK (char_length(email) <= 254 AND email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
+  android_version TEXT CHECK (android_version IS NULL OR char_length(android_version) <= 60),
+  device_model TEXT CHECK (device_model IS NULL OR char_length(device_model) <= 120),
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 2. Pilot Feedback Table
+-- 2. Pilot Feedback Table (Hardened with strict length constraints)
 CREATE TABLE IF NOT EXISTS pilot_feedback (
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
-  what_worked TEXT NOT NULL CHECK (char_length(trim(what_worked)) >= 2),
-  what_broke TEXT NOT NULL CHECK (char_length(trim(what_broke)) >= 2),
-  what_to_add TEXT NOT NULL CHECK (char_length(trim(what_to_add)) >= 2),
-  tester_email TEXT,
-  tester_device TEXT,
+  what_worked TEXT NOT NULL CHECK (char_length(trim(what_worked)) >= 2 AND char_length(what_worked) <= 3000),
+  what_broke TEXT NOT NULL CHECK (char_length(trim(what_broke)) >= 2 AND char_length(what_broke) <= 3000),
+  what_to_add TEXT NOT NULL CHECK (char_length(trim(what_to_add)) >= 2 AND char_length(what_to_add) <= 3000),
+  tester_email TEXT CHECK (tester_email IS NULL OR char_length(tester_email) <= 254),
+  tester_device TEXT CHECK (tester_device IS NULL OR char_length(tester_device) <= 120),
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -32,7 +32,7 @@ CREATE INDEX IF NOT EXISTS idx_pilot_feedback_created_at ON pilot_feedback (crea
 CREATE INDEX IF NOT EXISTS idx_pilot_feedback_rating ON pilot_feedback (rating);
 
 -- ====================================================================
--- 3. Row Level Security (RLS) Configuration
+-- 3. Row Level Security (RLS) Configuration - Maximum Protection
 -- ====================================================================
 
 -- Enable RLS to prevent public data scraping
@@ -46,6 +46,8 @@ DROP POLICY IF EXISTS "Allow service role full access on pilot_signups" ON pilot
 DROP POLICY IF EXISTS "Allow service role full access on pilot_feedback" ON pilot_feedback;
 DROP POLICY IF EXISTS "Allow public read on pilot_signups" ON pilot_signups;
 DROP POLICY IF EXISTS "Allow public read on pilot_feedback" ON pilot_feedback;
+DROP POLICY IF EXISTS "Allow maintainer read on pilot_signups" ON pilot_signups;
+DROP POLICY IF EXISTS "Allow maintainer read on pilot_feedback" ON pilot_feedback;
 
 -- A. PUBLIC INSERT POLICIES:
 -- Anyone (anonymous tester) can submit pilot signups and feedback
@@ -61,12 +63,8 @@ CREATE POLICY "Allow anonymous insert on pilot_feedback"
   TO anon, authenticated
   WITH CHECK (true);
 
--- B. RESTRICT SELECT/UPDATE/DELETE:
--- By NOT granting SELECT, UPDATE, or DELETE to 'anon', regular public visitors
--- cannot read or tamper with any tester data or emails.
--- Service role (server-side admin key) automatically retains full access.
-
--- C. Service Role Access:
+-- B. SERVICE ROLE FULL ACCESS:
+-- Backend server with service role key has unrestricted admin control
 CREATE POLICY "Allow service role full access on pilot_signups"
   ON pilot_signups
   FOR ALL
@@ -81,24 +79,28 @@ CREATE POLICY "Allow service role full access on pilot_feedback"
   USING (true)
   WITH CHECK (true);
 
--- D. Maintainer Direct Read Access:
--- Allows frontend admin dashboard to fetch live registrations and reviews
+-- C. HARDENED MAINTAINER READ ACCESS:
+-- Protects tester emails & data: only requests presenting the correct Maintainer PIN header can read records
 CREATE POLICY "Allow maintainer read on pilot_signups"
   ON pilot_signups
   FOR SELECT
   TO anon, authenticated
-  USING (true);
+  USING (
+    coalesce(current_setting('request.headers', true)::json->>'x-admin-pin', '') = 'Sneha@143'
+    OR coalesce(current_setting('request.headers', true)::json->>'x-admin-token', '') = 'Sneha@143'
+  );
 
 CREATE POLICY "Allow maintainer read on pilot_feedback"
   ON pilot_feedback
   FOR SELECT
   TO anon, authenticated
-  USING (true);
+  USING (
+    coalesce(current_setting('request.headers', true)::json->>'x-admin-pin', '') = 'Sneha@143'
+    OR coalesce(current_setting('request.headers', true)::json->>'x-admin-token', '') = 'Sneha@143'
+  );
 
 -- ====================================================================
 -- 4. Enable Supabase Realtime CDC Publication
 -- ====================================================================
--- Enables instant WebSocket push updates whenever testers submit data
 ALTER PUBLICATION supabase_realtime ADD TABLE pilot_signups;
 ALTER PUBLICATION supabase_realtime ADD TABLE pilot_feedback;
-

@@ -217,6 +217,8 @@ export default function App() {
   const [adminLastSyncedAt, setAdminLastSyncedAt] = useState<Date | null>(null);
   const [adminDataSource, setAdminDataSource] = useState<'supabase' | 'offline'>('supabase');
   const [adminWsStatus, setAdminWsStatus] = useState<'connected' | 'connecting' | 'disconnected'>('disconnected');
+  const [adminFailedAttempts, setAdminFailedAttempts] = useState(0);
+  const [adminLockoutSeconds, setAdminLockoutSeconds] = useState(0);
 
   // Scroll reveal animation
   useEffect(() => {
@@ -508,7 +510,9 @@ export default function App() {
       queueOfflineSubmission('sneha_pending_feedback', feedbackPayload);
       setFeedbackOfflineNotice(true);
       setFeedbackSubmitted(true);
-      window.location.href = "mailto:sumitnawale123456@gmail.com?subject=" + encodeURIComponent("SNEHA Pilot Feedback (" + feedbackRating + " Stars)") + "&body=" + encodeURIComponent("Rating: " + feedbackRating + "/5\nWhat Worked: " + whatWorked + "\nWhat Broke: " + whatBroke + "\nWhat to Add: " + whatToAdd + "\nEmail: " + testerEmail + "\nDevice: " + testerDevice);
+      try {
+        window.location.href = "mailto:sumitnawale123456@gmail.com?subject=" + encodeURIComponent("SNEHA Pilot Feedback (" + feedbackRating + " Stars)") + "&body=" + encodeURIComponent("Rating: " + feedbackRating + "/5\nWhat Worked: " + whatWorked + "\nWhat Broke: " + whatBroke + "\nWhat to Add: " + whatToAdd + "\nEmail: " + testerEmail + "\nDevice: " + testerDevice);
+      } catch {}
     } finally {
       setFeedbackLoading(false);
     }
@@ -516,18 +520,34 @@ export default function App() {
 
   const handleCustomApkUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      if (customApkInfo?.url) {
-        URL.revokeObjectURL(customApkInfo.url);
-      }
-      const url = URL.createObjectURL(file);
-      const sizeMb = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
-      setCustomApkInfo({
-        name: file.name,
-        size: sizeMb,
-        url,
-      });
+    if (!file) return;
+
+    // Security check: Extension whitelist (.apk only)
+    if (!file.name.toLowerCase().endsWith('.apk')) {
+      alert('Security validation: Only valid Android application packages (.apk) are accepted.');
+      e.target.value = '';
+      return;
     }
+
+    // Security check: Max file size (250MB limit)
+    if (file.size > 250 * 1024 * 1024) {
+      alert('Security validation: File size exceeds the maximum allowed limit of 250 MB.');
+      e.target.value = '';
+      return;
+    }
+
+    if (customApkInfo?.url) {
+      URL.revokeObjectURL(customApkInfo.url);
+    }
+
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const url = URL.createObjectURL(file);
+    const sizeMb = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+    setCustomApkInfo({
+      name: safeName,
+      size: sizeMb,
+      url,
+    });
   };
 
   const navigateToSection = (sectionId: string) => {
@@ -639,8 +659,43 @@ export default function App() {
     };
   }, [activeTab, isAdminAuthenticated, adminRealtimeActive, fetchAdminData]);
 
+  // Security Hardening: Anti-brute-force lockout countdown timer
+  useEffect(() => {
+    if (adminLockoutSeconds <= 0) return;
+    const interval = setInterval(() => {
+      setAdminLockoutSeconds((prev) => (prev > 1 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [adminLockoutSeconds]);
+
+  // Security Hardening: Auto session timeout after 15 minutes of inactivity
+  useEffect(() => {
+    if (!isAdminAuthenticated) return;
+    let timer: any = null;
+
+    const resetInactivity = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        handleAdminLogout();
+      }, 15 * 60 * 1000);
+    };
+
+    resetInactivity();
+    const userEvents = ['mousemove', 'keydown', 'click', 'touchstart', 'scroll'];
+    userEvents.forEach((evt) => window.addEventListener(evt, resetInactivity, { passive: true }));
+
+    return () => {
+      clearTimeout(timer);
+      userEvents.forEach((evt) => window.removeEventListener(evt, resetInactivity));
+    };
+  }, [isAdminAuthenticated]);
+
   const handleAdminLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    if (adminLockoutSeconds > 0) {
+      setAdminAuthError(`Security Lockout active: Please wait ${adminLockoutSeconds}s before retrying.`);
+      return;
+    }
     if (!adminPin.trim()) {
       setAdminAuthError('Please enter maintainer PIN.');
       return;
@@ -651,10 +706,19 @@ export default function App() {
         sessionStorage.setItem('sneha_admin_auth', 'true');
         sessionStorage.setItem('sneha_admin_token', adminPin.trim());
       } catch {}
+      setAdminFailedAttempts(0);
+      setAdminLockoutSeconds(0);
       setIsAdminAuthenticated(true);
       fetchAdminData(false);
     } else {
-      setAdminAuthError('Incorrect PIN. Please check and try again.');
+      const nextCount = adminFailedAttempts + 1;
+      setAdminFailedAttempts(nextCount);
+      if (nextCount >= 5) {
+        setAdminLockoutSeconds(60);
+        setAdminAuthError('Security Alert: 5 incorrect PIN attempts. Admin portal locked for 60 seconds.');
+      } else {
+        setAdminAuthError(`Incorrect PIN. ${5 - nextCount} attempt(s) remaining before security lockout.`);
+      }
     }
   };
 
@@ -1342,6 +1406,7 @@ export default function App() {
                         <input
                           type="text"
                           required
+                          maxLength={100}
                           value={signupForm.name}
                           onChange={(e) => setSignupForm({ ...signupForm, name: e.target.value })}
                           placeholder="e.g. Alex Sharma"
@@ -1356,6 +1421,7 @@ export default function App() {
                         <input
                           type="email"
                           required
+                          maxLength={254}
                           value={signupForm.email}
                           onChange={(e) => setSignupForm({ ...signupForm, email: e.target.value })}
                           placeholder="name@example.com"
@@ -1394,6 +1460,7 @@ export default function App() {
                           <input
                             type="text"
                             required
+                            maxLength={120}
                             value={signupForm.deviceModel}
                             onChange={(e) => setSignupForm({ ...signupForm, deviceModel: e.target.value })}
                             placeholder="e.g. Pixel 7, Galaxy S21"
@@ -1562,6 +1629,7 @@ export default function App() {
                   <textarea
                     rows={3}
                     required
+                    maxLength={3000}
                     value={whatWorked}
                     onChange={(e) => setWhatWorked(e.target.value)}
                     placeholder="e.g. Prompt intent processing was instantaneous, alarms set without opening system menus..."
@@ -1577,6 +1645,7 @@ export default function App() {
                   <textarea
                     rows={3}
                     required
+                    maxLength={3000}
                     value={whatBroke}
                     onChange={(e) => setWhatBroke(e.target.value)}
                     placeholder="e.g. System permission prompt refused to reappear after denial on Android 14..."
@@ -1592,6 +1661,7 @@ export default function App() {
                   <textarea
                     rows={3}
                     required
+                    maxLength={3000}
                     value={whatToAdd}
                     onChange={(e) => setWhatToAdd(e.target.value)}
                     placeholder="e.g. Home screen widget, quick-toggle intent, local voice TTS customization..."
@@ -1607,6 +1677,7 @@ export default function App() {
                     </label>
                     <input
                       type="email"
+                      maxLength={254}
                       value={testerEmail}
                       onChange={(e) => setTesterEmail(e.target.value)}
                       placeholder="name@example.com"
@@ -1619,6 +1690,7 @@ export default function App() {
                     </label>
                     <input
                       type="text"
+                      maxLength={120}
                       value={testerDevice}
                       onChange={(e) => setTesterDevice(e.target.value)}
                       placeholder="e.g. Pixel 7 / Android 14"
@@ -2183,8 +2255,10 @@ export default function App() {
                       type="password"
                       value={adminPin}
                       onChange={(e) => setAdminPin(e.target.value)}
-                      placeholder="Enter Admin PIN..."
-                      className="w-full p-3 bg-[#f5ecd4] border-2 border-[#1f1a0e] text-center font-mono font-bold tracking-widest text-lg shadow-[2px_2px_0_#1f1a0e] focus:border-[#0e4dff] focus:outline-none"
+                      disabled={adminLockoutSeconds > 0}
+                      maxLength={64}
+                      placeholder={adminLockoutSeconds > 0 ? `Locked for ${adminLockoutSeconds}s...` : 'Enter Admin PIN...'}
+                      className="w-full p-3 bg-[#f5ecd4] dark:bg-[#2a2418] text-[#1f1a0e] dark:text-[#f5ecd4] border-2 border-[#1f1a0e] dark:border-[#eedcb4]/40 text-center font-mono font-bold tracking-widest text-lg shadow-[2px_2px_0_#1f1a0e] focus:border-[#0e4dff] focus:outline-none disabled:opacity-50"
                     />
                   </div>
 
@@ -2196,9 +2270,10 @@ export default function App() {
 
                   <button
                     type="submit"
-                    className="w-full py-3 bg-[#0e4dff] text-white font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] hover:bg-[#ff4a8a] hover:text-[#1f1a0e] transition-all cursor-pointer"
+                    disabled={adminLockoutSeconds > 0}
+                    className="w-full py-3 bg-[#0e4dff] text-white font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] hover:bg-[#ff4a8a] hover:text-[#1f1a0e] transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Unlock Admin Dashboard →
+                    {adminLockoutSeconds > 0 ? `Security Lockout (${adminLockoutSeconds}s)` : 'Unlock Admin Dashboard →'}
                   </button>
                 </form>
               </div>

@@ -3,6 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <!-- Security Headers & Anti-Tamper Policies -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; media-src 'self' https: blob:; connect-src 'self' https://dhbewzvmtewpmntskrgv.supabase.co wss://dhbewzvmtewpmntskrgv.supabase.co https://api.resend.com; object-src 'none'; base-uri 'self'; form-action 'self' mailto:;" />
     <title>SNEHA - Pilot Distribution</title>
     <meta name="description" content="Official pilot distribution website and tester companion for SNEHA (com.sneha.app), the privacy-first on-device AI companion for Android 8.0+." />
     <meta property="og:title" content="SNEHA - Pilot Distribution" />
