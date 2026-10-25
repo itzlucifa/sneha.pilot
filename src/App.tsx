@@ -529,7 +529,7 @@ export default function App() {
   const fetchAdminData = async (token?: string) => {
     setAdminLoading(true);
     setAdminAuthError('');
-    const authToken = token || (typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('sneha_admin_token') : null) || 'sneha2026';
+    const authToken = token || (typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('sneha_admin_token') : null) || 'Sneha@143';
 
     try {
       // 1. Load pending local offline queues
@@ -595,8 +595,8 @@ export default function App() {
       setAdminAuthError('Please enter maintainer PIN.');
       return;
     }
-    // Default maintainer PIN: sneha2026
-    if (adminPin.trim() === 'sneha2026' || adminPin.trim() === 'admin') {
+    // Maintainer PIN: Sneha@143
+    if (adminPin.trim() === 'Sneha@143') {
       try {
         sessionStorage.setItem('sneha_admin_auth', 'true');
         sessionStorage.setItem('sneha_admin_token', adminPin.trim());
@@ -604,7 +604,7 @@ export default function App() {
       setIsAdminAuthenticated(true);
       fetchAdminData(adminPin.trim());
     } else {
-      setAdminAuthError('Incorrect PIN. (Default PIN: sneha2026)');
+      setAdminAuthError('Incorrect PIN. Please check and try again.');
     }
   };
 
@@ -2122,7 +2122,7 @@ export default function App() {
                 </div>
                 <h2 className="font-['Bowlby_One'] text-2xl uppercase mb-2">Maintainer Lock</h2>
                 <p className="font-['Crimson_Pro'] italic text-sm text-[#5a4f30] mb-6">
-                  Enter your maintainer PIN to unlock the live submissions dashboard, bug reports, and CSV exports. (Default PIN: <code>sneha2026</code>)
+                  Enter your maintainer PIN to unlock the live submissions dashboard, bug reports, and CSV exports.
                 </p>
 
                 <form onSubmit={handleAdminLogin} className="space-y-4">

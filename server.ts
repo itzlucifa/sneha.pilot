@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3001;
 // Supabase configuration
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL || '';
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || '';
-const ADMIN_SECRET = process.env.ADMIN_SECRET || 'sneha2026';
+const ADMIN_SECRET = process.env.ADMIN_SECRET || 'Sneha@143';
 const MAINTAINER_EMAIL = process.env.MAINTAINER_EMAIL || 'sumitnawale123456@gmail.com';
 
 app.use(express.json({ limit: '1mb' }));
@@ -384,7 +384,7 @@ app.get('*', (req: Request, res: Response) => {
 app.listen(PORT, () => {
   console.log(`[SNEHA Backend] Server listening on http://localhost:${PORT}`);
   console.log(`[SNEHA Backend] Supabase URL: ${SUPABASE_URL ? 'Configured' : 'Missing'}`);
-  console.log(`[SNEHA Backend] Admin Secret: Configured (default: sneha2026)`);
+  console.log(`[SNEHA Backend] Admin Secret: Configured (Sneha@143)`);
 });
 
 export default app;

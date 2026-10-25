@@ -309,7 +309,7 @@ describe('SNEHA Pilot Distribution App', () => {
       expect(await screen.findByText(/Incorrect PIN/i)).toBeInTheDocument();
 
       // Submit correct PIN
-      fireEvent.change(pinInput, { target: { value: 'sneha2026' } });
+      fireEvent.change(pinInput, { target: { value: 'Sneha@143' } });
       fireEvent.click(screen.getByText('Unlock Admin Dashboard →'));
 
       // Dashboard unlocks
