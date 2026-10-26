@@ -898,29 +898,7 @@ export default function App() {
         <div className="absolute -bottom-16 right-1/4 w-72 h-72 rounded-full bg-gradient-to-tl from-[#ff7028]/15 to-transparent" />
       </div>
 
-      {/* Founder Pilot Announcement Bar */}
-      <div className="bg-[#ff4a8a] text-[#1f1a0e] border-b-2 border-[#1f1a0e] px-3 py-1.5 sm:py-2 text-center text-[11px] sm:text-xs font-bold tracking-wide flex items-center justify-center gap-2 sm:gap-3 flex-wrap relative z-50">
-        <span className="px-1.5 py-0.5 bg-[#1f1a0e] text-[#f5ecd4] text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-wider shrink-0 border border-[#1f1a0e]">
-          PILOT ACCESS
-        </span>
-        <span className="font-sans font-bold text-[#1f1a0e]">
-          <span className="sm:hidden">100% Free Through Dec 1, 2026 — Lock in Founder Rates</span>
-          <span className="hidden sm:inline">100% Free Full Access Until December 1, 2026 — Lock in Founder Rates Before Paid Rollout</span>
-        </span>
-        <button
-          type="button"
-          onClick={() => {
-            setActiveTab('download');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-[#1f1a0e] text-[#f5ecd4] hover:bg-white hover:text-[#1f1a0e] font-sans font-bold text-[10px] sm:text-[11px] uppercase tracking-wider border border-[#1f1a0e] transition-colors cursor-pointer shrink-0"
-        >
-          <span>Get APK</span>
-          <span>→</span>
-        </button>
-      </div>
-
-{/* Header with Hamburger Menu */}
+      {/* Header with Hamburger Menu */}
       <header className="sticky top-0 z-50 bg-[#f5ecd4] text-[#1f1a0e] border-b-4 border-[#1f1a0e] shadow-lg">
         <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2">
@@ -1028,15 +1006,15 @@ export default function App() {
             }`}>
               {/* Hero Section */}
               <section className="px-4 sm:px-8 py-10 sm:py-16 max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center" id="hero">
-                <div className="lg:col-span-7" data-reveal="hero-left">
-                  <div className="flex flex-wrap gap-3 mb-6">
-                    <span className="inline-block px-3 py-1 text-[11px] sm:text-[12px] font-bold uppercase tracking-widest border-2 border-[#1f1a0e] bg-[#ff4a8a] text-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] hover:shadow-[4px_4px_0_#0e4dff] hover:-translate-y-0.5 transition-all font-['Bowlby_One']">
+                <div className="lg:col-span-7">
+                  <div className="flex flex-wrap gap-2.5 sm:gap-3 mb-6">
+                    <span className="inline-flex items-center px-3.5 py-1.5 text-xs font-black uppercase tracking-wider border-2 border-[#1f1a0e] bg-[#ff4a8a] text-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] font-sans">
                       THE AI WHICH ACTUALLY CARES
                     </span>
-                    <span className="inline-block px-3 py-1 text-[11px] sm:text-[12px] font-bold uppercase tracking-widest border-2 border-[#1f1a0e] bg-[#0e4dff] text-[#f5ecd4] shadow-[2px_2px_0_#1f1a0e] hover:shadow-[4px_4px_0_#ff4a8a] hover:-translate-y-0.5 transition-all font-['Bowlby_One']">
+                    <span className="inline-flex items-center px-3.5 py-1.5 text-xs font-black uppercase tracking-wider border-2 border-[#1f1a0e] bg-[#0e4dff] text-white shadow-[3px_3px_0_#1f1a0e] font-sans">
                       MADE WITH LOVE ❤️
                     </span>
-                    <span className="inline-block px-3 py-1 text-[11px] sm:text-[12px] font-bold uppercase tracking-widest border-2 border-[#1f1a0e] bg-[#10b981] text-white shadow-[2px_2px_0_#1f1a0e] hover:shadow-[4px_4px_0_#0e4dff] hover:-translate-y-0.5 transition-all font-['Bowlby_One']">
+                    <span className="inline-flex items-center px-3.5 py-1.5 text-xs font-black uppercase tracking-wider border-2 border-[#1f1a0e] bg-[#10b981] text-white shadow-[3px_3px_0_#1f1a0e] font-sans">
                       FREE TILL DEC 1 ⚡
                     </span>
                   </div>
@@ -1097,7 +1075,7 @@ export default function App() {
                 </div>
 
                 {/* Hero Right: Showcase frame with dimensions */}
-                <div className="lg:col-span-5 relative flex justify-center" data-reveal="hero-right">
+                <div className="lg:col-span-5 relative flex justify-center">
                   <div className="relative w-full max-w-[340px]">
                     {/* Audio element for Humdum song */}
                     <audio

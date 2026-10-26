@@ -195,7 +195,18 @@ textarea {
   text-shadow: none !important;
 }
 
-/* 4. GENERAL STATUS BADGES & RELEASE HISTORY PILLS (bg-[#eedcb4] or bg-[#f5ecd4] with dark text)
+/* 4. GREEN BADGES (FREE TILL DEC 1, ACTIVE NOW)
+   Bright emerald green background with crisp white bold text */
+.dark span.bg-\[\#10b981\],
+.dark span[class*="bg-[#10b981]"] {
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+  font-weight: 800 !important;
+  text-shadow: none !important;
+}
+
+/* 5. GENERAL STATUS BADGES & RELEASE HISTORY PILLS (bg-[#eedcb4] or bg-[#f5ecd4] with dark text)
    Dark panel background with crisp white text and white/cream border */
 .dark span.bg-\[\#eedcb4\].text-\[\#1f1a0e\],
 .dark span[class*="bg-[#eedcb4]"][class*="text-[#1f1a0e]"],
