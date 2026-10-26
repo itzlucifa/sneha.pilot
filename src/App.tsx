@@ -891,25 +891,32 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#f5ecd4] text-[#1f1a0e] font-sans selection:bg-[#1f1a0e] selection:text-[#f5ecd4] relative">
-      {/* Decorative Riso Bleeds */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
-        <div className="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-[#ff4a8a]/20 blur-3xl mix-blend-multiply" />
-        <div className="absolute top-1/2 -left-20 w-80 h-80 rounded-full bg-[#0e4dff]/15 blur-3xl mix-blend-multiply" />
-        <div className="absolute -bottom-10 right-1/4 w-72 h-72 rounded-full bg-[#ff7028]/15 blur-3xl mix-blend-multiply" />
+      {/* Subtle Ambient Bleeds without GPU blur or mix-blend to preserve 100% crisp text */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-30 dark:opacity-10" aria-hidden="true">
+        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-gradient-to-br from-[#ff4a8a]/20 to-transparent" />
+        <div className="absolute top-1/2 -left-24 w-80 h-80 rounded-full bg-gradient-to-tr from-[#0e4dff]/15 to-transparent" />
+        <div className="absolute -bottom-16 right-1/4 w-72 h-72 rounded-full bg-gradient-to-tl from-[#ff7028]/15 to-transparent" />
       </div>
 
-{/* Urgent Founder Pilot Banner */}
-      <div className="bg-[#ff4a8a] text-[#1f1a0e] border-b-3 border-[#1f1a0e] px-4 py-2 text-center text-xs sm:text-sm font-['Bowlby_One'] uppercase tracking-wider flex items-center justify-center gap-2 flex-wrap relative z-50">
-        <span className="px-2 py-0.5 bg-[#1f1a0e] text-[#f5ecd4] text-[10px] font-mono font-bold">LIMITED PILOT</span>
-        <span>🔥 100% Free Full Access Until December 1, 2026 — Lock in Founder Lifetime Discounts Before Paid Rollout!</span>
+      {/* Founder Pilot Announcement Bar */}
+      <div className="bg-[#ff4a8a] text-[#1f1a0e] border-b-2 border-[#1f1a0e] px-3 py-1.5 sm:py-2 text-center text-[11px] sm:text-xs font-bold tracking-wide flex items-center justify-center gap-2 sm:gap-3 flex-wrap relative z-50">
+        <span className="px-1.5 py-0.5 bg-[#1f1a0e] text-[#f5ecd4] text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-wider shrink-0 border border-[#1f1a0e]">
+          PILOT ACCESS
+        </span>
+        <span className="font-sans font-bold text-[#1f1a0e]">
+          <span className="sm:hidden">100% Free Through Dec 1, 2026 — Lock in Founder Rates</span>
+          <span className="hidden sm:inline">100% Free Full Access Until December 1, 2026 — Lock in Founder Rates Before Paid Rollout</span>
+        </span>
         <button
+          type="button"
           onClick={() => {
             setActiveTab('download');
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
-          className="underline decoration-2 hover:text-white transition-colors cursor-pointer text-xs ml-1"
+          className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-[#1f1a0e] text-[#f5ecd4] hover:bg-white hover:text-[#1f1a0e] font-sans font-bold text-[10px] sm:text-[11px] uppercase tracking-wider border border-[#1f1a0e] transition-colors cursor-pointer shrink-0"
         >
-          Get APK Now →
+          <span>Get APK</span>
+          <span>→</span>
         </button>
       </div>
 
@@ -1013,7 +1020,7 @@ export default function App() {
         <ErrorBoundary>
         {activeTab === 'pilot-site' && (
           <div>
-            <div className={`mx-auto transition-all ${
+            <div className={`mx-auto transition-[max-width] duration-200 ease-out ${
               viewportMode === 'compact' ? 'max-w-[320px] border-x-4 border-[#1f1a0e] shadow-2xl my-6 bg-[#f5ecd4]' :
               viewportMode === 'mobile' ? 'max-w-[375px] border-x-4 border-[#1f1a0e] shadow-2xl my-6 bg-[#f5ecd4]' :
               viewportMode === 'tablet' ? 'max-w-[768px] border-x-4 border-[#1f1a0e] shadow-2xl my-6 bg-[#f5ecd4]' :
