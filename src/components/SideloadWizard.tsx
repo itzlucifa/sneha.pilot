@@ -14,7 +14,9 @@ import {
   Sparkles,
   Download,
   Info,
-  Check
+  Check,
+  Layers,
+  Cpu
 } from 'lucide-react';
 
 export interface SideloadWizardProps {
@@ -52,10 +54,10 @@ const OS_TABS = [
 ];
 
 const OEM_TABS = [
-  { id: 'pixel' as OemKey, label: 'Google Pixel', icon: '📱' },
-  { id: 'samsung' as OemKey, label: 'Samsung Galaxy (One UI)', icon: '🪐' },
-  { id: 'xiaomi' as OemKey, label: 'Xiaomi / Poco (HyperOS)', icon: '⚡' },
-  { id: 'oneplus' as OemKey, label: 'OnePlus / OxygenOS', icon: '🔴' }
+  { id: 'pixel' as OemKey, label: 'Google Pixel' },
+  { id: 'samsung' as OemKey, label: 'Samsung Galaxy (One UI)' },
+  { id: 'xiaomi' as OemKey, label: 'Xiaomi / Poco (HyperOS)' },
+  { id: 'oneplus' as OemKey, label: 'OnePlus / OxygenOS' }
 ];
 
 const TROUBLESHOOTING_GUIDES: TroubleshootingItem[] = [
@@ -412,7 +414,10 @@ export const SideloadWizard: React.FC<SideloadWizardProps> = ({
                     : 'bg-white dark:bg-[#271f13] text-[#1f1a0e] dark:text-[#fdfaf2] hover:bg-[#eedcb4] dark:hover:bg-[#342a1a] shadow-[2px_2px_0_#1f1a0e]'
                 }`}
               >
-                <span className="text-base">{oem.icon}</span>
+                {oem.id === 'pixel' && <Smartphone size={13} className="shrink-0" />}
+                {oem.id === 'samsung' && <Layers size={13} className="shrink-0" />}
+                {oem.id === 'xiaomi' && <Cpu size={13} className="shrink-0" />}
+                {oem.id === 'oneplus' && <Sparkles size={13} className="shrink-0" />}
                 <span className="text-xs font-bold uppercase tracking-tight">{oem.label}</span>
               </button>
             );

@@ -456,7 +456,7 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({
                 {ratingAnalytics.avgRating.toFixed(1)}
               </b>
               <span className="text-xs font-bold uppercase text-[#1f1a0e] dark:text-[#fdfaf2]">
-                / 5.0 ★
+                / 5.0 Rating
               </span>
             </div>
           </div>
@@ -581,7 +581,7 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({
 
           <div className="p-3 bg-[#eedcb4]/60 dark:bg-[#271f13] border-2 border-dashed border-[#1f1a0e]/40 dark:border-[#fdfaf2]/40 text-xs flex flex-wrap items-center justify-between gap-2">
             <span className="font-['Crimson_Pro'] italic text-[#2a2515] dark:text-[#e8deca]">
-              Positive Sentiment Threshold (4★ and 5★ reviews):
+              Positive Sentiment Threshold (4-Star and 5-Star reviews):
             </span>
             <strong className="font-['Bowlby_One'] text-sm text-[#10b981]">
               {ratingAnalytics.positivePercentage}% Positive Sentiment ({ratingAnalytics.positiveCount} of{' '}

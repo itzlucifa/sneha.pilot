@@ -181,7 +181,7 @@ export const FeedbackStatusBadge: React.FC<FeedbackStatusBadgeProps> = ({
 Thank you for participating in the SNEHA Pilot Distribution and sharing your valuable feedback with us!
 
 We have thoroughly audited your report (Report ID: #${feedbackId}):
-• Rating: ${rating} / 5 ★
+• Rating: ${rating} / 5 Stars
 • What Worked Well:
   "${whatWorked || 'N/A'}"
 • What Broke / Issues Encountered:

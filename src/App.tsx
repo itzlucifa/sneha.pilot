@@ -941,7 +941,7 @@ export default function App() {
                 1. Pilot Site
               </button>
               <button onClick={() => { setActiveTab('pilot-site'); setMenuOpen(false); setTimeout(() => { document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' }); }, 150); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#ff7028] hover:text-[#1f1a0e] transition-all flex items-center justify-between">
-                <span>💰 Founder Pricing</span>
+                <span>Founder Pricing</span>
                 <span className="text-[10px] font-mono uppercase bg-[#10b981] text-white px-2 py-0.5 border border-[#1f1a0e]">Free Till Dec 1</span>
               </button>
               <button onClick={() => { setActiveTab('in-app-feedback'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#0e4dff] hover:text-white transition-all">
@@ -1015,11 +1015,11 @@ export default function App() {
                       MADE WITH LOVE ❤️
                     </span>
                     <span className="inline-flex items-center px-3.5 py-1.5 text-xs font-black uppercase tracking-wider border-2 border-[#1f1a0e] bg-[#10b981] text-white shadow-[3px_3px_0_#1f1a0e] font-sans">
-                      FREE TILL DEC 1 ⚡
+                      FREE TILL DEC 1
                     </span>
                   </div>
 
-                  <h1 className="font-['Bowlby_One'] text-4xl sm:text-6xl md:text-7xl leading-[0.88] uppercase tracking-tight mb-6">
+                  <h1 className="font-['Bowlby_One'] text-3xl sm:text-6xl md:text-7xl leading-[0.9] uppercase tracking-tight mb-6 break-words">
                     LOCAL,<br />
                     <span className="text-[#ff4a8a] drop-shadow-[2px_2px_0_#0e4dff]">PRIVATE,</span><br />
                     <span className="text-transparent active-hero-stroke">ACTIVE.</span>
@@ -1032,7 +1032,7 @@ export default function App() {
                     “SNEHA is the AI companion that never goes down, never has to leak your data, and actually does things for you — on a phone you already own, at near-zero infrastructure cost.”
                   </p>
 
-                  <div className="flex flex-wrap items-center gap-4 mb-8">
+                  <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-8">
                     <a
                       href="#signup"
                       className="px-5 py-3 bg-[#ff4a8a] text-[#1f1a0e] font-bold text-sm uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_#1f1a0e] transition-all"
@@ -1043,33 +1043,33 @@ export default function App() {
                       href="#pricing"
                       className="px-4 py-3 bg-[#eedcb4] text-[#1f1a0e] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] hover:bg-[#1f1a0e] hover:text-[#f5ecd4] transition-all"
                     >
-                      💰 Founder Pricing Roadmap
+                      Founder Pricing Roadmap
                     </a>
                     <button
                       onClick={() => setActiveTab('in-app-feedback')}
-                      className="text-xs font-bold uppercase tracking-wider text-[#0e4dff] hover:text-[#1f1a0e] border-b-2 border-dashed border-[#0e4dff] pb-0.5 transition-all"
+                      className="text-xs font-bold uppercase tracking-wider text-[#0e4dff] hover:text-[#1f1a0e] border-b-2 border-dashed border-[#0e4dff] pb-0.5 transition-all cursor-pointer"
                     >
                       Existing tester? Submit Reviews //
                     </button>
                   </div>
 
                   {/* Factual Hero Stats (No invented metrics) */}
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t-3 border-[#1f1a0e] text-[11px] font-bold uppercase tracking-wider">
-                    <div className="p-2 bg-[#eedcb4]/50 border border-[#1f1a0e]">
-                      <b className="block font-['Bowlby_One'] text-2xl text-[#1f1a0e] leading-none mb-1">SDK 26</b>
-                      Android 8.0+
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 pt-4 border-t-3 border-[#1f1a0e] text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">
+                    <div className="p-2 sm:p-2.5 bg-[#eedcb4]/50 border border-[#1f1a0e] min-w-0">
+                      <b className="block font-['Bowlby_One'] text-xl sm:text-2xl text-[#1f1a0e] leading-none mb-1">SDK 26</b>
+                      <span className="truncate block">Android 8.0+</span>
                     </div>
-                    <div className="p-2 bg-[#eedcb4]/50 border border-[#1f1a0e]">
-                      <b className="block font-['Bowlby_One'] text-2xl text-[#1f1a0e] leading-none mb-1">SDK 35</b>
-                      Target SDK
+                    <div className="p-2 sm:p-2.5 bg-[#eedcb4]/50 border border-[#1f1a0e] min-w-0">
+                      <b className="block font-['Bowlby_One'] text-xl sm:text-2xl text-[#1f1a0e] leading-none mb-1">SDK 35</b>
+                      <span className="truncate block">Target SDK</span>
                     </div>
-                    <div className="p-2 bg-[#eedcb4]/50 border border-[#1f1a0e]">
-                      <b className="block font-['Bowlby_One'] text-2xl text-[#0e4dff] leading-none mb-1">0</b>
-                      Cloud Trackers
+                    <div className="p-2 sm:p-2.5 bg-[#eedcb4]/50 border border-[#1f1a0e] min-w-0">
+                      <b className="block font-['Bowlby_One'] text-xl sm:text-2xl text-[#0e4dff] leading-none mb-1">0</b>
+                      <span className="truncate block">Cloud Trackers</span>
                     </div>
-                    <div className="p-2 bg-[#eedcb4]/50 border border-[#1f1a0e]">
-                      <b className="block font-['Bowlby_One'] text-2xl text-[#ff4a8a] leading-none mb-1">DEC 1</b>
-                      Free Till Launch
+                    <div className="p-2 sm:p-2.5 bg-[#eedcb4]/50 border border-[#1f1a0e] min-w-0">
+                      <b className="block font-['Bowlby_One'] text-xl sm:text-2xl text-[#ff4a8a] leading-none mb-1">DEC 1</b>
+                      <span className="truncate block">Free Till Launch</span>
                     </div>
                   </div>
                 </div>
@@ -1091,7 +1091,7 @@ export default function App() {
                       onClick={toggleSongPlayback}
                       aria-label={isPlayingSong ? "Click to pause Humdum song" : "Click to play Humdum by Aditya Rikhari"}
                       title={isPlayingSong ? "Click to pause 'Humdum'" : "Click to play 'Humdum' by Aditya Rikhari"}
-                      className={`absolute -top-6 -left-6 w-24 h-24 rounded-full border-3 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] flex flex-col items-center justify-center font-['Bowlby_One'] text-xs uppercase leading-none transition-all z-30 cursor-pointer select-none hover:scale-105 active:scale-95 ${
+                      className={`absolute -top-3 -left-2 sm:-top-6 sm:-left-6 w-20 h-20 sm:w-24 sm:h-24 rounded-full border-3 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] flex flex-col items-center justify-center font-['Bowlby_One'] text-[10px] sm:text-xs uppercase leading-none transition-all z-30 cursor-pointer select-none hover:scale-105 active:scale-95 ${
                         isPlayingSong
                           ? 'bg-[#ff4a8a] text-[#1f1a0e] animate-[spin_7s_linear_infinite] shadow-[0_0_0_2px_#1f1a0e,4px_4px_0_#0e4dff]'
                           : 'bg-[#ff7028] text-[#1f1a0e] animate-[spin_18s_linear_infinite]'
@@ -1112,8 +1112,9 @@ export default function App() {
                       ) : (
                         <>
                           PILOT<br />TESTER
-                          <small className="font-sans font-bold text-[7px] tracking-wider mt-0.5 flex items-center gap-0.5">
-                            PLAY ▶
+                          <small className="font-sans font-bold text-[7px] tracking-wider mt-0.5 flex items-center justify-center gap-1">
+                            <span>PLAY</span>
+                            <Play size={8} className="fill-current inline shrink-0" />
                           </small>
                         </>
                       )}
@@ -1345,7 +1346,7 @@ export default function App() {
                           </div>
                           <div className="absolute bottom-1.5 sm:bottom-2 left-1.5 sm:left-2 right-1.5 sm:right-2 z-10 bg-[#0d0b06]/90 backdrop-blur-xs text-[#f5ecd4] text-[8px] sm:text-[9px] font-bold uppercase px-2 py-1 flex justify-between items-center border border-[#f5ecd4]/30 rounded">
                             <span className="truncate mr-1">01 · Features</span>
-                            <span className="text-[#ff4a8a] shrink-0 group-hover:scale-105 transition-transform">🔍 HD</span>
+                            <span className="text-[#ff4a8a] shrink-0 font-mono font-bold text-[9px]">1:1 HD</span>
                           </div>
                         </div>
                       )}
@@ -1379,7 +1380,7 @@ export default function App() {
                           </div>
                           <div className="absolute bottom-1.5 sm:bottom-2 left-1.5 sm:left-2 right-1.5 sm:right-2 z-10 bg-[#0d0b06]/90 backdrop-blur-xs text-[#f5ecd4] text-[8px] sm:text-[9px] font-bold uppercase px-2 py-1 flex justify-between items-center border border-[#f5ecd4]/30 rounded">
                             <span className="truncate mr-1">02 · Home</span>
-                            <span className="text-[#0e4dff] shrink-0 group-hover:scale-105 transition-transform">🔍 HD</span>
+                            <span className="text-[#0e4dff] shrink-0 font-mono font-bold text-[9px]">1:1 HD</span>
                           </div>
                         </div>
                       )}
@@ -1387,7 +1388,8 @@ export default function App() {
 
                     <div className="mt-4 sm:mt-6 text-center">
                       <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#f5ecd4] text-[#1f1a0e] border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] text-[10px] font-bold uppercase tracking-wider">
-                        <span>🔍</span> Click or tap either screen for 1:1 HD inspector
+                        <Search size={12} className="shrink-0 text-[#0e4dff]" />
+                        <span>Click or tap either screen for 1:1 HD inspector</span>
                       </span>
                     </div>
                   </div>
@@ -1417,7 +1419,7 @@ export default function App() {
               <section className="px-4 sm:px-8 py-16 max-w-6xl mx-auto" id="pricing">
                 <div className="mb-10 text-center max-w-3xl mx-auto">
                   <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#ff7028] text-[#1f1a0e] text-xs font-['Bowlby_One'] uppercase tracking-widest border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] mb-3">
-                    <span>💰 COMMERCIAL ROADMAP &amp; FOUNDER ACCESS</span>
+                    <span>COMMERCIAL ROADMAP &amp; FOUNDER ACCESS</span>
                   </div>
                   <h2 className="font-['Bowlby_One'] text-3xl sm:text-5xl uppercase tracking-tight leading-tight mb-3">
                     FREE UNTIL <span className="text-[#ff4a8a]">DECEMBER 1</span>.
@@ -1429,7 +1431,7 @@ export default function App() {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                   {/* Tier 1: 1 Month Pass */}
-                  <div className="p-6 bg-[#f5ecd4] dark:bg-[#1c170d] border-3 border-[#1f1a0e] dark:border-[#eedcb4]/40 shadow-[6px_6px_0_#1f1a0e] flex flex-col justify-between relative">
+                  <div className="p-4 sm:p-6 bg-[#f5ecd4] dark:bg-[#1c170d] border-3 border-[#1f1a0e] dark:border-[#eedcb4]/40 shadow-[6px_6px_0_#1f1a0e] flex flex-col justify-between relative">
                     <div className="absolute -top-3 right-4 px-2.5 py-0.5 bg-[#10b981] text-white font-['Bowlby_One'] text-[10px] uppercase tracking-wider border-2 border-[#1f1a0e]">
                       FREE TILL DEC 1
                     </div>
@@ -1465,7 +1467,7 @@ export default function App() {
                   </div>
 
                   {/* Tier 2: 6 Months Pass */}
-                  <div className="p-6 bg-[#eedcb4] dark:bg-[#271f13] border-3 border-[#1f1a0e] dark:border-[#eedcb4]/40 shadow-[6px_6px_0_#1f1a0e] flex flex-col justify-between relative">
+                  <div className="p-4 sm:p-6 bg-[#eedcb4] dark:bg-[#271f13] border-3 border-[#1f1a0e] dark:border-[#eedcb4]/40 shadow-[6px_6px_0_#1f1a0e] flex flex-col justify-between relative">
                     <div className="absolute -top-3 right-4 px-2.5 py-0.5 bg-[#0e4dff] text-white font-['Bowlby_One'] text-[10px] uppercase tracking-wider border-2 border-[#1f1a0e]">
                       SAVE 42%
                     </div>
@@ -1498,9 +1500,9 @@ export default function App() {
                   </div>
 
                   {/* Tier 3: 1 Year Founder Pass */}
-                  <div className="p-6 bg-[#ff4a8a]/15 dark:bg-[#ff4a8a]/10 border-3 border-[#ff4a8a] shadow-[6px_6px_0_#ff4a8a] flex flex-col justify-between relative">
+                  <div className="p-4 sm:p-6 bg-[#ff4a8a]/15 dark:bg-[#ff4a8a]/10 border-3 border-[#ff4a8a] shadow-[6px_6px_0_#ff4a8a] flex flex-col justify-between relative">
                     <div className="absolute -top-3 right-4 px-2.5 py-0.5 bg-[#ff4a8a] text-[#1f1a0e] font-['Bowlby_One'] text-[10px] uppercase tracking-wider border-2 border-[#1f1a0e]">
-                      ⭐ BEST VALUE · 53% OFF
+                      BEST VALUE · 53% OFF
                     </div>
                     <div>
                       <span className="font-mono text-xs font-bold text-[#ff4a8a] uppercase tracking-wider block mb-1">
@@ -1534,8 +1536,8 @@ export default function App() {
                 {/* Active Tester Bounty Box */}
                 <div className="p-4 sm:p-5 bg-[#eedcb4] dark:bg-[#271f13] border-3 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[4px_4px_0_#1f1a0e] flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-[#ff7028] text-white flex items-center justify-center border-2 border-[#1f1a0e] font-['Bowlby_One'] text-lg shrink-0">
-                      🎁
+                    <div className="w-10 h-10 bg-[#ff7028] text-white flex items-center justify-center border-2 border-[#1f1a0e] shrink-0">
+                      <Sparkles size={20} strokeWidth={2.5} />
                     </div>
                     <div>
                       <h4 className="font-['Bowlby_One'] text-sm sm:text-base uppercase text-[#1f1a0e] dark:text-[#fdfaf2]">
@@ -1585,7 +1587,7 @@ export default function App() {
                     {/* Founder Benefit Callout Banner */}
                     <div className="mb-5 p-3.5 bg-[#0e4dff] text-white border-2 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] text-xs font-bold uppercase tracking-wider flex items-center justify-between gap-3">
                       <div className="flex items-center gap-2">
-                        <span className="text-base">🎁</span>
+                        <Sparkles size={16} className="text-white shrink-0" />
                         <span>Register now to lock in Founder Rates: ₹143/mo · ₹499/6-mo · ₹799/yr on Dec 1st!</span>
                       </div>
                       <span className="hidden sm:inline-block px-2 py-0.5 bg-white text-[#0e4dff] text-[10px] font-mono font-bold shrink-0">
@@ -1810,13 +1812,14 @@ export default function App() {
                         key={val}
                         aria-label={`${val} Star${val > 1 ? 's' : ''}`}
                         onClick={() => setFeedbackRating(val)}
-                        className={`p-3 border-2 border-[#1f1a0e] font-['Bowlby_One'] text-lg transition-all ${
+                        className={`p-2 sm:p-2.5 border-2 border-[#1f1a0e] font-sans font-black text-sm sm:text-base transition-all flex items-center justify-center gap-1 ${
                           feedbackRating === val
-                            ? 'bg-[#ff4a8a] text-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] -translate-y-0.5'
+                            ? 'bg-[#ff4a8a] text-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e]'
                             : 'bg-[#f5ecd4] text-[#1f1a0e] hover:bg-[#eedcb4]'
                         }`}
                       >
-                        {val} ★
+                        <span>{val}</span>
+                        <Star size={12} className="fill-current text-[#1f1a0e] shrink-0" />
                       </button>
                     ))}
                   </div>
@@ -1998,6 +2001,10 @@ export default function App() {
             </p>
 
             <div className="border-3 border-[#1f1a0e] shadow-[8px_8px_0_#1f1a0e] bg-[#f5ecd4]">
+              <div className="sm:hidden px-3 py-1.5 bg-[#eedcb4] text-[10px] font-mono text-[#5a4f30] border-b border-[#1f1a0e] flex items-center justify-between">
+                <span>Horizontal table</span>
+                <span>Swipe to view all columns →</span>
+              </div>
               <div className="overflow-x-auto max-w-full">
                 <table className="w-full text-left border-collapse text-xs min-w-[700px]">
                 <thead>
@@ -2126,9 +2133,10 @@ export default function App() {
               <button
                 type="button"
                 onClick={() => setIsQrModalOpen(true)}
-                className="px-4 py-2 bg-[#ff4a8a] text-[#1f1a0e] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] hover:bg-[#ff7028] transition-all cursor-pointer flex items-center gap-2"
+                className="px-4 py-2 bg-[#ff4a8a] text-[#1f1a0e] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] hover:bg-[#ff7028] transition-all cursor-pointer flex items-center gap-1.5"
               >
-                <span>📱</span> Scan QR on Phone
+                <Smartphone size={15} className="shrink-0" />
+                <span>Scan QR on Phone</span>
               </button>
             </div>
 
@@ -2263,6 +2271,10 @@ export default function App() {
             </div>
 
             <div className="p-4 sm:p-8 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[6px_6px_0_#1f1a0e] sm:shadow-[8px_8px_0_#1f1a0e]">
+              <div className="sm:hidden px-3 py-1.5 bg-[#eedcb4] text-[10px] font-mono text-[#5a4f30] border border-[#1f1a0e] mb-2 flex items-center justify-between">
+                <span>Compatibility table</span>
+                <span>Swipe to view all columns →</span>
+              </div>
               <div className="overflow-x-auto max-w-full">
                 <table className="w-full text-left border-collapse text-xs min-w-[700px]">
                 <thead>
@@ -2596,7 +2608,7 @@ export default function App() {
                     <b className="font-['Bowlby_One'] text-3xl text-[#ff7028]">
                       {adminFeedback.length > 0
                         ? (adminFeedback.reduce((sum, f) => sum + (f.rating || 0), 0) / adminFeedback.length).toFixed(1)
-                        : '5.0'} ★
+                        : '5.0'} / 5.0
                     </b>
                     <small className="block text-[10px] text-[#2a2515] mt-1 font-['Crimson_Pro'] italic">Overall satisfaction</small>
                   </div>
@@ -2715,8 +2727,12 @@ export default function App() {
                       </span>
                     </div>
 
+                    <div className="sm:hidden px-3 py-1 bg-[#eedcb4] text-[10px] font-mono text-[#5a4f30] border-2 border-[#1f1a0e] border-b-0 flex items-center justify-between">
+                      <span>Sign-up records</span>
+                      <span>Swipe to view all fields →</span>
+                    </div>
                     <div className="overflow-x-auto border-2 border-[#1f1a0e]">
-                      <table className="w-full text-left border-collapse text-xs">
+                      <table className="w-full text-left border-collapse text-xs min-w-[550px]">
                         <thead>
                           <tr className="bg-[#1f1a0e] text-[#f5ecd4] font-['Bowlby_One'] text-[10px] uppercase">
                             <th className="p-2.5 border-r border-[#3a3320]">Date</th>
@@ -2775,7 +2791,7 @@ export default function App() {
                                 : 'bg-[#eedcb4] text-[#1f1a0e] hover:bg-white'
                             }`}
                           >
-                            {r === 'all' ? 'All' : `${r}★`}
+                            {r === 'all' ? 'All' : `${r} Stars`}
                           </button>
                         ))}
                       </div>
@@ -2795,7 +2811,7 @@ export default function App() {
                             <div className="flex items-center justify-between border-b border-[#1f1a0e]/20 pb-2">
                               <div className="flex items-center gap-2">
                                 <span className="px-2 py-0.5 bg-[#ff4a8a] text-[#1f1a0e] font-['Bowlby_One'] text-xs border border-[#1f1a0e]">
-                                  {f.rating} ★
+                                  {f.rating} / 5
                                 </span>
                                 <span className="font-bold text-xs uppercase text-[#1f1a0e]">
                                   {f.tester_device || 'Unspecified Device'}
@@ -2881,7 +2897,7 @@ export default function App() {
                           <ul className="text-xs space-y-1 font-mono">
                             {adminOfflineQueue.feedback.map((f, idx) => (
                               <li key={idx} className="p-1.5 bg-[#f5ecd4] border border-[#1f1a0e]">
-                                {f.rating}★ — {f.what_worked?.slice(0, 30)}...
+                                Rating {f.rating}/5 — {f.what_worked?.slice(0, 30)}...
                               </li>
                             ))}
                           </ul>

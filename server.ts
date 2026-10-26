@@ -427,7 +427,7 @@ app.post('/api/feedback', rateLimiter('feedback', 10, 10 * 60 * 1000), async (re
 
     await dispatchEmail({
       to: MAINTAINER_EMAIL,
-      subject: `[SNEHA Feedback Alert] ${numRating}★ Review from ${feedbackRecord.tester_email || 'Anonymous'}`,
+      subject: `[SNEHA Feedback Alert] ${numRating}-Star Review from ${feedbackRecord.tester_email || 'Anonymous'}`,
       text: `Tester Review (${numRating}/5 Stars):\n\nDevice: ${feedbackRecord.tester_device || 'N/A'}\nEmail: ${feedbackRecord.tester_email || 'Anonymous'}\n\nWhat Worked:\n${feedbackRecord.what_worked}\n\nWhat Broke:\n${feedbackRecord.what_broke}\n\nWhat to Add:\n${feedbackRecord.what_to_add}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; padding: 20px; border: 2px solid #1f1a0e;">
