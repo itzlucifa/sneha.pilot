@@ -1,7 +1,7 @@
 /**
  * @license
- * SPDX-License-Identifier: GPL-3.0-or-later
- * SNEHA Pilot Distribution Platform & In-App Tester Companion
+ * Proprietary — SNEHA Commercial Pilot Distribution Platform
+ * All Rights Reserved
  */
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
@@ -898,6 +898,21 @@ export default function App() {
         <div className="absolute -bottom-10 right-1/4 w-72 h-72 rounded-full bg-[#ff7028]/15 blur-3xl mix-blend-multiply" />
       </div>
 
+{/* Urgent Founder Pilot Banner */}
+      <div className="bg-[#ff4a8a] text-[#1f1a0e] border-b-3 border-[#1f1a0e] px-4 py-2 text-center text-xs sm:text-sm font-['Bowlby_One'] uppercase tracking-wider flex items-center justify-center gap-2 flex-wrap relative z-50">
+        <span className="px-2 py-0.5 bg-[#1f1a0e] text-[#f5ecd4] text-[10px] font-mono font-bold">LIMITED PILOT</span>
+        <span>🔥 100% Free Full Access Until December 1, 2026 — Lock in Founder Lifetime Discounts Before Paid Rollout!</span>
+        <button
+          onClick={() => {
+            setActiveTab('download');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className="underline decoration-2 hover:text-white transition-colors cursor-pointer text-xs ml-1"
+        >
+          Get APK Now →
+        </button>
+      </div>
+
 {/* Header with Hamburger Menu */}
       <header className="sticky top-0 z-50 bg-[#f5ecd4] text-[#1f1a0e] border-b-4 border-[#1f1a0e] shadow-lg">
         <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
@@ -940,6 +955,10 @@ export default function App() {
               <button onClick={() => { setActiveTab('pilot-site'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#ff4a8a] hover:text-[#f5ecd4] transition-all">
                 1. Pilot Site
               </button>
+              <button onClick={() => { setActiveTab('pilot-site'); setMenuOpen(false); setTimeout(() => { document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' }); }, 150); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#ff7028] hover:text-[#1f1a0e] transition-all flex items-center justify-between">
+                <span>💰 Founder Pricing</span>
+                <span className="text-[10px] font-mono uppercase bg-[#10b981] text-white px-2 py-0.5 border border-[#1f1a0e]">Free Till Dec 1</span>
+              </button>
               <button onClick={() => { setActiveTab('in-app-feedback'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#0e4dff] hover:text-white transition-all">
                 2. App-Side Feedback
               </button>
@@ -947,7 +966,7 @@ export default function App() {
                 3. Privacy Policy
               </button>
               <button onClick={() => { setActiveTab('audit'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#eedcb4] hover:text-[#1f1a0e] transition-all">
-                4. Feature Audit
+                4. Security &amp; Privacy Audit
               </button>
               <button onClick={() => { setActiveTab('changelog'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#0e4dff] hover:text-white transition-all">
                 5. Changelog
@@ -1008,7 +1027,7 @@ export default function App() {
                       THE AI WHICH ACTUALLY CARES
                     </span>
                     <span className="inline-block px-3 py-1 text-[11px] sm:text-[12px] font-bold uppercase tracking-widest border-2 border-[#1f1a0e] bg-[#0e4dff] text-[#f5ecd4] shadow-[2px_2px_0_#1f1a0e] hover:shadow-[4px_4px_0_#ff4a8a] hover:-translate-y-0.5 transition-all font-['Bowlby_One']">
-                      BUILD WITH LOVE ❤️
+                      FREE TILL DEC 1 ⚡
                     </span>
                   </div>
 
@@ -1022,7 +1041,7 @@ export default function App() {
                   </h1>
 
                   <p className="font-['Crimson_Pro'] italic text-lg sm:text-xl text-[#1f1a0e] leading-relaxed mb-6 max-w-xl">
-                    “SNEHA is the AI companion that never goes down, never has to leak your data, and actually does things for you - on a phone you already own, at near-zero infrastructure cost.”
+                    “SNEHA is the AI companion that never goes down, never has to leak your data, and actually does things for you — on a phone you already own, at near-zero infrastructure cost.”
                   </p>
 
                   <div className="flex flex-wrap items-center gap-4 mb-8">
@@ -1030,13 +1049,19 @@ export default function App() {
                       href="#signup"
                       className="px-5 py-3 bg-[#ff4a8a] text-[#1f1a0e] font-bold text-sm uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_#1f1a0e] transition-all"
                     >
-                      Join the Pilot Program →
+                      Join Free Pilot →
+                    </a>
+                    <a
+                      href="#pricing"
+                      className="px-4 py-3 bg-[#eedcb4] text-[#1f1a0e] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] hover:bg-[#1f1a0e] hover:text-[#f5ecd4] transition-all"
+                    >
+                      💰 Founder Pricing Roadmap
                     </a>
                     <button
                       onClick={() => setActiveTab('in-app-feedback')}
                       className="text-xs font-bold uppercase tracking-wider text-[#0e4dff] hover:text-[#1f1a0e] border-b-2 border-dashed border-[#0e4dff] pb-0.5 transition-all"
                     >
-                      Existing tester? Submit Reviews &amp; Feedback //
+                      Existing tester? Submit Reviews //
                     </button>
                   </div>
 
@@ -1055,8 +1080,8 @@ export default function App() {
                       Cloud Trackers
                     </div>
                     <div className="p-2 bg-[#eedcb4]/50 border border-[#1f1a0e]">
-                      <b className="block font-['Bowlby_One'] text-2xl text-[#ff4a8a] leading-none mb-1">GPLv3</b>
-                      Audited License
+                      <b className="block font-['Bowlby_One'] text-2xl text-[#ff4a8a] leading-none mb-1">DEC 1</b>
+                      Free Till Launch
                     </div>
                   </div>
                 </div>
@@ -1237,7 +1262,7 @@ export default function App() {
                     </div>
                     <h3 className="font-bold text-lg mb-1">Near-zero infrastructure cost</h3>
                     <p className="font-['Crimson_Pro'] italic text-sm text-[#3a3320] mb-2 leading-relaxed">
-                      Computes locally on your hardware, eliminating expensive recurring server overhead and mandatory SaaS subscriptions.
+                      Computes locally on your hardware, eliminating expensive cloud server overhead and allowing us to offer ultra-affordable pricing instead of greedy $20/month SaaS subscriptions.
                     </p>
                     <div className="p-2.5 bg-[#ff7028]/15 border-l-3 border-[#ff7028] text-xs font-['Crimson_Pro'] italic text-[#2a2515] mb-2">
                       <strong>Mandatory Caveat:</strong> Core local features cost $0; optional cloud fallback models are user-configured if enabled.
@@ -1394,33 +1419,187 @@ export default function App() {
                       Every screen is constructed around instantaneous tactile response. When you request a task, your phone's local processor reads your intent, checks the relevant Android permission boundary, and acts immediately.
                     </p>
                     <div className="mt-4 pt-3 border-t-2 border-dashed border-[#1f1a0e] text-[10px] font-bold uppercase tracking-wider text-[#1f1a0e]">
-                      Package: com.sneha.app · Min SDK 26 · Target SDK 35 · GPLv3
+                      Package: com.sneha.app · Min SDK 26 · Target SDK 35 · Independent Privacy Core
                     </div>
                   </div>
                 </div>
               </section>
 
-              {/* Technical Factual Pledge (Step 1 & 6 Compliant) */}
+              {/* Founder Pricing & Commercial Roadmap Section */}
+              <section className="px-4 sm:px-8 py-16 max-w-6xl mx-auto" id="pricing">
+                <div className="mb-10 text-center max-w-3xl mx-auto">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#ff7028] text-[#1f1a0e] text-xs font-['Bowlby_One'] uppercase tracking-widest border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] mb-3">
+                    <span>💰 COMMERCIAL ROADMAP &amp; FOUNDER ACCESS</span>
+                  </div>
+                  <h2 className="font-['Bowlby_One'] text-3xl sm:text-5xl uppercase tracking-tight leading-tight mb-3">
+                    FREE UNTIL <span className="text-[#ff4a8a]">DECEMBER 1</span>.
+                  </h2>
+                  <p className="font-['Crimson_Pro'] italic text-base sm:text-lg text-[#2a2515] leading-relaxed">
+                    Big Tech gives you "free" cloud AI so they can harvest your private voice, screen, and questions to sell targeted ads. SNEHA is 100% private and runs offline on your phone. To guarantee we never sell user data or add tracking SDKs, SNEHA will transition to a modest, ultra-affordable fee after December 1, 2026.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                  {/* Tier 1: Current Pilot Access */}
+                  <div className="p-6 bg-[#f5ecd4] dark:bg-[#1c170d] border-3 border-[#1f1a0e] dark:border-[#eedcb4]/40 shadow-[6px_6px_0_#1f1a0e] flex flex-col justify-between relative">
+                    <div className="absolute -top-3 right-4 px-2.5 py-0.5 bg-[#10b981] text-white font-['Bowlby_One'] text-[10px] uppercase tracking-wider border-2 border-[#1f1a0e]">
+                      ACTIVE NOW
+                    </div>
+                    <div>
+                      <span className="font-mono text-xs font-bold text-[#0e4dff] uppercase tracking-wider block mb-1">
+                        Stage 01 // Public Pilot
+                      </span>
+                      <h3 className="font-['Bowlby_One'] text-xl uppercase mb-2">Early Adopter Pilot</h3>
+                      <div className="flex items-baseline gap-2 mb-4">
+                        <span className="font-['Bowlby_One'] text-4xl text-[#1f1a0e] dark:text-[#fdfaf2]">₹0</span>
+                        <span className="text-xs font-bold uppercase text-[#5a4f30]">/ 100% Free Access</span>
+                      </div>
+                      <p className="font-['Crimson_Pro'] italic text-xs text-[#2a2515] dark:text-[#cdbe9e] mb-4">
+                        Unrestricted full access for all testers through December 1, 2026. No payment details required.
+                      </p>
+                      <ul className="space-y-2 text-xs font-medium text-[#1f1a0e] dark:text-[#fdfaf2] border-t-2 border-[#1f1a0e]/15 pt-3 mb-6">
+                        <li className="flex items-center gap-2">✓ Full On-Device AI Neural Runtime</li>
+                        <li className="flex items-center gap-2">✓ Offline Voice &amp; Automation Intents</li>
+                        <li className="flex items-center gap-2">✓ Direct APK Updates &amp; Hotfixes</li>
+                        <li className="flex items-center gap-2">✓ Locked-in Founder Status</li>
+                      </ul>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveTab('download');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className="w-full py-2.5 bg-[#1f1a0e] text-[#f5ecd4] hover:bg-[#0e4dff] hover:text-white font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] transition-all text-center block cursor-pointer"
+                    >
+                      Download Free Pilot APK →
+                    </button>
+                  </div>
+
+                  {/* Tier 2: Founder Lifetime Pass (Special Early Bird) */}
+                  <div className="p-6 bg-[#ff4a8a]/15 dark:bg-[#ff4a8a]/10 border-3 border-[#ff4a8a] shadow-[6px_6px_0_#ff4a8a] flex flex-col justify-between relative">
+                    <div className="absolute -top-3 right-4 px-2.5 py-0.5 bg-[#ff4a8a] text-[#1f1a0e] font-['Bowlby_One'] text-[10px] uppercase tracking-wider border-2 border-[#1f1a0e]">
+                      ⭐ PILOT EXCLUSIVE
+                    </div>
+                    <div>
+                      <span className="font-mono text-xs font-bold text-[#ff4a8a] uppercase tracking-wider block mb-1">
+                        Early Bird Deal
+                      </span>
+                      <h3 className="font-['Bowlby_One'] text-xl uppercase mb-2">Founder Lifetime Pass</h3>
+                      <div className="flex items-baseline gap-2 mb-4">
+                        <span className="font-['Bowlby_One'] text-4xl text-[#ff4a8a]">₹299</span>
+                        <span className="text-xs font-bold uppercase text-[#5a4f30] line-through">₹999</span>
+                        <span className="text-[10px] font-bold text-[#10b981] bg-[#10b981]/20 px-1.5 py-0.5 border border-[#10b981]">70% OFF</span>
+                      </div>
+                      <p className="font-['Crimson_Pro'] italic text-xs text-[#2a2515] dark:text-[#cdbe9e] mb-4">
+                        One single payment, zero recurring bills forever. Exclusively offered to registered pilot testers!
+                      </p>
+                      <ul className="space-y-2 text-xs font-medium text-[#1f1a0e] dark:text-[#fdfaf2] border-t-2 border-[#1f1a0e]/15 pt-3 mb-6">
+                        <li className="flex items-center gap-2">✓ Lifetime Offline Engine Updates</li>
+                        <li className="flex items-center gap-2">✓ Never Pay a Monthly Subscription</li>
+                        <li className="flex items-center gap-2">✓ Free for Top 100 Bug Reporters</li>
+                        <li className="flex items-center gap-2">✓ Founder VIP Discord &amp; Direct Input</li>
+                      </ul>
+                    </div>
+                    <a
+                      href="#signup"
+                      className="w-full py-2.5 bg-[#ff4a8a] text-[#1f1a0e] hover:bg-[#1f1a0e] hover:text-[#f5ecd4] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] transition-all text-center block cursor-pointer"
+                    >
+                      Lock in Founder Perks →
+                    </a>
+                  </div>
+
+                  {/* Tier 3: Commercial Release */}
+                  <div className="p-6 bg-[#f5ecd4] dark:bg-[#1c170d] border-3 border-[#1f1a0e] dark:border-[#eedcb4]/40 shadow-[6px_6px_0_#1f1a0e] flex flex-col justify-between relative">
+                    <div className="absolute -top-3 right-4 px-2.5 py-0.5 bg-[#0e4dff] text-white font-['Bowlby_One'] text-[10px] uppercase tracking-wider border-2 border-[#1f1a0e]">
+                      AFTER DEC 1
+                    </div>
+                    <div>
+                      <span className="font-mono text-xs font-bold text-[#5a4f30] uppercase tracking-wider block mb-1">
+                        Stage 02 // Commercial Pro
+                      </span>
+                      <h3 className="font-['Bowlby_One'] text-xl uppercase mb-2">Standard Subscription</h3>
+                      <div className="flex items-baseline gap-2 mb-4">
+                        <span className="font-['Bowlby_One'] text-4xl text-[#0e4dff]">₹99</span>
+                        <span className="text-xs font-bold uppercase text-[#5a4f30]">/ month</span>
+                      </div>
+                      <p className="font-['Crimson_Pro'] italic text-xs text-[#2a2515] dark:text-[#cdbe9e] mb-4">
+                        Regular consumer pricing for new users who join after the December 1st pilot concludes.
+                      </p>
+                      <ul className="space-y-2 text-xs font-medium text-[#1f1a0e] dark:text-[#fdfaf2] border-t-2 border-[#1f1a0e]/15 pt-3 mb-6">
+                        <li className="flex items-center gap-2">✓ Monthly Offline Neural Engine Access</li>
+                        <li className="flex items-center gap-2">✓ Continual Android 15 Compatibility</li>
+                        <li className="flex items-center gap-2">✓ Zero Telemetry Commercial SLA</li>
+                        <li className="flex items-center gap-2">✓ Standard Support</li>
+                      </ul>
+                    </div>
+                    <span className="w-full py-2.5 bg-[#eedcb4] text-[#5a4f30] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] text-center block opacity-75">
+                      Opens December 1st
+                    </span>
+                  </div>
+                </div>
+
+                {/* Active Tester Bounty Box */}
+                <div className="p-4 sm:p-5 bg-[#eedcb4] dark:bg-[#271f13] border-3 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[4px_4px_0_#1f1a0e] flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 bg-[#ff7028] text-white flex items-center justify-center border-2 border-[#1f1a0e] font-['Bowlby_One'] text-lg shrink-0">
+                      🎁
+                    </div>
+                    <div>
+                      <h4 className="font-['Bowlby_One'] text-sm sm:text-base uppercase text-[#1f1a0e] dark:text-[#fdfaf2]">
+                        Want SNEHA 100% Free for Life?
+                      </h4>
+                      <p className="font-['Crimson_Pro'] italic text-xs sm:text-sm text-[#2a2515] dark:text-[#cdbe9e] mt-0.5">
+                        Submit at least 2 verified bug reports or hardware logs through the App-Side Feedback tab before Dec 1st. Our top 100 active tester contributors will receive a complimentary, permanent Lifetime License!
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setActiveTab('in-app-feedback');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="px-4 py-2 bg-[#0e4dff] text-white font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] hover:bg-[#1f1a0e] transition-all shrink-0 cursor-pointer"
+                  >
+                    Submit Feedback Now →
+                  </button>
+                </div>
+              </section>
+
+              {/* Technical Factual Pledge */}
               <section className="px-4 sm:px-8 py-12 text-center max-w-4xl mx-auto">
                 <blockquote className="font-['Bowlby_One'] text-2xl sm:text-4xl uppercase leading-snug tracking-tight text-[#1f1a0e] mb-3">
-                  “Built to run locally on the phone in your pocket — <span className="text-[#ff4a8a]">zero external telemetry</span>, zero subscription fees, and transparent <span className="text-[#0e4dff]">GPLv3</span> code.”
+                  “Built to run locally on the phone in your pocket — <span className="text-[#ff4a8a]">zero external telemetry</span>, 100% free till Dec 1, and independent <span className="text-[#0e4dff]">privacy-first</span> engineering.”
                 </blockquote>
                 <cite className="font-bold text-xs uppercase tracking-widest text-[#0e4dff] not-italic block">
-                  // SNEHA Pilot Engineering Pledge · sumitnawale123456@gmail.com
+                  // SNEHA Pilot Commercial Integrity Pledge · sumitnawale123456@gmail.com
                 </cite>
               </section>
 
               {/* Pilot Sign-Up Section */}
               <section className="px-4 sm:px-8 py-16 bg-[#ff4a8a] text-[#1f1a0e] border-t-3 border-[#1f1a0e]" id="signup">
                 <div className="max-w-2xl mx-auto text-center">
+                  <div className="inline-block px-3 py-1 bg-[#1f1a0e] text-[#f5ecd4] text-xs font-['Bowlby_One'] uppercase tracking-widest border-2 border-[#1f1a0e] mb-3 shadow-[2px_2px_0_#f5ecd4]">
+                    FOUNDER REGISTRATION · CLOSES DEC 1
+                  </div>
                   <h2 className="font-['Bowlby_One'] text-3xl sm:text-5xl uppercase tracking-tight mb-3 text-[#1f1a0e] drop-shadow-[2px_2px_0_#f5ecd4]">
                     Join the SNEHA Pilot.
                   </h2>
                   <p className="font-['Crimson_Pro'] italic text-base sm:text-lg text-[#1f1a0e] font-semibold mb-8">
-                    Help test early distribution builds and submit reviews before the Play Store launch. We collect zero data beyond what is needed to verify test device compatibility.
+                    Get 100% free early access until December 1st. Everyone who registers now locks in Founder Status, giving you 70% off lifetime commercial access on launch day!
                   </p>
 
                   <div className="p-6 sm:p-8 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[8px_8px_0_#1f1a0e] text-left">
+                    {/* Founder Benefit Callout Banner */}
+                    <div className="mb-5 p-3.5 bg-[#0e4dff] text-white border-2 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] text-xs font-bold uppercase tracking-wider flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-base">🎁</span>
+                        <span>Register now to lock in Founder Status &amp; 70% Lifetime Early Bird Discount on Dec 1st!</span>
+                      </div>
+                      <span className="hidden sm:inline-block px-2 py-0.5 bg-white text-[#0e4dff] text-[10px] font-mono font-bold shrink-0">
+                        FREE PASS
+                      </span>
+                    </div>
                     {signupSuccess && (
                       <div className="mb-4 p-3 bg-[#eedcb4] border-2 border-[#0e4dff] text-[#0e4dff] text-xs font-bold flex flex-col gap-1">
                         <div className="flex items-center gap-2">
@@ -1579,7 +1758,7 @@ export default function App() {
                         <CopyableBadge text="sumitnawale123456@gmail.com" className="text-[#eedcb4] hover:text-[#ff4a8a]" />
                       </li>
                       <li className="text-[11px] text-[#eedcb4]/70 pt-1">
-                        Licensed under GPLv3
+                        Independent Commercial Software · Free Pilot Till Dec 1
                       </li>
                     </ul>
                   </div>
@@ -1587,7 +1766,7 @@ export default function App() {
 
                 <div className="max-w-6xl mx-auto pt-6 border-t border-[#eedcb4]/20 flex flex-wrap justify-between items-center gap-4 text-[11px] text-[#eedcb4]">
                   <span>© SNEHA PILOT DISTRIBUTION · 2026 · ALL RIGHTS RESERVED</span>
-                  <span>GPLV3 OPEN SOURCE · ZERO TRACKERS · ON-DEVICE PRIVACY</span>
+                  <span>PROPRIETARY ON-DEVICE AI · ZERO TRACKERS · FREE PILOT TILL DEC 1</span>
                 </div>
               </footer>
             </div>
@@ -1798,9 +1977,12 @@ export default function App() {
               </div>
 
               <div className="border-t-2 border-dashed border-[#1f1a0e] pt-4">
-                <h3 className="font-['Bowlby_One'] text-xl uppercase mb-2">4. Open Source GPLv3 Guarantee</h3>
+                <h3 className="font-['Bowlby_One'] text-xl uppercase mb-2">4. Commercial Integrity &amp; Independent Privacy Architecture</h3>
+                <p className="font-['Crimson_Pro'] text-base text-[#2a2515] leading-relaxed mb-2">
+                  SNEHA is independently developed proprietary software. We are 100% free with unlimited access through December 1, 2026, after which we charge a modest, user-funded commercial fee specifically so we never have to monetize user data, sell ad tracking pixels, or compromise your personal privacy.
+                </p>
                 <p className="font-['Crimson_Pro'] text-base text-[#2a2515] leading-relaxed">
-                  SNEHA is licensed under the GNU General Public License v3.0. You have the right to inspect, verify, and compile every line of code yourself.
+                  You can independently verify our zero-telemetry claims anytime via our cryptographic Checksum Validator and on-device packet inspection.
                 </p>
                 <div className="mt-3 p-2.5 bg-[#eedcb4] border border-[#1f1a0e] text-xs font-bold">
                   Contact: <a href="mailto:sumitnawale123456@gmail.com" className="text-[#0e4dff] underline">sumitnawale123456@gmail.com</a>
@@ -2185,7 +2367,7 @@ export default function App() {
               {[
                 {
                   q: 'What is SNEHA?',
-                  a: 'SNEHA is a privacy-first, on-device AI companion for Android 8.0+. It runs entirely on your phone — no cloud trackers, no telemetry, no subscriptions.',
+                  a: 'SNEHA is a privacy-first, on-device AI companion for Android 8.0+. It runs entirely on your phone — zero cloud trackers, zero background telemetry, and 100% free for all testers until December 1, 2026.',
                 },
                 {
                   q: 'Does SNEHA collect my data?',
@@ -2196,8 +2378,16 @@ export default function App() {
                   a: 'Android 8.0 (Min SDK 26) through Android 15 (Target SDK 35). See the Device Compatibility page for details.',
                 },
                 {
+                  q: 'Is SNEHA free forever? Why will it charge after December 1st?',
+                  a: 'SNEHA is 100% free with unlimited access for all users throughout the pilot until December 1, 2026! After December 1st, SNEHA will transition to a modest, affordable commercial fee (with massive grandfathered lifetime discounts for early pilot testers). Why? Big Tech gives you "free" cloud AI so they can record your screen and sell your habits to ad brokers. SNEHA is customer-funded to guarantee 100% privacy and zero data surveillance.',
+                },
+                {
+                  q: 'What is the Founder Early Adopter Discount?',
+                  a: 'Anyone who joins and registers during the pilot period locks in Founder Status, giving you up to 70% off our commercial license for life. Active testers who submit 2 or more verified bug reports also qualify for a 100% Free Lifetime License!',
+                },
+                {
                   q: 'Is SNEHA open source?',
-                  a: 'Yes. SNEHA is licensed under GPLv3. You can inspect, verify, and compile every line of code yourself.',
+                  a: 'SNEHA is built on proprietary, independently developed on-device neural runtime technology. However, our zero-telemetry claims are 100% auditable: our APK contains zero analytics SDKs, zero background network calls, and you can verify the SHA-256 cryptographic digest directly on this website.',
                 },
                 {
                   q: 'How do I join the pilot program?',

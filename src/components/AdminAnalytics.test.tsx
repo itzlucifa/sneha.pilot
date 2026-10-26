@@ -64,7 +64,7 @@ describe('AdminAnalytics Component', () => {
     {
       id: 103,
       rating: 3,
-      what_worked: 'GPLv3 privacy guarantee',
+      what_worked: 'On-device privacy guarantee',
       what_broke: 'Crash when disconnected during download',
       what_to_add: 'Automatic retry prompt',
       tester_email: 'charlie@oneplus.com',

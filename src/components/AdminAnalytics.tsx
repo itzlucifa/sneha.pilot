@@ -521,7 +521,7 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({
               Across {deviceAnalytics.manufacturers.length} OEM brands
             </span>
             <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase border border-[#1f1a0e] dark:border-[#fdfaf2] bg-[#0e4dff] text-white">
-              GPLv3 Core
+              Founder Core
             </span>
           </div>
         </div>
