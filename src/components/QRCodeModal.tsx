@@ -410,7 +410,7 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm overflow-y-auto animate-fade-in"
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           onClose();
@@ -422,18 +422,18 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({
     >
       <div
         ref={modalRef}
-        className="w-full max-w-lg bg-[#f5ecd4] dark:bg-[#1c170d] text-[#1f1a0e] dark:text-[#f5ecd4] border-3 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[8px_8px_0_#1f1a0e] dark:shadow-[8px_8px_0_#000000] p-6 relative overflow-hidden transition-all duration-200"
+        className="w-full max-w-[calc(100vw-1.5rem)] sm:max-w-md my-auto max-h-[92vh] overflow-y-auto bg-[#f5ecd4] dark:bg-[#1c170d] text-[#1f1a0e] dark:text-[#f5ecd4] border-3 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[4px_4px_0_#1f1a0e] sm:shadow-[8px_8px_0_#1f1a0e] dark:shadow-[4px_4px_0_#000000] p-4 sm:p-6 relative transition-all duration-200"
       >
         {/* Top Header Badge & Close Button */}
-        <div className="flex items-start justify-between gap-4 mb-4 pb-3 border-b-2 border-[#1f1a0e] dark:border-[#eedcb4]/20">
-          <div>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 mb-2 bg-[#0e4dff] text-white text-[10px] font-mono font-bold uppercase tracking-wider border border-[#1f1a0e]">
+        <div className="flex items-start justify-between gap-3 mb-3 pb-3 border-b-2 border-[#1f1a0e] dark:border-[#eedcb4]/20">
+          <div className="min-w-0 flex-1">
+            <div className="inline-flex items-center gap-1.5 px-2 py-0.5 mb-1.5 bg-[#0e4dff] text-white text-[10px] font-mono font-bold uppercase tracking-wider border border-[#1f1a0e]">
               <QrCode size={12} />
               <span>Direct Android Sideload</span>
             </div>
             <h2
               id="qr-modal-title"
-              className="font-['Bowlby_One'] text-xl sm:text-2xl uppercase tracking-tight text-[#1f1a0e] dark:text-[#fdfaf2]"
+              className="font-['Bowlby_One'] text-lg sm:text-2xl uppercase tracking-tight text-[#1f1a0e] dark:text-[#fdfaf2] break-words"
             >
               {title}
             </h2>
@@ -448,13 +448,13 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({
             aria-label="Close QR Code Modal"
             className="p-1.5 bg-[#ff4a8a] text-[#1f1a0e] border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] hover:bg-[#1f1a0e] hover:text-[#f5ecd4] transition-all cursor-pointer shrink-0"
           >
-            <X size={20} strokeWidth={2.5} />
+            <X size={18} strokeWidth={2.5} />
           </button>
         </div>
 
         {/* QR Code Container with Viewfinder Accents */}
-        <div className="flex flex-col items-center justify-center my-4">
-          <div className="relative p-5 bg-white border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] rounded-none">
+        <div className="flex flex-col items-center justify-center my-3">
+          <div className="relative p-3 sm:p-4 bg-white border-3 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] rounded-none max-w-full">
             {/* Neo-brutalist Viewfinder Reticle Corners */}
             <div className="absolute top-1 left-1 w-3 h-3 border-t-3 border-l-3 border-[#ff4a8a]" />
             <div className="absolute top-1 right-1 w-3 h-3 border-t-3 border-r-3 border-[#ff4a8a]" />
@@ -464,7 +464,7 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({
             {/* Pure SVG QR Code */}
             <svg
               viewBox={`0 0 ${totalSvgSize} ${totalSvgSize}`}
-              className="w-56 h-56 sm:w-64 sm:h-64"
+              className="w-40 h-40 sm:w-56 sm:h-56 max-w-full aspect-square"
               shapeRendering="crispEdges"
               role="img"
               aria-label="Scannable QR Code for SNEHA APK Download"
@@ -476,24 +476,24 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({
             </svg>
 
             {/* Target Badge Center Overlay / Subtle branding */}
-            <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-2.5 py-0.5 bg-[#ff7028] text-[#1f1a0e] font-['Bowlby_One'] text-[9px] uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] whitespace-nowrap">
+            <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-[#ff7028] text-[#1f1a0e] font-['Bowlby_One'] text-[9px] uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] whitespace-nowrap">
               ● SCAN TARGET
             </div>
           </div>
 
-          <span className="text-[11px] font-mono text-[#5a4f30] dark:text-[#cdbe9e] mt-4 flex items-center gap-1">
-            <Sparkles size={12} className="text-[#ff7028]" />
+          <span className="text-[10px] sm:text-[11px] font-mono text-[#5a4f30] dark:text-[#cdbe9e] mt-3.5 flex items-center gap-1">
+            <Sparkles size={11} className="text-[#ff7028]" />
             Pure SVG • Lossless Scalable Vector • ECC Level M
           </span>
         </div>
 
         {/* Step-by-Step Scan Instructions */}
-        <div className="p-3 bg-[#eedcb4]/60 dark:bg-[#271f13] border-2 border-[#1f1a0e] dark:border-[#eedcb4]/20 my-4 text-xs">
-          <div className="font-['Bowlby_One'] uppercase text-[11px] text-[#1f1a0e] dark:text-[#fdfaf2] mb-1.5 flex items-center gap-1.5">
-            <Smartphone size={14} className="text-[#0e4dff]" />
+        <div className="p-2.5 sm:p-3 bg-[#eedcb4]/60 dark:bg-[#271f13] border-2 border-[#1f1a0e] dark:border-[#eedcb4]/20 my-3 text-xs">
+          <div className="font-['Bowlby_One'] uppercase text-[11px] text-[#1f1a0e] dark:text-[#fdfaf2] mb-1 flex items-center gap-1.5">
+            <Smartphone size={13} className="text-[#0e4dff]" />
             <span>How to Scan from your Phone:</span>
           </div>
-          <ol className="list-decimal list-inside space-y-1 text-[#2a2515] dark:text-[#e8deca] font-sans font-medium text-[11px] leading-relaxed">
+          <ol className="list-decimal list-inside space-y-0.5 text-[#2a2515] dark:text-[#e8deca] font-sans font-medium text-[11px] leading-relaxed">
             <li>Open the standard Camera app or Google Lens on your Android device.</li>
             <li>Align your camera frame over the QR code on this screen.</li>
             <li>Tap the browser pop-up banner to initiate direct APK download.</li>
@@ -501,14 +501,14 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({
         </div>
 
         {/* Copyable Link Field & Action Buttons */}
-        <div className="space-y-2.5">
-          <div className="flex items-center gap-2">
-            <div className="flex-1 px-3 py-2 bg-[#eedcb4]/40 dark:bg-[#1a140b] border-2 border-[#1f1a0e] dark:border-[#eedcb4]/20 font-mono text-xs text-[#1f1a0e] dark:text-[#fdfaf2] truncate select-all">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 min-w-0">
+            <div className="min-w-0 flex-1 px-2.5 py-1.5 bg-[#eedcb4]/40 dark:bg-[#1a140b] border-2 border-[#1f1a0e] dark:border-[#eedcb4]/20 font-mono text-xs text-[#1f1a0e] dark:text-[#fdfaf2] truncate select-all">
               {url}
             </div>
             <button
               onClick={handleCopy}
-              className={`px-3 py-2 font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] transition-all flex items-center gap-1.5 shrink-0 cursor-pointer ${
+              className={`px-3 py-1.5 font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] transition-all flex items-center gap-1.5 shrink-0 cursor-pointer ${
                 copied
                   ? 'bg-[#10b981] text-white'
                   : 'bg-[#ff4a8a] text-[#1f1a0e] hover:bg-[#1f1a0e] hover:text-[#f5ecd4]'
@@ -516,12 +516,12 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({
             >
               {copied ? (
                 <>
-                  <Check size={14} strokeWidth={3} />
+                  <Check size={13} strokeWidth={3} />
                   <span>Copied!</span>
                 </>
               ) : (
                 <>
-                  <Copy size={14} />
+                  <Copy size={13} />
                   <span>Copy</span>
                 </>
               )}
@@ -533,15 +533,15 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-2.5 bg-[#0e4dff] text-white font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] hover:bg-[#1f1a0e] hover:text-[#f5ecd4] transition-all flex items-center justify-center gap-2 text-center"
+              className="px-3 py-2 bg-[#0e4dff] text-white font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] hover:bg-[#1f1a0e] hover:text-[#f5ecd4] transition-all flex items-center justify-center gap-1.5 text-center"
             >
-              <ExternalLink size={14} />
+              <ExternalLink size={13} />
               <span>Open Link</span>
             </a>
 
             <button
               onClick={onClose}
-              className="px-4 py-2.5 bg-[#eedcb4] dark:bg-[#271f13] text-[#1f1a0e] dark:text-[#fdfaf2] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[3px_3px_0_#1f1a0e] hover:bg-[#1f1a0e] hover:text-[#f5ecd4] transition-all cursor-pointer text-center"
+              className="px-3 py-2 bg-[#eedcb4] dark:bg-[#271f13] text-[#1f1a0e] dark:text-[#fdfaf2] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[2px_2px_0_#1f1a0e] hover:bg-[#1f1a0e] hover:text-[#f5ecd4] transition-all cursor-pointer text-center"
             >
               Dismiss
             </button>

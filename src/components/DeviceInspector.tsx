@@ -326,14 +326,14 @@ export const DeviceInspector: React.FC<DeviceInspectorProps> = ({
 
   return (
     <div
-      className={`bg-[#f5ecd4] dark:bg-[#1c170d] text-[#1f1a0e] dark:text-[#f5ecd4] border-3 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[6px_6px_0_#1f1a0e] dark:shadow-[6px_6px_0_#000000] p-6 sm:p-8 transition-all ${className}`}
+      className={`bg-[#f5ecd4] dark:bg-[#1c170d] text-[#1f1a0e] dark:text-[#f5ecd4] border-3 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[6px_6px_0_#1f1a0e] dark:shadow-[6px_6px_0_#000000] p-4 sm:p-6 lg:p-8 transition-all overflow-hidden ${className}`}
     >
       {/* Top Header & Pulsing Status Indicator */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b-3 border-[#1f1a0e] dark:border-[#eedcb4]/20">
-        <div>
+        <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2 mb-2">
             {/* Real-time Pulsing Status Indicator */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#10b981] text-white border-2 border-[#1f1a0e] text-[10px] font-mono font-bold uppercase tracking-wider shadow-[2px_2px_0_#1f1a0e]">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-[#10b981] text-white border-2 border-[#1f1a0e] text-[10px] font-mono font-bold uppercase tracking-wider shadow-[2px_2px_0_#1f1a0e]">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
@@ -346,10 +346,10 @@ export const DeviceInspector: React.FC<DeviceInspectorProps> = ({
             </span>
           </div>
 
-          <h3 className="font-['Bowlby_One'] text-2xl sm:text-3xl uppercase tracking-tight text-[#1f1a0e] dark:text-[#fdfaf2]">
+          <h3 className="font-['Bowlby_One'] text-xl sm:text-3xl uppercase tracking-tight text-[#1f1a0e] dark:text-[#fdfaf2] break-words">
             Real-Time Device & Hardware Inspector
           </h3>
-          <p className="font-['Crimson_Pro'] italic text-sm text-[#5a4f30] dark:text-[#cdbe9e] mt-1">
+          <p className="font-['Crimson_Pro'] italic text-xs sm:text-sm text-[#5a4f30] dark:text-[#cdbe9e] mt-1">
             Instant diagnostic analysis of your chipset, RAM, WebAssembly acceleration, and SNEHA compatibility.
           </p>
         </div>
@@ -358,7 +358,7 @@ export const DeviceInspector: React.FC<DeviceInspectorProps> = ({
         <button
           onClick={inspectDevice}
           disabled={isScanning}
-          className="px-3.5 py-2 bg-[#eedcb4] dark:bg-[#271f13] text-[#1f1a0e] dark:text-[#fdfaf2] text-xs font-bold uppercase border-2 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[3px_3px_0_#1f1a0e] hover:bg-[#1f1a0e] hover:text-[#f5ecd4] transition-all cursor-pointer flex items-center gap-2 shrink-0"
+          className="self-start sm:self-auto px-3.5 py-2 bg-[#eedcb4] dark:bg-[#271f13] text-[#1f1a0e] dark:text-[#fdfaf2] text-xs font-bold uppercase border-2 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[3px_3px_0_#1f1a0e] hover:bg-[#1f1a0e] hover:text-[#f5ecd4] transition-all cursor-pointer flex items-center gap-2 shrink-0"
         >
           <RefreshCw size={14} className={isScanning ? 'animate-spin' : ''} />
           <span>{isScanning ? 'Scanning...' : 'Re-Inspect'}</span>
@@ -368,34 +368,36 @@ export const DeviceInspector: React.FC<DeviceInspectorProps> = ({
       {/* Main Verdict Card */}
       {specs && (
         <div
-          className={`p-5 border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] mb-6 animate-fade-in ${
+          className={`p-4 sm:p-5 border-3 border-[#1f1a0e] dark:border-[#eedcb4]/40 shadow-[4px_4px_0_#1f1a0e] mb-6 animate-fade-in bg-[#eedcb4] dark:bg-[#271f13] ${
             specs.verdictType === 'success'
-              ? 'bg-[#10b981] text-white'
+              ? 'border-l-8 border-l-[#10b981]'
               : specs.verdictType === 'warning'
-              ? 'bg-[#ff4a8a] text-[#1f1a0e]'
-              : 'bg-[#0e4dff] text-white'
+              ? 'border-l-8 border-l-[#ff4a8a]'
+              : 'border-l-8 border-l-[#0e4dff]'
           }`}
         >
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="flex items-start gap-3.5">
-              <div className="w-12 h-12 bg-white flex items-center justify-center border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] shrink-0 text-[#1f1a0e]">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex items-start gap-3 min-w-0 flex-1">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white dark:bg-[#1a140b] flex items-center justify-center border-2 border-[#1f1a0e] dark:border-[#eedcb4]/40 shadow-[2px_2px_0_#1f1a0e] shrink-0 text-[#1f1a0e] dark:text-[#fdfaf2]">
                 {specs.verdictType === 'success' ? (
-                  <ShieldCheck size={28} className="text-[#10b981]" />
+                  <ShieldCheck size={26} className="text-[#10b981]" />
                 ) : specs.verdictType === 'warning' ? (
-                  <AlertCircle size={28} className="text-[#ff4a8a]" />
+                  <AlertCircle size={26} className="text-[#ff4a8a]" />
                 ) : (
-                  <Smartphone size={28} className="text-[#0e4dff]" />
+                  <Smartphone size={26} className="text-[#0e4dff]" />
                 )}
               </div>
 
-              <div>
-                <div className="font-['Bowlby_One'] text-lg sm:text-xl uppercase tracking-tight flex items-center gap-2">
-                  <span>{specs.deviceModel}</span>
-                  <span className="px-2 py-0.5 bg-white text-[#1f1a0e] text-[10px] font-mono font-bold border border-[#1f1a0e]">
+              <div className="min-w-0 flex-1 overflow-hidden">
+                <div className="font-['Bowlby_One'] text-base sm:text-xl uppercase tracking-tight flex flex-wrap items-center gap-2">
+                  <span className="break-words max-w-full text-[#1f1a0e] dark:text-[#fdfaf2]">
+                    {specs.deviceModel}
+                  </span>
+                  <span className="px-2 py-0.5 bg-white dark:bg-[#1a140b] text-[#1f1a0e] dark:text-[#fdfaf2] text-[10px] font-mono font-bold border border-[#1f1a0e] dark:border-[#eedcb4]/30 shrink-0">
                     {specs.osVersion}
                   </span>
                 </div>
-                <p className="font-sans text-xs sm:text-sm font-medium mt-1 leading-relaxed opacity-95">
+                <p className="font-sans text-xs sm:text-sm font-medium mt-1 leading-relaxed text-[#2a2515] dark:text-[#e8deca] break-words">
                   {specs.compatibilityVerdict}
                 </p>
               </div>
@@ -404,7 +406,7 @@ export const DeviceInspector: React.FC<DeviceInspectorProps> = ({
             {/* Prominent Auto-Fill Button */}
             <button
               onClick={handleAutoFill}
-              className={`px-4 py-3 font-['Bowlby_One'] text-xs sm:text-sm uppercase tracking-wide border-2 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0 ${
+              className={`w-full md:w-auto px-4 py-2.5 sm:py-3 font-['Bowlby_One'] text-xs sm:text-sm uppercase tracking-wide border-2 border-[#1f1a0e] dark:border-[#eedcb4]/40 shadow-[3px_3px_0_#1f1a0e] transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0 ${
                 autoFilled
                   ? 'bg-white text-[#10b981]'
                   : 'bg-[#ff7028] text-[#1f1a0e] hover:bg-[#1f1a0e] hover:text-[#f5ecd4]'
@@ -417,8 +419,8 @@ export const DeviceInspector: React.FC<DeviceInspectorProps> = ({
                 </>
               ) : (
                 <>
-                  <span>Auto-Fill My Device in Pilot Signup Form</span>
-                  <ArrowRight size={16} />
+                  <span className="text-center">Auto-Fill My Device in Pilot Signup Form</span>
+                  <ArrowRight size={16} className="shrink-0" />
                 </>
               )}
             </button>
@@ -428,15 +430,15 @@ export const DeviceInspector: React.FC<DeviceInspectorProps> = ({
 
       {/* Hardware Spec Cards Grid */}
       {specs && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6">
           {/* Card 1: CPU Architecture */}
-          <div className="p-4 bg-white dark:bg-[#271f13] border-2 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[3px_3px_0_#1f1a0e]">
+          <div className="p-3.5 sm:p-4 bg-white dark:bg-[#271f13] border-2 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[3px_3px_0_#1f1a0e] min-w-0 overflow-hidden">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#5a4f30] dark:text-[#cdbe9e] flex items-center gap-1.5">
-                <Cpu size={14} className="text-[#0e4dff]" />
-                <span>CPU Concurrency</span>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#5a4f30] dark:text-[#cdbe9e] flex items-center gap-1.5 truncate">
+                <Cpu size={14} className="text-[#0e4dff] shrink-0" />
+                <span className="truncate">CPU Concurrency</span>
               </span>
-              <span className="px-2 py-0.5 bg-[#eedcb4] dark:bg-[#1a140b] text-[#1f1a0e] dark:text-[#fdfaf2] text-[10px] font-mono border border-[#1f1a0e]/30">
+              <span className="px-2 py-0.5 bg-[#eedcb4] dark:bg-[#1a140b] text-[#1f1a0e] dark:text-[#fdfaf2] text-[10px] font-mono border border-[#1f1a0e]/30 shrink-0">
                 {specs.cpuCores} LOGICAL CORES
               </span>
             </div>
@@ -451,17 +453,17 @@ export const DeviceInspector: React.FC<DeviceInspectorProps> = ({
           </div>
 
           {/* Card 2: Memory & RAM */}
-          <div className="p-4 bg-white dark:bg-[#271f13] border-2 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[3px_3px_0_#1f1a0e]">
+          <div className="p-3.5 sm:p-4 bg-white dark:bg-[#271f13] border-2 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[3px_3px_0_#1f1a0e] min-w-0 overflow-hidden">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#5a4f30] dark:text-[#cdbe9e] flex items-center gap-1.5">
-                <HardDrive size={14} className="text-[#ff7028]" />
-                <span>System RAM</span>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#5a4f30] dark:text-[#cdbe9e] flex items-center gap-1.5 truncate">
+                <HardDrive size={14} className="text-[#ff7028] shrink-0" />
+                <span className="truncate">System RAM</span>
               </span>
-              <span className="px-2 py-0.5 bg-[#eedcb4] dark:bg-[#1a140b] text-[#1f1a0e] dark:text-[#fdfaf2] text-[10px] font-mono border border-[#1f1a0e]/30">
+              <span className="px-2 py-0.5 bg-[#eedcb4] dark:bg-[#1a140b] text-[#1f1a0e] dark:text-[#fdfaf2] text-[10px] font-mono border border-[#1f1a0e]/30 shrink-0">
                 RECOMMENDED 3GB+
               </span>
             </div>
-            <div className="font-['Bowlby_One'] text-base uppercase text-[#1f1a0e] dark:text-[#fdfaf2]">
+            <div className="font-['Bowlby_One'] text-base uppercase text-[#1f1a0e] dark:text-[#fdfaf2] truncate">
               {specs.deviceMemoryGb ? `${specs.deviceMemoryGb} GB Available` : '≥ 4 GB (Estimated)'}
             </div>
             <p className="font-['Crimson_Pro'] italic text-xs text-[#5a4f30] dark:text-[#cdbe9e] mt-1">
@@ -470,17 +472,17 @@ export const DeviceInspector: React.FC<DeviceInspectorProps> = ({
           </div>
 
           {/* Card 3: Display Resolution & DPR */}
-          <div className="p-4 bg-white dark:bg-[#271f13] border-2 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[3px_3px_0_#1f1a0e]">
+          <div className="p-3.5 sm:p-4 bg-white dark:bg-[#271f13] border-2 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[3px_3px_0_#1f1a0e] min-w-0 overflow-hidden">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#5a4f30] dark:text-[#cdbe9e] flex items-center gap-1.5">
-                <Monitor size={14} className="text-[#ff4a8a]" />
-                <span>Display & Viewport</span>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#5a4f30] dark:text-[#cdbe9e] flex items-center gap-1.5 truncate">
+                <Monitor size={14} className="text-[#ff4a8a] shrink-0" />
+                <span className="truncate">Display & Viewport</span>
               </span>
-              <span className="px-2 py-0.5 bg-[#eedcb4] dark:bg-[#1a140b] text-[#1f1a0e] dark:text-[#fdfaf2] text-[10px] font-mono border border-[#1f1a0e]/30">
+              <span className="px-2 py-0.5 bg-[#eedcb4] dark:bg-[#1a140b] text-[#1f1a0e] dark:text-[#fdfaf2] text-[10px] font-mono border border-[#1f1a0e]/30 shrink-0">
                 {specs.devicePixelRatio}x DPR
               </span>
             </div>
-            <div className="font-['Bowlby_One'] text-base uppercase text-[#1f1a0e] dark:text-[#fdfaf2]">
+            <div className="font-['Bowlby_One'] text-base uppercase text-[#1f1a0e] dark:text-[#fdfaf2] truncate">
               {specs.screenResolution}
             </div>
             <p className="font-['Crimson_Pro'] italic text-xs text-[#5a4f30] dark:text-[#cdbe9e] mt-1">
@@ -489,17 +491,17 @@ export const DeviceInspector: React.FC<DeviceInspectorProps> = ({
           </div>
 
           {/* Card 4: WebAssembly & SIMD Acceleration */}
-          <div className="p-4 bg-white dark:bg-[#271f13] border-2 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[3px_3px_0_#1f1a0e]">
+          <div className="p-3.5 sm:p-4 bg-white dark:bg-[#271f13] border-2 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[3px_3px_0_#1f1a0e] min-w-0 overflow-hidden">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#5a4f30] dark:text-[#cdbe9e] flex items-center gap-1.5">
-                <Zap size={14} className="text-[#0e4dff]" />
-                <span>WebAssembly SIMD</span>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#5a4f30] dark:text-[#cdbe9e] flex items-center gap-1.5 truncate">
+                <Zap size={14} className="text-[#0e4dff] shrink-0" />
+                <span className="truncate">WebAssembly SIMD</span>
               </span>
-              <span className="px-2 py-0.5 bg-[#10b981] text-white text-[10px] font-mono font-bold border border-[#1f1a0e]">
+              <span className="px-2 py-0.5 bg-[#10b981] text-white text-[10px] font-mono font-bold border border-[#1f1a0e] shrink-0">
                 ENABLED
               </span>
             </div>
-            <div className="font-['Bowlby_One'] text-base uppercase text-[#1f1a0e] dark:text-[#fdfaf2]">
+            <div className="font-['Bowlby_One'] text-base uppercase text-[#1f1a0e] dark:text-[#fdfaf2] truncate">
               {specs.webAssemblySupported ? 'Wasm Engine Ready' : 'Fallback Engine'}
             </div>
             <p className="font-['Crimson_Pro'] italic text-xs text-[#5a4f30] dark:text-[#cdbe9e] mt-1">
@@ -510,13 +512,13 @@ export const DeviceInspector: React.FC<DeviceInspectorProps> = ({
           </div>
 
           {/* Card 5: GPU Renderer & Graphics Driver */}
-          <div className="p-4 bg-white dark:bg-[#271f13] border-2 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[3px_3px_0_#1f1a0e]">
+          <div className="p-3.5 sm:p-4 bg-white dark:bg-[#271f13] border-2 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[3px_3px_0_#1f1a0e] min-w-0 overflow-hidden">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#5a4f30] dark:text-[#cdbe9e] flex items-center gap-1.5">
-                <Layers size={14} className="text-[#ff7028]" />
-                <span>GPU Accelerator</span>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#5a4f30] dark:text-[#cdbe9e] flex items-center gap-1.5 truncate">
+                <Layers size={14} className="text-[#ff7028] shrink-0" />
+                <span className="truncate">GPU Accelerator</span>
               </span>
-              <span className="px-2 py-0.5 bg-[#eedcb4] dark:bg-[#1a140b] text-[#1f1a0e] dark:text-[#fdfaf2] text-[10px] font-mono border border-[#1f1a0e]/30">
+              <span className="px-2 py-0.5 bg-[#eedcb4] dark:bg-[#1a140b] text-[#1f1a0e] dark:text-[#fdfaf2] text-[10px] font-mono border border-[#1f1a0e]/30 shrink-0">
                 HARDWARE
               </span>
             </div>
@@ -532,17 +534,17 @@ export const DeviceInspector: React.FC<DeviceInspectorProps> = ({
           </div>
 
           {/* Card 6: Storage & Network Status */}
-          <div className="p-4 bg-white dark:bg-[#271f13] border-2 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[3px_3px_0_#1f1a0e]">
+          <div className="p-3.5 sm:p-4 bg-white dark:bg-[#271f13] border-2 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[3px_3px_0_#1f1a0e] min-w-0 overflow-hidden">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#5a4f30] dark:text-[#cdbe9e] flex items-center gap-1.5">
-                <Radio size={14} className="text-[#ff4a8a]" />
-                <span>Storage & Network</span>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#5a4f30] dark:text-[#cdbe9e] flex items-center gap-1.5 truncate">
+                <Radio size={14} className="text-[#ff4a8a] shrink-0" />
+                <span className="truncate">Storage & Network</span>
               </span>
-              <span className="px-2 py-0.5 bg-[#eedcb4] dark:bg-[#1a140b] text-[#1f1a0e] dark:text-[#fdfaf2] text-[10px] font-mono border border-[#1f1a0e]/30">
+              <span className="px-2 py-0.5 bg-[#eedcb4] dark:bg-[#1a140b] text-[#1f1a0e] dark:text-[#fdfaf2] text-[10px] font-mono border border-[#1f1a0e]/30 shrink-0">
                 {specs.networkType}
               </span>
             </div>
-            <div className="font-['Bowlby_One'] text-base uppercase text-[#1f1a0e] dark:text-[#fdfaf2]">
+            <div className="font-['Bowlby_One'] text-base uppercase text-[#1f1a0e] dark:text-[#fdfaf2] truncate">
               {specs.storageEstimateMb
                 ? `${Math.round(specs.storageEstimateMb / 1024)} GB Free Quota`
                 : 'Local Storage Verified'}

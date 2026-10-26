@@ -358,9 +358,9 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({
       {/* -----------------------------------------------------------
           Dashboard Top Banner & Filter Controls
           ----------------------------------------------------------- */}
-      <div className="p-4 sm:p-5 bg-[#f5ecd4] dark:bg-[#1c170d] border-3 border-[#1f1a0e] dark:border-[#fdfaf2] shadow-[6px_6px_0_#1f1a0e] dark:shadow-[6px_6px_0_#fdfaf2] flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
+      <div className="p-4 sm:p-5 bg-[#f5ecd4] dark:bg-[#1c170d] border-3 border-[#1f1a0e] dark:border-[#fdfaf2] shadow-[6px_6px_0_#1f1a0e] dark:shadow-[6px_6px_0_#fdfaf2] flex flex-wrap items-center justify-between gap-4 overflow-hidden">
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-2 mb-1">
             <span className="px-2 py-0.5 bg-[#0e4dff] text-white font-['Bowlby_One'] text-[10px] uppercase border border-[#1f1a0e] dark:border-[#fdfaf2]">
               Live Telemetry
             </span>
@@ -368,7 +368,7 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({
               AUDIT v1.0.2 · SUPABASE REALTIME
             </span>
           </div>
-          <h2 className="font-['Bowlby_One'] text-xl sm:text-2xl uppercase tracking-tight text-[#1f1a0e] dark:text-[#fdfaf2] flex items-center gap-2">
+          <h2 className="font-['Bowlby_One'] text-lg sm:text-2xl uppercase tracking-tight text-[#1f1a0e] dark:text-[#fdfaf2] flex flex-wrap items-center gap-2 break-words">
             <BarChart3 size={24} className="text-[#0e4dff] shrink-0" />
             <span>Pilot Analytics Dashboard</span>
           </h2>

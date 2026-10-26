@@ -198,11 +198,11 @@ export const ChecksumValidator: React.FC<ChecksumValidatorProps> = ({
 
   return (
     <div
-      className={`bg-[#f5ecd4] dark:bg-[#1c170d] text-[#1f1a0e] dark:text-[#f5ecd4] border-3 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[6px_6px_0_#1f1a0e] dark:shadow-[6px_6px_0_#000000] p-6 sm:p-8 transition-all ${className}`}
+      className={`bg-[#f5ecd4] dark:bg-[#1c170d] text-[#1f1a0e] dark:text-[#f5ecd4] border-3 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[6px_6px_0_#1f1a0e] dark:shadow-[6px_6px_0_#000000] p-4 sm:p-6 lg:p-8 transition-all overflow-hidden ${className}`}
     >
       {/* Top Header & Badges */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b-3 border-[#1f1a0e] dark:border-[#eedcb4]/20">
-        <div>
+        <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2 mb-2">
             <span className="px-2.5 py-0.5 bg-[#0e4dff] text-white text-[10px] font-mono font-bold uppercase tracking-wider border border-[#1f1a0e]">
               Web Crypto SHA-256
@@ -214,10 +214,10 @@ export const ChecksumValidator: React.FC<ChecksumValidatorProps> = ({
               Zero-Cloud Upload
             </span>
           </div>
-          <h3 className="font-['Bowlby_One'] text-2xl sm:text-3xl uppercase tracking-tight text-[#1f1a0e] dark:text-[#fdfaf2]">
+          <h3 className="font-['Bowlby_One'] text-xl sm:text-3xl uppercase tracking-tight text-[#1f1a0e] dark:text-[#fdfaf2] break-words">
             Cryptographic Checksum Validator
           </h3>
-          <p className="font-['Crimson_Pro'] italic text-sm text-[#5a4f30] dark:text-[#cdbe9e] mt-1">
+          <p className="font-['Crimson_Pro'] italic text-xs sm:text-sm text-[#5a4f30] dark:text-[#cdbe9e] mt-1">
             Verify your downloaded SNEHA APK against the official release fingerprint before installation.
           </p>
         </div>
@@ -366,18 +366,18 @@ export const ChecksumValidator: React.FC<ChecksumValidatorProps> = ({
         )}
 
         {isMatch && (
-          <div className="p-4 bg-[#10b981] text-white border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] flex items-center gap-4 animate-fade-in">
-            <div className="w-12 h-12 bg-white text-[#10b981] flex items-center justify-center border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] shrink-0">
-              <ShieldCheck size={30} strokeWidth={2.5} />
+          <div className="p-4 bg-[#10b981] text-white border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] flex items-start sm:items-center gap-3 sm:gap-4 animate-fade-in">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white text-[#10b981] flex items-center justify-center border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] shrink-0">
+              <ShieldCheck size={26} strokeWidth={2.5} />
             </div>
-            <div>
-              <div className="font-['Bowlby_One'] text-base sm:text-lg uppercase tracking-tight text-white flex items-center gap-2">
+            <div className="min-w-0 flex-1 overflow-hidden">
+              <div className="font-['Bowlby_One'] text-sm sm:text-lg uppercase tracking-tight text-white flex flex-wrap items-center gap-2">
                 <span>VERIFIED OFFICIAL SNEHA BUILD</span>
-                <span className="px-2 py-0.5 bg-white text-[#10b981] text-[10px] font-mono font-black border border-[#1f1a0e]">
+                <span className="px-2 py-0.5 bg-white text-[#10b981] text-[10px] font-mono font-black border border-[#1f1a0e] shrink-0">
                   MATCH 100%
                 </span>
               </div>
-              <p className="font-sans text-xs text-white/95 font-medium mt-0.5">
+              <p className="font-sans text-xs text-white/95 font-medium mt-0.5 break-words">
                 The computed cryptographic hash exactly matches the official release signature signed by SNEHA release engineering. The package is safe to sideload.
               </p>
             </div>
@@ -385,18 +385,18 @@ export const ChecksumValidator: React.FC<ChecksumValidatorProps> = ({
         )}
 
         {isMismatch && (
-          <div className="p-4 bg-[#ff4a8a] text-[#1f1a0e] border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] flex items-center gap-4 animate-fade-in">
-            <div className="w-12 h-12 bg-white text-[#ff4a8a] flex items-center justify-center border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] shrink-0">
-              <ShieldAlert size={30} strokeWidth={2.5} />
+          <div className="p-4 bg-[#ff4a8a] text-[#1f1a0e] border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] flex items-start sm:items-center gap-3 sm:gap-4 animate-fade-in">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white text-[#ff4a8a] flex items-center justify-center border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] shrink-0">
+              <ShieldAlert size={26} strokeWidth={2.5} />
             </div>
-            <div>
-              <div className="font-['Bowlby_One'] text-base sm:text-lg uppercase tracking-tight text-[#1f1a0e] flex items-center gap-2">
+            <div className="min-w-0 flex-1 overflow-hidden">
+              <div className="font-['Bowlby_One'] text-sm sm:text-lg uppercase tracking-tight text-[#1f1a0e] flex flex-wrap items-center gap-2">
                 <span>CHECKSUM MISMATCH - POTENTIAL TAMPERING</span>
-                <span className="px-2 py-0.5 bg-[#1f1a0e] text-[#ff4a8a] text-[10px] font-mono font-black border border-[#1f1a0e]">
+                <span className="px-2 py-0.5 bg-[#1f1a0e] text-[#ff4a8a] text-[10px] font-mono font-black border border-[#1f1a0e] shrink-0">
                   CORRUPTED
                 </span>
               </div>
-              <p className="font-sans text-xs text-[#1f1a0e] font-bold mt-0.5">
+              <p className="font-sans text-xs text-[#1f1a0e] font-bold mt-0.5 break-words">
                 WARNING: The SHA-256 fingerprint does not match the official release! Do not install this package on your Android device. Re-download from the official distribution channel.
               </p>
             </div>

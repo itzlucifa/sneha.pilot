@@ -310,11 +310,11 @@ export const SideloadWizard: React.FC<SideloadWizardProps> = ({
 
   return (
     <div
-      className={`bg-[#f5ecd4] dark:bg-[#1c170d] text-[#1f1a0e] dark:text-[#f5ecd4] border-3 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[6px_6px_0_#1f1a0e] dark:shadow-[6px_6px_0_#000000] p-6 sm:p-8 transition-all ${className}`}
+      className={`bg-[#f5ecd4] dark:bg-[#1c170d] text-[#1f1a0e] dark:text-[#f5ecd4] border-3 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[6px_6px_0_#1f1a0e] dark:shadow-[6px_6px_0_#000000] p-4 sm:p-6 lg:p-8 transition-all overflow-hidden ${className}`}
     >
       {/* Top Header & Intro */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b-3 border-[#1f1a0e] dark:border-[#eedcb4]/20">
-        <div>
+        <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2 mb-2">
             <span className="px-2.5 py-0.5 bg-[#ff7028] text-[#1f1a0e] text-[10px] font-mono font-bold uppercase tracking-wider border border-[#1f1a0e]">
               Tester Onboarding Guide
@@ -323,10 +323,10 @@ export const SideloadWizard: React.FC<SideloadWizardProps> = ({
               OEM-Specific Instructions
             </span>
           </div>
-          <h3 className="font-['Bowlby_One'] text-2xl sm:text-3xl uppercase tracking-tight text-[#1f1a0e] dark:text-[#fdfaf2]">
+          <h3 className="font-['Bowlby_One'] text-xl sm:text-3xl uppercase tracking-tight text-[#1f1a0e] dark:text-[#fdfaf2] break-words">
             Interactive Android Sideload Wizard
           </h3>
-          <p className="font-['Crimson_Pro'] italic text-sm text-[#5a4f30] dark:text-[#cdbe9e] mt-1">
+          <p className="font-['Crimson_Pro'] italic text-xs sm:text-sm text-[#5a4f30] dark:text-[#cdbe9e] mt-1">
             Foolproof step-by-step walkthrough for sideloading SNEHA APK across Android versions & manufacturer skins.
           </p>
         </div>

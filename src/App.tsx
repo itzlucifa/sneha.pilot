@@ -2083,12 +2083,12 @@ export default function App() {
               </div>
             </div>
 
-            <div className="p-6 sm:p-8 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[8px_8px_0_#1f1a0e]">
-              {/* Real-Time Hardware Capability Inspector */}
-              <div className="mb-6">
-                <DeviceInspector onAutoFillSignup={handleAutoFillSignup} />
-              </div>
+            {/* Real-Time Hardware Capability Inspector */}
+            <div className="mb-8">
+              <DeviceInspector onAutoFillSignup={handleAutoFillSignup} />
+            </div>
 
+            <div className="p-4 sm:p-8 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[6px_6px_0_#1f1a0e] sm:shadow-[8px_8px_0_#1f1a0e]">
               <div className="overflow-x-auto max-w-full">
                 <table className="w-full text-left border-collapse text-xs min-w-[700px]">
                 <thead>
