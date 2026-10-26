@@ -1027,6 +1027,9 @@ export default function App() {
                       THE AI WHICH ACTUALLY CARES
                     </span>
                     <span className="inline-block px-3 py-1 text-[11px] sm:text-[12px] font-bold uppercase tracking-widest border-2 border-[#1f1a0e] bg-[#0e4dff] text-[#f5ecd4] shadow-[2px_2px_0_#1f1a0e] hover:shadow-[4px_4px_0_#ff4a8a] hover:-translate-y-0.5 transition-all font-['Bowlby_One']">
+                      MADE WITH LOVE ❤️
+                    </span>
+                    <span className="inline-block px-3 py-1 text-[11px] sm:text-[12px] font-bold uppercase tracking-widest border-2 border-[#1f1a0e] bg-[#10b981] text-white shadow-[2px_2px_0_#1f1a0e] hover:shadow-[4px_4px_0_#0e4dff] hover:-translate-y-0.5 transition-all font-['Bowlby_One']">
                       FREE TILL DEC 1 ⚡
                     </span>
                   </div>
@@ -1440,28 +1443,28 @@ export default function App() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                  {/* Tier 1: Current Pilot Access */}
+                  {/* Tier 1: 1 Month Pass */}
                   <div className="p-6 bg-[#f5ecd4] dark:bg-[#1c170d] border-3 border-[#1f1a0e] dark:border-[#eedcb4]/40 shadow-[6px_6px_0_#1f1a0e] flex flex-col justify-between relative">
                     <div className="absolute -top-3 right-4 px-2.5 py-0.5 bg-[#10b981] text-white font-['Bowlby_One'] text-[10px] uppercase tracking-wider border-2 border-[#1f1a0e]">
-                      ACTIVE NOW
+                      FREE TILL DEC 1
                     </div>
                     <div>
                       <span className="font-mono text-xs font-bold text-[#0e4dff] uppercase tracking-wider block mb-1">
-                        Stage 01 // Public Pilot
+                        Tier 01 // Monthly Pass
                       </span>
-                      <h3 className="font-['Bowlby_One'] text-xl uppercase mb-2">Early Adopter Pilot</h3>
+                      <h3 className="font-['Bowlby_One'] text-xl uppercase mb-2">1 Month Pass</h3>
                       <div className="flex items-baseline gap-2 mb-4">
-                        <span className="font-['Bowlby_One'] text-4xl text-[#1f1a0e] dark:text-[#fdfaf2]">₹0</span>
-                        <span className="text-xs font-bold uppercase text-[#5a4f30]">/ 100% Free Access</span>
+                        <span className="font-['Bowlby_One'] text-4xl text-[#1f1a0e] dark:text-[#fdfaf2]">₹143</span>
+                        <span className="text-xs font-bold uppercase text-[#5a4f30]">/ month</span>
                       </div>
                       <p className="font-['Crimson_Pro'] italic text-xs text-[#2a2515] dark:text-[#cdbe9e] mb-4">
-                        Unrestricted full access for all testers through December 1, 2026. No payment details required.
+                        The "143" Starter Companion. Full on-device neural engine. 100% free through Dec 1, 2026.
                       </p>
                       <ul className="space-y-2 text-xs font-medium text-[#1f1a0e] dark:text-[#fdfaf2] border-t-2 border-[#1f1a0e]/15 pt-3 mb-6">
                         <li className="flex items-center gap-2">✓ Full On-Device AI Neural Runtime</li>
                         <li className="flex items-center gap-2">✓ Offline Voice &amp; Automation Intents</li>
                         <li className="flex items-center gap-2">✓ Direct APK Updates &amp; Hotfixes</li>
-                        <li className="flex items-center gap-2">✓ Locked-in Founder Status</li>
+                        <li className="flex items-center gap-2">✓ Zero Recurring Commitments</li>
                       </ul>
                     </div>
                     <button
@@ -1476,66 +1479,70 @@ export default function App() {
                     </button>
                   </div>
 
-                  {/* Tier 2: Founder Lifetime Pass (Special Early Bird) */}
+                  {/* Tier 2: 6 Months Pass */}
+                  <div className="p-6 bg-[#eedcb4] dark:bg-[#271f13] border-3 border-[#1f1a0e] dark:border-[#eedcb4]/40 shadow-[6px_6px_0_#1f1a0e] flex flex-col justify-between relative">
+                    <div className="absolute -top-3 right-4 px-2.5 py-0.5 bg-[#0e4dff] text-white font-['Bowlby_One'] text-[10px] uppercase tracking-wider border-2 border-[#1f1a0e]">
+                      SAVE 42%
+                    </div>
+                    <div>
+                      <span className="font-mono text-xs font-bold text-[#0e4dff] uppercase tracking-wider block mb-1">
+                        Tier 02 // Semi-Annual Pass
+                      </span>
+                      <h3 className="font-['Bowlby_One'] text-xl uppercase mb-2">6 Months Pass</h3>
+                      <div className="flex items-baseline gap-2 mb-4">
+                        <span className="font-['Bowlby_One'] text-4xl text-[#0e4dff]">₹499</span>
+                        <span className="text-xs font-bold uppercase text-[#5a4f30]">/ 6 months</span>
+                        <span className="text-[10px] font-bold text-[#1f1a0e] bg-white/70 px-1.5 py-0.5 border border-[#1f1a0e]">~₹83/mo</span>
+                      </div>
+                      <p className="font-['Crimson_Pro'] italic text-xs text-[#2a2515] dark:text-[#cdbe9e] mb-4">
+                        Under ₹500 psychological barrier! Save ₹359 vs monthly. 100% free through Dec 1, 2026.
+                      </p>
+                      <ul className="space-y-2 text-xs font-medium text-[#1f1a0e] dark:text-[#fdfaf2] border-t-2 border-[#1f1a0e]/15 pt-3 mb-6">
+                        <li className="flex items-center gap-2">✓ 6 Months Continuous Offline AI Runtime</li>
+                        <li className="flex items-center gap-2">✓ Priority APK Hotfixes &amp; Neural Updates</li>
+                        <li className="flex items-center gap-2">✓ Direct Line to Core Developers</li>
+                        <li className="flex items-center gap-2">✓ Locked-in Founder Renewal Rights</li>
+                      </ul>
+                    </div>
+                    <a
+                      href="#signup"
+                      className="w-full py-2.5 bg-[#0e4dff] text-white hover:bg-[#1f1a0e] hover:text-[#f5ecd4] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] transition-all text-center block cursor-pointer"
+                    >
+                      Reserve 6-Month Pass →
+                    </a>
+                  </div>
+
+                  {/* Tier 3: 1 Year Founder Pass */}
                   <div className="p-6 bg-[#ff4a8a]/15 dark:bg-[#ff4a8a]/10 border-3 border-[#ff4a8a] shadow-[6px_6px_0_#ff4a8a] flex flex-col justify-between relative">
                     <div className="absolute -top-3 right-4 px-2.5 py-0.5 bg-[#ff4a8a] text-[#1f1a0e] font-['Bowlby_One'] text-[10px] uppercase tracking-wider border-2 border-[#1f1a0e]">
-                      ⭐ PILOT EXCLUSIVE
+                      ⭐ BEST VALUE · 53% OFF
                     </div>
                     <div>
                       <span className="font-mono text-xs font-bold text-[#ff4a8a] uppercase tracking-wider block mb-1">
-                        Early Bird Deal
+                        Tier 03 // Annual Founder Pass
                       </span>
-                      <h3 className="font-['Bowlby_One'] text-xl uppercase mb-2">Founder Lifetime Pass</h3>
+                      <h3 className="font-['Bowlby_One'] text-xl uppercase mb-2">1 Year Pass</h3>
                       <div className="flex items-baseline gap-2 mb-4">
-                        <span className="font-['Bowlby_One'] text-4xl text-[#ff4a8a]">₹299</span>
-                        <span className="text-xs font-bold uppercase text-[#5a4f30] line-through">₹999</span>
-                        <span className="text-[10px] font-bold text-[#10b981] bg-[#10b981]/20 px-1.5 py-0.5 border border-[#10b981]">70% OFF</span>
+                        <span className="font-['Bowlby_One'] text-4xl text-[#ff4a8a]">₹799</span>
+                        <span className="text-xs font-bold uppercase text-[#5a4f30]">/ year</span>
+                        <span className="text-xs font-bold uppercase text-[#5a4f30] line-through">₹1,716</span>
                       </div>
                       <p className="font-['Crimson_Pro'] italic text-xs text-[#2a2515] dark:text-[#cdbe9e] mb-4">
-                        One single payment, zero recurring bills forever. Exclusively offered to registered pilot testers!
+                        Effective ₹66/month (~₹2.20/day). Only ₹300 more than 6 months! 5+ months completely free.
                       </p>
                       <ul className="space-y-2 text-xs font-medium text-[#1f1a0e] dark:text-[#fdfaf2] border-t-2 border-[#1f1a0e]/15 pt-3 mb-6">
-                        <li className="flex items-center gap-2">✓ Lifetime Offline Engine Updates</li>
-                        <li className="flex items-center gap-2">✓ Never Pay a Monthly Subscription</li>
+                        <li className="flex items-center gap-2">✓ Full 12 Months Offline Neural Engine</li>
+                        <li className="flex items-center gap-2">✓ Permanent Grandfathered Founder Renewal</li>
                         <li className="flex items-center gap-2">✓ Free for Top 100 Bug Reporters</li>
-                        <li className="flex items-center gap-2">✓ Founder VIP Discord &amp; Direct Input</li>
+                        <li className="flex items-center gap-2">✓ VIP Early Access to New Automation Skills</li>
                       </ul>
                     </div>
                     <a
                       href="#signup"
                       className="w-full py-2.5 bg-[#ff4a8a] text-[#1f1a0e] hover:bg-[#1f1a0e] hover:text-[#f5ecd4] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] transition-all text-center block cursor-pointer"
                     >
-                      Lock in Founder Perks →
+                      Claim 1-Year Founder Deal →
                     </a>
-                  </div>
-
-                  {/* Tier 3: Commercial Release */}
-                  <div className="p-6 bg-[#f5ecd4] dark:bg-[#1c170d] border-3 border-[#1f1a0e] dark:border-[#eedcb4]/40 shadow-[6px_6px_0_#1f1a0e] flex flex-col justify-between relative">
-                    <div className="absolute -top-3 right-4 px-2.5 py-0.5 bg-[#0e4dff] text-white font-['Bowlby_One'] text-[10px] uppercase tracking-wider border-2 border-[#1f1a0e]">
-                      AFTER DEC 1
-                    </div>
-                    <div>
-                      <span className="font-mono text-xs font-bold text-[#5a4f30] uppercase tracking-wider block mb-1">
-                        Stage 02 // Commercial Pro
-                      </span>
-                      <h3 className="font-['Bowlby_One'] text-xl uppercase mb-2">Standard Subscription</h3>
-                      <div className="flex items-baseline gap-2 mb-4">
-                        <span className="font-['Bowlby_One'] text-4xl text-[#0e4dff]">₹99</span>
-                        <span className="text-xs font-bold uppercase text-[#5a4f30]">/ month</span>
-                      </div>
-                      <p className="font-['Crimson_Pro'] italic text-xs text-[#2a2515] dark:text-[#cdbe9e] mb-4">
-                        Regular consumer pricing for new users who join after the December 1st pilot concludes.
-                      </p>
-                      <ul className="space-y-2 text-xs font-medium text-[#1f1a0e] dark:text-[#fdfaf2] border-t-2 border-[#1f1a0e]/15 pt-3 mb-6">
-                        <li className="flex items-center gap-2">✓ Monthly Offline Neural Engine Access</li>
-                        <li className="flex items-center gap-2">✓ Continual Android 15 Compatibility</li>
-                        <li className="flex items-center gap-2">✓ Zero Telemetry Commercial SLA</li>
-                        <li className="flex items-center gap-2">✓ Standard Support</li>
-                      </ul>
-                    </div>
-                    <span className="w-full py-2.5 bg-[#eedcb4] text-[#5a4f30] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] text-center block opacity-75">
-                      Opens December 1st
-                    </span>
                   </div>
                 </div>
 
@@ -1586,7 +1593,7 @@ export default function App() {
                     Join the SNEHA Pilot.
                   </h2>
                   <p className="font-['Crimson_Pro'] italic text-base sm:text-lg text-[#1f1a0e] font-semibold mb-8">
-                    Get 100% free early access until December 1st. Everyone who registers now locks in Founder Status, giving you 70% off lifetime commercial access on launch day!
+                    Get 100% free early access until December 1st. Everyone who registers now locks in Founder Status, giving you grandfathered rates across all plans (₹143/mo, ₹499/6-mo, or ₹799/yr) and eligibility for a free lifetime pass!
                   </p>
 
                   <div className="p-6 sm:p-8 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[8px_8px_0_#1f1a0e] text-left">
@@ -1594,7 +1601,7 @@ export default function App() {
                     <div className="mb-5 p-3.5 bg-[#0e4dff] text-white border-2 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] text-xs font-bold uppercase tracking-wider flex items-center justify-between gap-3">
                       <div className="flex items-center gap-2">
                         <span className="text-base">🎁</span>
-                        <span>Register now to lock in Founder Status &amp; 70% Lifetime Early Bird Discount on Dec 1st!</span>
+                        <span>Register now to lock in Founder Rates: ₹143/mo · ₹499/6-mo · ₹799/yr on Dec 1st!</span>
                       </div>
                       <span className="hidden sm:inline-block px-2 py-0.5 bg-white text-[#0e4dff] text-[10px] font-mono font-bold shrink-0">
                         FREE PASS
@@ -2374,20 +2381,20 @@ export default function App() {
                   a: 'No. Conversations, intent history, and automation preferences stay inside the private Android sandbox (/data/data/com.sneha.app). Nothing leaves your device unless you explicitly tap submit on a form.',
                 },
                 {
-                  q: 'What Android versions are supported?',
-                  a: 'Android 8.0 (Min SDK 26) through Android 15 (Target SDK 35). See the Device Compatibility page for details.',
-                },
-                {
                   q: 'Is SNEHA free forever? Why will it charge after December 1st?',
-                  a: 'SNEHA is 100% free with unlimited access for all users throughout the pilot until December 1, 2026! After December 1st, SNEHA will transition to a modest, affordable commercial fee (with massive grandfathered lifetime discounts for early pilot testers). Why? Big Tech gives you "free" cloud AI so they can record your screen and sell your habits to ad brokers. SNEHA is customer-funded to guarantee 100% privacy and zero data surveillance.',
+                  a: 'SNEHA is 100% free with unlimited access for all users throughout the pilot until December 1, 2026! After December 1st, SNEHA will transition to 3 ultra-affordable passes: 1 Month @ ₹143, 6 Months @ ₹499 (save 42%), and 1 Year @ ₹799 (best value, save 53%!). Early pilot testers who register now get locked-in grandfathered perks, and active bug reporters can earn a free lifetime pass.',
                 },
                 {
                   q: 'What is the Founder Early Adopter Discount?',
-                  a: 'Anyone who joins and registers during the pilot period locks in Founder Status, giving you up to 70% off our commercial license for life. Active testers who submit 2 or more verified bug reports also qualify for a 100% Free Lifetime License!',
+                  a: 'Anyone who joins and registers during the pilot period locks in Founder Status, giving you grandfathered rates across all passes (₹143/mo, ₹499 for 6 months, and ₹799 for 1 year). In addition, active testers who submit 2 or more verified bug reports qualify for a 100% Free Lifetime License!',
                 },
                 {
                   q: 'Is SNEHA open source?',
                   a: 'SNEHA is built on proprietary, independently developed on-device neural runtime technology. However, our zero-telemetry claims are 100% auditable: our APK contains zero analytics SDKs, zero background network calls, and you can verify the SHA-256 cryptographic digest directly on this website.',
+                },
+                {
+                  q: 'What Android versions are supported?',
+                  a: 'Android 8.0 (Min SDK 26) through Android 15 (Target SDK 35). See the Device Compatibility page for details.',
                 },
                 {
                   q: 'How do I join the pilot program?',

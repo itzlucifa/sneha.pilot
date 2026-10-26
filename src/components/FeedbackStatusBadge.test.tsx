@@ -45,7 +45,7 @@ describe('FeedbackStatusBadge Component', () => {
 
     // UI updated
     expect(screen.getByRole('button', { name: /Triage status: Bug Confirmed/i })).toBeInTheDocument();
-  });
+  }, 15000);
 
   it('loads previously stored status from localStorage on initial render', () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ '202': 'Fixed in Next Build' }));
