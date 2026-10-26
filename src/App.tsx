@@ -56,6 +56,14 @@ import {
   subscribeToSupabaseRealtime,
   SUPABASE_URL
 } from './supabase';
+import {
+  QRCodeModal,
+  ChecksumValidator,
+  SideloadWizard,
+  DeviceInspector,
+  AdminAnalytics,
+  FeedbackStatusBadge,
+} from './components';
 
 // Reusable Copyable Badge with instant feedback
 export function CopyableBadge({
@@ -195,6 +203,9 @@ export default function App() {
   const [screenshotView, setScreenshotView] = useState<'duo' | 'screen-1' | 'screen-2'>('duo');
   const [lightboxImage, setLightboxImage] = useState<{ src: string; title: string; subtitle: string; caption: string } | null>(null);
 
+  // QR Code Modal for Mobile Phone Sideloading
+  const [isQrModalOpen, setIsQrModalOpen] = useState(false);
+
   // Admin Portal State (Section 4)
   const [adminPin, setAdminPin] = useState('');
   const [adminAuthError, setAdminAuthError] = useState('');
@@ -208,7 +219,7 @@ export default function App() {
   const [adminSignups, setAdminSignups] = useState<any[]>([]);
   const [adminFeedback, setAdminFeedback] = useState<any[]>([]);
   const [adminLoading, setAdminLoading] = useState(false);
-  const [adminActiveSubTab, setAdminActiveSubTab] = useState<'signups' | 'feedback' | 'offline'>('signups');
+  const [adminActiveSubTab, setAdminActiveSubTab] = useState<'signups' | 'feedback' | 'offline' | 'analytics'>('signups');
   const [adminSearchQuery, setAdminSearchQuery] = useState('');
   const [adminFeedbackRatingFilter, setAdminFeedbackRatingFilter] = useState<number | 'all'>('all');
   const [adminOfflineQueue, setAdminOfflineQueue] = useState<{ signups: any[]; feedback: any[] }>({ signups: [], feedback: [] });
@@ -559,6 +570,32 @@ export default function App() {
       }
     }, 60);
   };
+
+  const handleAutoFillSignup = useCallback((info: { deviceModel: string; androidVersion: string }) => {
+    setSignupForm((prev) => ({
+      ...prev,
+      deviceModel: info.deviceModel || prev.deviceModel,
+      androidVersion: info.androidVersion || prev.androidVersion,
+    }));
+    setActiveTab('pilot-site');
+    setTimeout(() => {
+      const el = document.getElementById('signup');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 80);
+  }, []);
+
+  // Reliability: Auto-resync queued offline items when device reconnects online
+  useEffect(() => {
+    const handleOnline = () => {
+      if (adminOfflineQueue.signups.length > 0 || adminOfflineQueue.feedback.length > 0) {
+        syncOfflineQueue();
+      }
+    };
+    window.addEventListener('online', handleOnline);
+    return () => window.removeEventListener('online', handleOnline);
+  }, [adminOfflineQueue]);
 
   // -------------------------------------------------------------
   // Admin Portal Logic (Section 4) - Direct Supabase Real-time
@@ -1900,7 +1937,7 @@ export default function App() {
         {/* Tab 6: Download APK */}
         {activeTab === 'download' && (
           <div className="max-w-3xl mx-auto px-4 py-12" data-reveal="download-section">
-            <div className="mb-6 flex items-center justify-between">
+            <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
               <div>
                 <span className="inline-block px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest border-2 border-[#1f1a0e] bg-[#ff4a8a] text-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] mb-2">
                   Step 7 // Pilot Build Distribution
@@ -1912,6 +1949,13 @@ export default function App() {
                   Grab the latest pilot build for SNEHA. Android 8.0+ (Min SDK 26) through Android 15 (Target SDK 35).
                 </p>
               </div>
+              <button
+                type="button"
+                onClick={() => setIsQrModalOpen(true)}
+                className="px-4 py-2 bg-[#ff4a8a] text-[#1f1a0e] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] hover:bg-[#ff7028] transition-all cursor-pointer flex items-center gap-2"
+              >
+                <span>📱</span> Scan QR on Phone
+              </button>
             </div>
 
             <div className="p-6 sm:p-8 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[8px_8px_0_#1f1a0e]">
@@ -2009,6 +2053,14 @@ export default function App() {
                     <li>Open the downloaded APK and tap Install.</li>
                   </ol>
                 </div>
+
+                {/* Cryptographic APK Checksum Validator */}
+                <div className="mt-8">
+                  <ChecksumValidator
+                    expectedHash="c7a409f9e160ef5212384918e90e768393e5066db293bb859c253456860d5e1b"
+                    fileName="sneha-pilot-1.0.1.apk"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -2032,6 +2084,11 @@ export default function App() {
             </div>
 
             <div className="p-6 sm:p-8 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[8px_8px_0_#1f1a0e]">
+              {/* Real-Time Hardware Capability Inspector */}
+              <div className="mb-6">
+                <DeviceInspector onAutoFillSignup={handleAutoFillSignup} />
+              </div>
+
               <div className="overflow-x-auto max-w-full">
                 <table className="w-full text-left border-collapse text-xs min-w-[700px]">
                 <thead>
@@ -2098,6 +2155,11 @@ export default function App() {
 
             <div className="mt-6 p-4 bg-[#eedcb4] border-2 border-dashed border-[#1f1a0e] text-xs font-['Crimson_Pro'] italic text-[#2a2515]">
               <strong>OEM Notes:</strong> System automation features (alarms, reminders, intents) require runtime user permissions and are undergoing staged testing across OEM variations (OneUI, Pixel OS, HyperOS, MIPS). Offline inference speed varies by device RAM and NPU.
+            </div>
+
+            {/* Interactive Step-by-Step Sideloading Walkthrough Guide */}
+            <div className="mt-8">
+              <SideloadWizard />
             </div>
           </div>
         )}
@@ -2376,7 +2438,17 @@ export default function App() {
 
                 {/* Sub-nav & Action Bar */}
                 <div className="p-4 bg-[#f5ecd4] border-3 border-[#1f1a0e] shadow-[6px_6px_0_#1f1a0e] flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-wrap">
+                    <button
+                      onClick={() => setAdminActiveSubTab('analytics')}
+                      className={`px-3 py-1.5 border-2 border-[#1f1a0e] text-xs font-bold uppercase transition-all cursor-pointer ${
+                        adminActiveSubTab === 'analytics'
+                          ? 'bg-[#10b981] text-white shadow-[2px_2px_0_#1f1a0e]'
+                          : 'bg-[#eedcb4] text-[#1f1a0e] hover:bg-white'
+                      }`}
+                    >
+                      Visual Analytics
+                    </button>
                     <button
                       onClick={() => setAdminActiveSubTab('signups')}
                       className={`px-3 py-1.5 border-2 border-[#1f1a0e] text-xs font-bold uppercase transition-all cursor-pointer ${
@@ -2437,6 +2509,11 @@ export default function App() {
                     )}
                   </div>
                 </div>
+
+                {/* Sub-view: Visual Analytics */}
+                {adminActiveSubTab === 'analytics' && (
+                  <AdminAnalytics signups={adminSignups} feedback={adminFeedback} />
+                )}
 
                 {/* Sub-view: Signups */}
                 {adminActiveSubTab === 'signups' && (
@@ -2562,12 +2639,25 @@ export default function App() {
                               </div>
                             </div>
 
-                            {f.tester_email && (
-                              <div className="pt-2 text-[10px] text-[#5a4f30] flex items-center gap-1 border-t border-[#1f1a0e]/10">
-                                <span>Tester:</span>
-                                <CopyableBadge text={f.tester_email} className="font-mono text-[10px]" />
+                            <div className="pt-2 text-[10px] text-[#5a4f30] flex flex-wrap items-center justify-between gap-2 border-t border-[#1f1a0e]/10">
+                              <div className="flex items-center gap-1">
+                                {f.tester_email ? (
+                                  <>
+                                    <span>Tester:</span>
+                                    <CopyableBadge text={f.tester_email} className="font-mono text-[10px]" />
+                                  </>
+                                ) : (
+                                  <span className="font-mono italic text-[10px]">Anonymous Tester</span>
+                                )}
                               </div>
-                            )}
+                              <FeedbackStatusBadge
+                                feedbackId={f.id || idx}
+                                testerEmail={f.tester_email}
+                                rating={f.rating}
+                                whatWorked={f.what_worked}
+                                whatBroke={f.what_broke}
+                              />
+                            </div>
                           </div>
                         ))
                       )}
@@ -2671,6 +2761,14 @@ export default function App() {
           </div>
         </div>
       )}
+
+      {/* 2D QR Code Sideloading Modal */}
+      <QRCodeModal
+        isOpen={isQrModalOpen}
+        onClose={() => setIsQrModalOpen(false)}
+        url="https://itzlucifa.github.io/sneha.pilot/assets/sneha-pilot-1.0.1.apk"
+        title="Scan to Download SNEHA APK"
+      />
     </div>
   );
 }

@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1.0",
+  "name": "SNEHA Pilot Distribution Feed",
+  "packageName": "com.sneha.app",
+  "latestVersion": "v1.0.2",
+  "updatedAt": "2026-10-25T18:00:00Z",
+  "releases": [
+    {
+      "version": "v1.0.2",
+      "releaseDate": "2026-10-25",
+      "channel": "pilot-stable",
+      "minSdk": 26,
+      "targetSdk": 35,
+      "apkUrl": "https://github.com/sneha-project/sneha-android/releases/download/v1.0.2/sneha-pilot-v1.0.2.apk",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "highlights": [
+        "Direct Real-Time Supabase sync for distributed test telemetry and live status reflection",
+        "Hardened Row Level Security (RLS) policies protecting tester identities and reports",
+        "Anti-brute-force rate limiting with progressive PIN lockout on admin endpoints",
+        "Robust offline localStorage & IndexedDB queue buffer with automatic reconnection sync"
+      ]
+    },
+    {
+      "version": "v1.0.1",
+      "releaseDate": "2026-10-24",
+      "channel": "pilot",
+      "minSdk": 26,
+      "targetSdk": 35,
+      "apkUrl": "https://github.com/sneha-project/sneha-android/releases/download/v1.0.1/sneha-pilot-v1.0.1.apk",
+      "sha256": "7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
+      "highlights": [
+        "Android 15 (Target SDK 35) edge-to-edge compatibility verification and regression audit",
+        "Dark mode accessibility overhaul with high-contrast neo-brutalist palette",
+        "Dedicated Changelog, Download APK, Device Compatibility, and FAQ views",
+        "Responsive navigation overhaul supporting mobile, tablet, and compact foldables"
+      ]
+    },
+    {
+      "version": "v1.0.0",
+      "releaseDate": "2026-10-20",
+      "channel": "pilot",
+      "minSdk": 26,
+      "targetSdk": 35,
+      "apkUrl": "https://github.com/sneha-project/sneha-android/releases/download/v1.0.0/sneha-pilot-v1.0.0.apk",
+      "sha256": "9b71d224bd62f3785d96d46ad3ea3d73319bfbc2890caadae2dff72519673ca7",
+      "highlights": [
+        "Initial public pilot distribution release of SNEHA (com.sneha.app)",
+        "Zero-telemetry GPLv3 core architecture with local-first encrypted state",
+        "In-App Feedback reporting system with device specification logging",
+        "Comprehensive Feature Audit Table covering core app capabilities"
+      ]
+    }
+  ]
+}
