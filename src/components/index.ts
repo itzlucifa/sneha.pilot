@@ -18,3 +18,5 @@ export type { FeedbackStatusBadgeProps, FeedbackTriageStatus } from './FeedbackS
 
 export { PitchDeck } from './PitchDeck';
 export type { PitchDeckProps } from './PitchDeck';
+
+export { ClickConfetti, triggerGeometricBlast } from './ClickConfetti';

@@ -65,7 +65,18 @@ import {
   AdminAnalytics,
   FeedbackStatusBadge,
   PitchDeck,
+  ClickConfetti,
+  triggerGeometricBlast,
 } from './components';
+import {
+  initAudioWarmup,
+  playClickSound,
+  playPopSound,
+  playThumpSound,
+  playChimeSound,
+  isSfxEnabled,
+  setSfxEnabled,
+} from './utils/sfx';
 
 // Reusable Copyable Badge with instant feedback
 export function CopyableBadge({
@@ -187,6 +198,22 @@ export default function App() {
     }
   });
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+
+  // Zero-Latency Tactile Audio SFX State
+  const [sfxActive, setSfxActive] = useState<boolean>(() => isSfxEnabled());
+
+  useEffect(() => {
+    initAudioWarmup();
+  }, []);
+
+  const handleToggleSfx = () => {
+    const next = !sfxActive;
+    setSfxActive(next);
+    setSfxEnabled(next);
+    if (next) {
+      playPopSound();
+    }
+  };
 
   // Custom APK file upload state
   const [customApkInfo, setCustomApkInfo] = useState<{ name: string; size: string; url: string } | null>(null);
@@ -893,6 +920,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#f5ecd4] text-[#1f1a0e] font-sans selection:bg-[#1f1a0e] selection:text-[#f5ecd4] relative">
+      {/* Interactive Neo-Brutalist Geometric Confetti Canvas */}
+      <ClickConfetti />
+
       {/* Subtle Ambient Bleeds without GPU blur or mix-blend to preserve 100% crisp text */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-30 dark:opacity-10" aria-hidden="true">
         <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-gradient-to-br from-[#ff4a8a]/20 to-transparent" />
@@ -956,17 +986,23 @@ export default function App() {
             className="absolute top-full left-0 right-0 bg-[#f5ecd4] dark:bg-[#1a140b] border-b-4 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-2xl z-50 animate-[fade-in_0.2s_ease-out] max-h-[82vh] overflow-y-auto overscroll-contain"
           >
             <div className="flex flex-col">
-              <button onClick={() => { setActiveTab('pitch-deck'); setMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] bg-[#eedcb4]/40 hover:bg-[#ff4a8a] hover:text-[#f5ecd4] transition-all flex items-center justify-between">
+              <button onClick={(e) => {
+                  playPopSound();
+                  triggerGeometricBlast(e.clientX, e.clientY, 12);
+                  setActiveTab('pitch-deck');
+                  setMenuOpen(false);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] bg-[#eedcb4]/40 hover:bg-[#ff4a8a] hover:text-[#f5ecd4] transition-all flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Presentation size={18} />
                   <span>Investor Pitch Deck</span>
                 </div>
                 <span className="text-[10px] font-mono uppercase bg-[#10b981] text-white px-2 py-0.5 border border-[#1f1a0e]">10 Slides · 90% Margin</span>
               </button>
-              <button onClick={() => { setActiveTab('pilot-site'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#ff4a8a] hover:text-[#f5ecd4] transition-all">
+              <button onClick={(e) => { playClickSound(); triggerGeometricBlast(e.clientX, e.clientY, 8); setActiveTab('pilot-site'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#ff4a8a] hover:text-[#f5ecd4] transition-all cursor-pointer">
                 1. Pilot Site
               </button>
-              <button onClick={() => { setActiveTab('pilot-site'); setMenuOpen(false); setTimeout(() => { document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' }); }, 150); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#ff7028] hover:text-[#1f1a0e] transition-all flex items-center justify-between">
+              <button onClick={(e) => { playPopSound(); triggerGeometricBlast(e.clientX, e.clientY, 12); setActiveTab('pilot-site'); setMenuOpen(false); setTimeout(() => { document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' }); }, 150); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#ff7028] hover:text-[#1f1a0e] transition-all flex items-center justify-between cursor-pointer">
                 <span>Founder Pricing</span>
                 <span className="text-[10px] font-mono uppercase bg-[#10b981] text-white px-2 py-0.5 border border-[#1f1a0e]">Free Till Dec 1</span>
               </button>
@@ -982,7 +1018,7 @@ export default function App() {
               <button onClick={() => { setActiveTab('changelog'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#0e4dff] hover:text-white transition-all">
                 5. Changelog
               </button>
-              <button onClick={() => { setActiveTab('download'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#ff4a8a] hover:text-[#f5ecd4] transition-all">
+              <button onClick={(e) => { playChimeSound(); triggerGeometricBlast(e.clientX, e.clientY, 14); setActiveTab('download'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#ff4a8a] hover:text-[#f5ecd4] transition-all cursor-pointer">
                 6. Download APK
               </button>
               <button onClick={() => { setActiveTab('compatibility'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#ff7028] hover:text-[#1f1a0e] transition-all">
@@ -991,10 +1027,46 @@ export default function App() {
               <button onClick={() => { setActiveTab('faq'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#eedcb4] hover:text-[#1f1a0e] transition-all">
                 8. FAQ
               </button>
-              <button onClick={() => { setActiveTab('admin'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#0e4dff] hover:text-white transition-all flex items-center justify-between">
+              <button
+                onClick={(e) => {
+                  playThumpSound();
+                  triggerGeometricBlast(e.clientX, e.clientY, 10);
+                  setActiveTab('admin');
+                  setMenuOpen(false);
+                }}
+                className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#0e4dff] hover:text-white transition-all flex items-center justify-between cursor-pointer"
+              >
                 <span>9. Admin Portal</span>
                 <span className="text-[10px] font-mono uppercase bg-[#1f1a0e] text-[#f5ecd4] px-2 py-0.5 border border-[#1f1a0e]">Maintainer</span>
               </button>
+
+              {/* Tactile Audio SFX Control (Inside Hamburger Menu) */}
+              <div className="px-5 py-3.5 border-b-3 border-[#1f1a0e] bg-[#eedcb4]/40 flex items-center justify-between">
+                <div>
+                  <span className="font-['Bowlby_One'] text-sm uppercase text-[#1f1a0e] dark:text-[#fdfaf2] block">
+                    Sound FX (Audio)
+                  </span>
+                  <span className="text-[10px] font-mono text-[#5a4f30] dark:text-[#cdbe9e]">
+                    Zero-latency mechanical clicks
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    handleToggleSfx();
+                    triggerGeometricBlast(e.clientX, e.clientY, 8);
+                  }}
+                  className={`px-3 py-1.5 border-2 border-[#1f1a0e] font-['Bowlby_One'] text-xs uppercase tracking-wider shadow-[2px_2px_0_#1f1a0e] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#1f1a0e] transition-all flex items-center gap-1.5 cursor-pointer ${
+                    sfxActive
+                      ? 'bg-[#39ff14] text-[#1f1a0e]'
+                      : 'bg-[#ff4a8a] text-white'
+                  }`}
+                  aria-label="Toggle Sound Effects"
+                >
+                  {sfxActive ? <Volume2 size={15} /> : <VolumeX size={15} />}
+                  <span>{sfxActive ? 'SFX: ON' : 'MUTED'}</span>
+                </button>
+              </div>
 
               {/* Viewport Testing inside hamburger */}
               <div className="px-5 py-4 border-b-3 border-[#1f1a0e]">
@@ -1061,6 +1133,7 @@ export default function App() {
                   <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-8">
                     <a
                       href="#signup"
+                      onClick={(e) => { playPopSound(); triggerGeometricBlast(e.clientX, e.clientY, 14); }}
                       className="px-5 py-3 bg-[#ff4a8a] text-[#1f1a0e] font-bold text-sm uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_#1f1a0e] transition-all"
                     >
                       Join Free Pilot →
