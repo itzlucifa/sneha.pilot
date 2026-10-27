@@ -45,7 +45,8 @@ import {
   Trash2,
   Search,
   Filter,
-  Presentation
+  Presentation,
+  Cloud
 } from 'lucide-react';
 import {
   supabaseInsert,
@@ -127,6 +128,61 @@ export function CopyableBadge({
         <Copy size={12} className="opacity-70 hover:opacity-100" />
       )}
     </button>
+  );
+}
+
+// Creative Neo-Brutalist Fluffy Cloud Badge with dynamic vector contours
+export function CloudBadge({
+  text,
+  variant,
+}: {
+  text: string;
+  variant: 'deck' | 'pricing';
+}) {
+  const isDeck = variant === 'deck';
+  const width = isDeck ? 172 : 130;
+  // Fluffy scalloped comic-book cloud path with 360-degree rounded lobes
+  const path = isDeck
+    ? 'M 14 12 A 20 20 0 0 0 49 12 A 20 20 0 0 0 84 12 A 20 20 0 0 0 119 12 A 20 20 0 0 0 154 12 A 8 8 0 0 1 154 24 A 33 33 0 0 1 107 24 A 33 33 0 0 1 61 24 A 33 33 0 0 1 14 24 A 8 8 0 0 1 14 12 Z'
+    : 'M 14 12 A 19 19 0 0 0 47 12 A 19 19 0 0 0 81 12 A 19 19 0 0 0 114 12 A 8 8 0 0 1 114 24 A 35 35 0 0 1 64 24 A 35 35 0 0 1 14 24 A 8 8 0 0 1 14 12 Z';
+
+  return (
+    <div
+      className="relative inline-flex items-center justify-center shrink-0 scale-90 sm:scale-100 origin-right transition-transform hover:scale-105"
+      style={{ filter: 'drop-shadow(2px 2px 0px #1f1a0e)' }}
+      aria-label={text}
+    >
+      <svg
+        viewBox={`0 0 ${width} 36`}
+        width={width}
+        height={36}
+        className="block pointer-events-none"
+        aria-hidden="true"
+      >
+        <path
+          d={path}
+          fill="#10b981"
+          stroke="#1f1a0e"
+          strokeWidth={2}
+          strokeLinejoin="round"
+        />
+        {/* Soft highlight arc on top puff for charming 3D cloud depth */}
+        <path
+          d={isDeck ? 'M 54 7 A 16 16 0 0 0 78 7' : 'M 52 7 A 15 15 0 0 0 74 7'}
+          fill="none"
+          stroke="#6ee7b7"
+          strokeWidth={1.5}
+          strokeLinecap="round"
+          opacity={0.85}
+        />
+      </svg>
+      <div className="absolute inset-0 flex items-center justify-center gap-1.5 text-white px-3 pointer-events-none">
+        <Cloud size={11} className="fill-white/30 text-white shrink-0 drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]" />
+        <span className="font-['Space_Grotesk'] font-bold text-[10.5px] uppercase tracking-wider text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] whitespace-nowrap">
+          {text}
+        </span>
+      </div>
+    </div>
   );
 }
 
@@ -1008,19 +1064,19 @@ export default function App() {
                   setActiveTab('pitch-deck');
                   setMenuOpen(false);
                   window.scrollTo({ top: 0, behavior: 'smooth' });
-                }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] bg-[#eedcb4]/40 hover:bg-[#ff4a8a] hover:text-[#f5ecd4] transition-all flex items-center justify-between">
+                }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] bg-[#eedcb4]/40 hover:bg-[#ff4a8a] hover:text-[#f5ecd4] transition-all flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <Presentation size={18} />
                   <span>Investor Pitch Deck</span>
                 </div>
-                <span className="text-[10px] font-mono uppercase bg-[#10b981] text-white px-2 py-0.5 border border-[#1f1a0e]">10 Slides · 90% Margin</span>
+                <CloudBadge text="10 Slides · 90% Margin" variant="deck" />
               </button>
               <button onClick={(e) => { playClickSound(); triggerGeometricBlast(e.clientX, e.clientY, 8); setActiveTab('pilot-site'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#ff4a8a] hover:text-[#f5ecd4] transition-all cursor-pointer">
                 1. Pilot Site
               </button>
-              <button onClick={(e) => { playPopSound(); triggerGeometricBlast(e.clientX, e.clientY, 12); setActiveTab('pilot-site'); setMenuOpen(false); setTimeout(() => { document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' }); }, 150); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#ff7028] hover:text-[#1f1a0e] transition-all flex items-center justify-between cursor-pointer">
+              <button onClick={(e) => { playPopSound(); triggerGeometricBlast(e.clientX, e.clientY, 12); setActiveTab('pilot-site'); setMenuOpen(false); setTimeout(() => { document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' }); }, 150); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#ff7028] hover:text-[#1f1a0e] transition-all flex items-center justify-between gap-2 cursor-pointer">
                 <span>Founder Pricing</span>
-                <span className="text-[10px] font-mono uppercase bg-[#10b981] text-white px-2 py-0.5 border border-[#1f1a0e]">Free Till Dec 1</span>
+                <CloudBadge text="Free Till Dec 1" variant="pricing" />
               </button>
               <button onClick={() => { setActiveTab('in-app-feedback'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#0e4dff] hover:text-white transition-all">
                 2. App-Side Feedback
