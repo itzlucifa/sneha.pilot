@@ -45,7 +45,9 @@ import {
   Trash2,
   Search,
   Filter,
-  Presentation
+  Presentation,
+  Maximize2,
+  Minimize2
 } from 'lucide-react';
 import {
   supabaseInsert,
@@ -214,6 +216,71 @@ export default function App() {
       playPopSound();
     }
   };
+
+  // Full Website Maximum Screen (Fullscreen) State & Handler
+  const [isWebsiteFullscreen, setIsWebsiteFullscreen] = useState<boolean>(() => {
+    try {
+      return typeof document !== 'undefined' && !!document.fullscreenElement;
+    } catch {
+      return false;
+    }
+  });
+
+  const toggleWebsiteFullscreen = useCallback(() => {
+    try {
+      if (!document.fullscreenElement) {
+        const root = document.documentElement;
+        if (root.requestFullscreen) {
+          root.requestFullscreen().catch(() => {});
+        } else if ((root as any).webkitRequestFullscreen) {
+          (root as any).webkitRequestFullscreen();
+        } else if ((root as any).msRequestFullscreen) {
+          (root as any).msRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen().catch(() => {});
+        } else if ((document as any).webkitExitFullscreen) {
+          (document as any).webkitExitFullscreen();
+        } else if ((document as any).msExitFullscreen) {
+          (document as any).msExitFullscreen();
+        }
+      }
+    } catch {
+      // Graceful fallback if fullscreen is restricted
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsWebsiteFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+    };
+  }, []);
+
+  // Global 'F' key shortcut to toggle Maximum Screen (when not typing in form fields)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'f' || e.key === 'F') {
+        const target = e.target as HTMLElement | null;
+        const isInput = target && (
+          target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.tagName === 'SELECT' ||
+          target.isContentEditable
+        );
+        if (isInput) return;
+        toggleWebsiteFullscreen();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [toggleWebsiteFullscreen]);
 
   // Custom APK file upload state
   const [customApkInfo, setCustomApkInfo] = useState<{ name: string; size: string; url: string } | null>(null);
@@ -1059,6 +1126,36 @@ export default function App() {
                 <span>9. Admin Portal</span>
                 <span className="text-[10px] font-mono uppercase bg-[#1f1a0e] text-[#f5ecd4] px-2 py-0.5 border border-[#1f1a0e]">Maintainer</span>
               </button>
+
+              {/* Full Website Maximum Screen (Fullscreen) Control */}
+              <div className="px-5 py-3.5 border-b-3 border-[#1f1a0e] bg-[#eedcb4]/40 flex items-center justify-between">
+                <div>
+                  <span className="font-['Bowlby_One'] text-sm uppercase text-[#1f1a0e] dark:text-[#fdfaf2] block">
+                    Maximum Screen
+                  </span>
+                  <span className="text-[10px] font-mono text-[#5a4f30] dark:text-[#cdbe9e]">
+                    Full website view (Press F to toggle)
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    playPopSound();
+                    triggerGeometricBlast(e.clientX, e.clientY, 10);
+                    toggleWebsiteFullscreen();
+                  }}
+                  className={`px-3 py-1.5 border-2 border-[#1f1a0e] font-['Bowlby_One'] text-xs uppercase tracking-wider shadow-[2px_2px_0_#1f1a0e] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#1f1a0e] transition-all flex items-center gap-1.5 cursor-pointer ${
+                    isWebsiteFullscreen
+                      ? 'bg-[#10b981] text-white'
+                      : 'bg-[#ff7028] text-[#1f1a0e]'
+                  }`}
+                  aria-label={isWebsiteFullscreen ? 'Exit Maximum Screen' : 'Enter Maximum Screen'}
+                  title={isWebsiteFullscreen ? 'Exit Maximum Screen (Press F)' : 'Enter Maximum Screen (Press F)'}
+                >
+                  {isWebsiteFullscreen ? <Minimize2 size={15} /> : <Maximize2 size={15} />}
+                  <span>{isWebsiteFullscreen ? 'FULL: ON' : 'MAXIMIZE'}</span>
+                </button>
+              </div>
 
               {/* Tactile Audio SFX Control (Inside Hamburger Menu) */}
               <div className="px-5 py-3.5 border-b-3 border-[#1f1a0e] bg-[#eedcb4]/40 flex items-center justify-between">

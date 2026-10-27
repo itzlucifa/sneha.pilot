@@ -680,3 +680,21 @@ textarea {
   background: var(--ink);
   border: 2px solid var(--paper);
 }
+
+
+/* Fullscreen Maximum Screen Presentation Mode */
+:fullscreen,
+::backdrop {
+  background-color: var(--paper);
+}
+
+html:fullscreen {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+}
+
+html.dark:fullscreen,
+html.dark::backdrop {
+  background-color: #1a140b;
+}

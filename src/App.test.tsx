@@ -217,6 +217,19 @@ describe('SNEHA Pilot Distribution App', () => {
     });
   });
 
+  describe('Maximum Screen Control in Menu', () => {
+    it('renders Maximum Screen toggle inside hamburger menu and handles click', () => {
+      render(<App />);
+      fireEvent.click(screen.getByLabelText('Toggle menu'));
+      expect(screen.getByText('Maximum Screen')).toBeInTheDocument();
+
+      const maxBtn = screen.getByLabelText('Enter Maximum Screen');
+      expect(maxBtn).toBeInTheDocument();
+      fireEvent.click(maxBtn);
+      expect(screen.getByText('Maximum Screen')).toBeInTheDocument();
+    });
+  });
+
   describe('Copy to Clipboard Badge', () => {
     it('copies text and provides visual feedback', async () => {
       const writeTextMock = vi.fn().mockResolvedValue(undefined);
