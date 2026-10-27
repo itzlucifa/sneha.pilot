@@ -56,72 +56,72 @@ const SLIDES: SlideMeta[] = [
   {
     id: 'vision',
     number: '01',
-    badge: 'VISION & CATEGORY',
+    badge: 'VISION & MISSION',
     title: 'The On-Device AI Revolution',
-    subtitle: 'The 100% Private, On-Device AI Companion for the 90% of Users Big Tech Ignored'
+    subtitle: 'A 100% private AI companion that lives inside your phone, works without internet, and costs zero rupees in cloud server fees.'
   },
   {
     id: 'problem',
     number: '02',
-    badge: 'THE PAIN POINT',
-    title: 'The Fatal Cloud AI Trap',
-    subtitle: 'Why Cloud Chatbots Burn Millions in Server Bills and Harvest User Data'
+    badge: 'THE BIG PROBLEM',
+    title: 'Why Cloud AI is Broken Today',
+    subtitle: 'ChatGPT and Gemini burn billions in server electricity, sell your private conversations, and stop working the moment you lose signal.'
   },
   {
     id: 'solution',
     number: '03',
-    badge: 'THE ARCHITECTURE',
+    badge: 'HOW SNEHA WORKS',
     title: 'SNEHA: True Edge Intelligence',
-    subtitle: 'Zero Cloud GPU Costs · Zero Data Leakage · Real Device Automation'
+    subtitle: 'We shrank the AI brain to fit directly onto your everyday Android phone. Fast, battery-friendly, and completely private.'
   },
   {
     id: 'why-now',
     number: '04',
-    badge: 'MARKET TIMING',
+    badge: 'THE MARKET TIMING',
     title: 'Why Right Now in 2026?',
-    subtitle: 'Small Language Model Quantization Meets the Flagship Exclusion Gap'
+    subtitle: 'Big Tech built AI only for ₹80,000+ luxury phones. We bring private AI to the 600 Million everyday phones they completely ignored.'
   },
   {
     id: 'product',
     number: '05',
-    badge: 'LIVE PROOF',
-    title: 'Code Reality, Not Slides',
-    subtitle: 'Audited Min SDK 26 Runtime, 6.2 MB Binary, and Direct Sideload Engine'
+    badge: 'REAL WORKING CODE',
+    title: 'Code Reality, Not Empty Slides',
+    subtitle: 'We already built the app. A 6.2 MB download, compatible with 95% of Android phones, and verified with zero tracking code.'
   },
   {
     id: 'market',
     number: '06',
-    badge: 'MARKET POTENTIAL',
-    title: 'TAM · SAM · SOM Sizing',
-    subtitle: 'A ₹160 Crore ($19M) ARR Addressable Opportunity in India Alone'
+    badge: 'MARKET SIZE',
+    title: 'How Big Can SNEHA Grow?',
+    subtitle: 'A ₹160 Crore ($19 Million) annual revenue opportunity in India alone by serving students and privacy-conscious professionals.'
   },
   {
     id: 'unit-economics',
     number: '07',
     badge: 'BUSINESS MODEL',
-    title: '90%+ Gross Margin Economics',
-    subtitle: 'Impulse Pricing (₹143/mo, ₹799/yr) Powered by ₹0 Marginal Compute Overhead'
+    title: '90%+ Pure Profit Margins',
+    subtitle: 'We charge pocket-friendly rates (₹143/month, ₹799/year). Because compute runs on the user’s phone, our server bill is ₹0.'
   },
   {
     id: 'competition',
     number: '08',
-    badge: 'DEFENSIVE MOAT',
+    badge: 'WHY WE WIN',
     title: 'Competitive Superiority Matrix',
-    subtitle: 'Why OpenAI, Gemini, and Apple Cannot Replicate SNEHA’s Cost Structure'
+    subtitle: 'Why OpenAI, Google, and Apple cannot match our prices or our privacy guarantees without destroying their own business models.'
   },
   {
     id: 'gtm',
     number: '09',
-    badge: 'GO-TO-MARKET',
-    title: 'Zero-CAC Campus-to-Scale Engine',
-    subtitle: 'Viral Pilot Distribution Bypassing the 30% Google Play Store Tax'
+    badge: 'GROWTH STRATEGY',
+    title: 'How We Get Our First 100,000 Users',
+    subtitle: 'College campus word-of-mouth, direct APK sharing with 0% Google Play cut, and partnerships with regional phone makers.'
   },
   {
     id: 'the-ask',
     number: '10',
-    badge: 'CAPITAL & MILESTONES',
-    title: 'The Seed Ask & Growth Targets',
-    subtitle: 'Accelerating to 50,000 Paid Subscribers and ₹3.5 Crore ARR'
+    badge: 'THE INVESTMENT ASK',
+    title: 'Seed Ask & 12-Month Targets',
+    subtitle: 'Raising ₹25 Lakhs to reach 50,000 paid subscribers and ₹3.5 Crore annual revenue at 90%+ gross profit margins.'
   }
 ];
 
@@ -132,7 +132,7 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Pitch Timer (e.g., 3 min or 5 min competition time limit)
+  // Pitch Timer (e.g. 3m or 5m competition limits)
   const [timerDuration, setTimerDuration] = useState<number>(300); // 5 min default
   const [timerSecondsLeft, setTimerSecondsLeft] = useState<number>(300);
   const [isTimerRunning, setIsTimerRunning] = useState<boolean>(false);
@@ -147,7 +147,7 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
   // Judge Q&A Defense Drawer
   const [expandedFaqIndex, setExpandedFaqIndex] = useState<number | null>(null);
 
-  // Touch Swipe coordinates
+  // Touch coordinates for mobile swipe
   const touchStartXRef = useRef<number>(0);
   const touchEndXRef = useRef<number>(0);
 
@@ -178,7 +178,7 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
     return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   };
 
-  // Keyboard navigation for presentation mode
+  // Keyboard Navigation
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev < SLIDES.length - 1 ? prev + 1 : prev));
   }, []);
@@ -232,7 +232,7 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [viewMode, nextSlide, prevSlide]);
 
-  // Touch swipe support for mobile
+  // Touch swipe support for mobile devices
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartXRef.current = e.targetTouches[0].clientX;
   };
@@ -244,7 +244,7 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
   const handleTouchEnd = () => {
     if (viewMode !== 'presentation') return;
     const diff = touchStartXRef.current - touchEndXRef.current;
-    if (Math.abs(diff) > 50) {
+    if (Math.abs(diff) > 40) {
       if (diff > 0) nextSlide();
       else prevSlide();
     }
@@ -266,7 +266,6 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
       annualRatio = 0.15;
     }
 
-    // Effective monthly revenue per user
     const monthlyRevFromMonthlyUsers = simUsers * monthlyRatio * 143;
     const monthlyRevFromSixMonthUsers = simUsers * sixMonthRatio * (499 / 6);
     const monthlyRevFromAnnualUsers = simUsers * annualRatio * (799 / 12);
@@ -274,15 +273,14 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
     const monthlyTotalRevenue = monthlyRevFromMonthlyUsers + monthlyRevFromSixMonthUsers + monthlyRevFromAnnualUsers;
     const annualRunRate = monthlyTotalRevenue * 12;
 
-    // SNEHA Unit Economics
-    const snehaCloudComputeCost = 0; // 100% on-device!
+    // SNEHA Unit Economics (On-Device compute = ₹0 server costs)
+    const snehaCloudComputeCost = 0;
     const snehaPaymentGatewayFee = monthlyTotalRevenue * 0.02; // 2% gateway
-    const snehaOpsDistribution = monthlyTotalRevenue * 0.05; // 5% ops/CDN
+    const snehaOpsDistribution = monthlyTotalRevenue * 0.05; // 5% download bandwidth & basic ops
     const snehaGrossProfit = monthlyTotalRevenue - (snehaCloudComputeCost + snehaPaymentGatewayFee + snehaOpsDistribution);
     const snehaGrossMarginPct = Math.round((snehaGrossProfit / monthlyTotalRevenue) * 100);
 
-    // Competitor Cloud AI (e.g. OpenAI GPT-4o-mini / Claude 3.5 API)
-    // 15 user requests/day = 450 requests/month @ approx ₹0.20 per query compute overhead = ₹90/user/month
+    // Typical Cloud AI (e.g. calling OpenAI / Claude API at ~15 prompts/day = ₹90/month per active user)
     const cloudAiComputeCostPerMonth = simUsers * 90;
     const cloudAiGrossProfit = monthlyTotalRevenue - (cloudAiComputeCostPerMonth + snehaPaymentGatewayFee + snehaOpsDistribution);
     const cloudAiGrossMarginPct = Math.round((cloudAiGrossProfit / monthlyTotalRevenue) * 100);
@@ -305,7 +303,7 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
     <div
       ref={containerRef}
       className={`w-full min-h-screen bg-[#f5ecd4] dark:bg-[#120e07] text-[#1f1a0e] dark:text-[#fdfaf2] transition-colors select-none ${
-        isFullscreen ? 'p-4 sm:p-8 flex flex-col justify-between' : 'pb-16'
+        isFullscreen ? 'p-2 sm:p-6 flex flex-col justify-between' : 'pb-16'
       }`}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
@@ -313,126 +311,139 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
     >
       {/* -------------------------------------------------------------
           TOP BAR: Presentation Controls, Mode Switcher, & Pitch Timer
+          Hardened for clean display on 320px–375px mobile screens
           ------------------------------------------------------------- */}
-      <section aria-label="Deck controls" className="sticky top-0 z-40 bg-[#f5ecd4]/95 dark:bg-[#120e07]/95 backdrop-blur-sm border-b-3 border-[#1f1a0e] dark:border-[#eedcb4]/30 px-3 sm:px-6 py-2.5 shadow-sm">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-          {/* Left: Deck Branding & Slide Status */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            <span className="px-2.5 py-1 bg-[#ff4a8a] text-[#1f1a0e] font-['Bowlby_One'] text-xs uppercase border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e]">
-              PITCH DECK
-            </span>
-            <span className="hidden sm:inline-block font-mono text-xs font-bold text-[#5a4f30] dark:text-[#cdbe9e]">
-              Venture Pitch &amp; Investment Dossier · 2026
-            </span>
-            {viewMode === 'presentation' && (
-              <span className="font-mono text-xs font-bold bg-[#1f1a0e] text-[#f5ecd4] dark:bg-[#fdfaf2] dark:text-[#1f1a0e] px-2 py-0.5 border border-[#1f1a0e]">
-                SLIDE {activeSlideMeta.number} / 10
+      <section aria-label="Deck controls" className="sticky top-0 z-40 bg-[#f5ecd4]/95 dark:bg-[#120e07]/95 backdrop-blur-sm border-b-3 border-[#1f1a0e] dark:border-[#eedcb4]/30 px-2.5 sm:px-6 py-2 shadow-sm">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          {/* Row 1 on mobile: Logo + Slide counter + Pitch Timer */}
+          <div className="flex items-center justify-between gap-2 w-full sm:w-auto">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <span className="px-2 py-0.5 bg-[#ff4a8a] text-[#1f1a0e] font-['Bowlby_One'] text-[11px] sm:text-xs uppercase border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e]">
+                PITCH DECK
               </span>
-            )}
+              {viewMode === 'presentation' && (
+                <span className="font-mono text-[10px] sm:text-xs font-bold bg-[#1f1a0e] text-[#f5ecd4] dark:bg-[#fdfaf2] dark:text-[#1f1a0e] px-1.5 py-0.5 border border-[#1f1a0e]">
+                  SLIDE {activeSlideMeta.number} / 10
+                </span>
+              )}
+            </div>
+
+            {/* Pitch Countdown Timer */}
+            <div className="flex items-center gap-1 sm:gap-1.5 bg-[#eedcb4] dark:bg-[#271f13] px-2 py-0.5 border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e]">
+              <Clock size={12} className="text-[#1f1a0e] dark:text-[#fdfaf2] shrink-0" />
+              <span
+                className={`font-mono text-xs sm:text-sm font-black tracking-wider ${
+                  timerSecondsLeft <= 30
+                    ? 'text-[#ff4a8a] animate-pulse'
+                    : timerSecondsLeft <= 60
+                    ? 'text-[#ff7028]'
+                    : 'text-[#10b981]'
+                }`}
+              >
+                {formatTimer(timerSecondsLeft)}
+              </span>
+              <button
+                type="button"
+                onClick={() => setIsTimerRunning(!isTimerRunning)}
+                title={isTimerRunning ? 'Pause Pitch Timer' : 'Start Pitch Timer'}
+                className="p-1 hover:bg-[#1f1a0e]/10 dark:hover:bg-white/10 transition-colors cursor-pointer"
+              >
+                {isTimerRunning ? <Pause size={11} /> : <Play size={11} />}
+              </button>
+              <button
+                type="button"
+                onClick={() => handleResetTimer(timerDuration)}
+                title="Reset Timer"
+                className="p-1 hover:bg-[#1f1a0e]/10 dark:hover:bg-white/10 transition-colors cursor-pointer"
+              >
+                <RotateCcw size={11} />
+              </button>
+              <div className="hidden md:flex items-center gap-1 pl-1 border-l border-[#1f1a0e]/20 text-[10px] font-mono">
+                <button
+                  type="button"
+                  onClick={() => handleResetTimer(180)}
+                  className={`px-1 py-0.2 border border-[#1f1a0e] ${
+                    timerDuration === 180 ? 'bg-[#ff7028] text-[#1f1a0e] font-bold' : 'bg-transparent'
+                  }`}
+                >
+                  3m
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleResetTimer(300)}
+                  className={`px-1 py-0.2 border border-[#1f1a0e] ${
+                    timerDuration === 300 ? 'bg-[#ff7028] text-[#1f1a0e] font-bold' : 'bg-transparent'
+                  }`}
+                >
+                  5m
+                </button>
+              </div>
+            </div>
           </div>
 
-          {/* Center: Stage Pitch Countdown Timer */}
-          <div className="flex items-center gap-1.5 sm:gap-2 bg-[#eedcb4] dark:bg-[#271f13] px-2.5 py-1 border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e]">
-            <Clock size={13} className="text-[#1f1a0e] dark:text-[#fdfaf2]" />
-            <span
-              className={`font-mono text-xs sm:text-sm font-black tracking-wider ${
-                timerSecondsLeft <= 30
-                  ? 'text-[#ff4a8a] animate-pulse'
-                  : timerSecondsLeft <= 60
-                  ? 'text-[#ff7028]'
-                  : 'text-[#10b981]'
-              }`}
-            >
-              {formatTimer(timerSecondsLeft)}
+          {/* Row 2 on mobile / Right on desktop: View Switcher & Fullscreen */}
+          <div className="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto pt-1 sm:pt-0 border-t border-[#1f1a0e]/10 sm:border-t-0">
+            <span className="sm:hidden font-mono text-[10px] text-[#5a4f30] dark:text-[#cdbe9e] truncate max-w-[160px]">
+              {activeSlideMeta.badge}
             </span>
-            <button
-              onClick={() => setIsTimerRunning(!isTimerRunning)}
-              title={isTimerRunning ? 'Pause Pitch Timer' : 'Start Pitch Timer'}
-              className="p-1 hover:bg-[#1f1a0e]/10 dark:hover:bg-white/10 transition-colors cursor-pointer"
-            >
-              {isTimerRunning ? <Pause size={12} /> : <Play size={12} />}
-            </button>
-            <button
-              onClick={() => handleResetTimer(timerDuration)}
-              title="Reset Timer"
-              className="p-1 hover:bg-[#1f1a0e]/10 dark:hover:bg-white/10 transition-colors cursor-pointer"
-            >
-              <RotateCcw size={12} />
-            </button>
-            <div className="hidden md:flex items-center gap-1 pl-1 border-l border-[#1f1a0e]/20 text-[10px] font-mono">
+            <div className="flex items-center gap-1.5 ml-auto">
+              <div className="flex border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] overflow-hidden text-[11px] font-bold uppercase">
+                <button
+                  type="button"
+                  onClick={() => setViewMode('presentation')}
+                  className={`px-2 py-0.5 sm:px-2.5 sm:py-1 flex items-center gap-1 transition-colors ${
+                    viewMode === 'presentation'
+                      ? 'bg-[#0e4dff] text-white'
+                      : 'bg-[#eedcb4] dark:bg-[#271f13] text-[#1f1a0e] dark:text-[#fdfaf2] hover:bg-white'
+                  }`}
+                >
+                  <Presentation size={12} />
+                  <span>Slides</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode('memo')}
+                  className={`px-2 py-0.5 sm:px-2.5 sm:py-1 flex items-center gap-1 transition-colors border-l-2 border-[#1f1a0e] ${
+                    viewMode === 'memo'
+                      ? 'bg-[#0e4dff] text-white'
+                      : 'bg-[#eedcb4] dark:bg-[#271f13] text-[#1f1a0e] dark:text-[#fdfaf2] hover:bg-white'
+                  }`}
+                >
+                  <FileText size={12} />
+                  <span>Memo</span>
+                </button>
+              </div>
+
               <button
-                onClick={() => handleResetTimer(180)}
-                className={`px-1 py-0.5 border border-[#1f1a0e] ${
-                  timerDuration === 180 ? 'bg-[#ff7028] text-[#1f1a0e] font-bold' : 'bg-transparent'
-                }`}
+                type="button"
+                onClick={toggleFullscreen}
+                title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen Presentation Mode (Press F)'}
+                className="p-1 sm:p-1.5 bg-[#eedcb4] dark:bg-[#271f13] border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] hover:bg-[#ff7028] transition-colors cursor-pointer"
               >
-                3m
-              </button>
-              <button
-                onClick={() => handleResetTimer(300)}
-                className={`px-1 py-0.5 border border-[#1f1a0e] ${
-                  timerDuration === 300 ? 'bg-[#ff7028] text-[#1f1a0e] font-bold' : 'bg-transparent'
-                }`}
-              >
-                5m
+                {isFullscreen ? <Minimize2 size={13} /> : <Maximize2 size={13} />}
               </button>
             </div>
-          </div>
-
-          {/* Right: View Mode & Fullscreen Controls */}
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            <div className="flex border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] overflow-hidden text-xs font-bold uppercase">
-              <button
-                onClick={() => setViewMode('presentation')}
-                className={`px-2.5 py-1 flex items-center gap-1 transition-colors ${
-                  viewMode === 'presentation'
-                    ? 'bg-[#0e4dff] text-white'
-                    : 'bg-[#eedcb4] dark:bg-[#271f13] text-[#1f1a0e] dark:text-[#fdfaf2] hover:bg-white'
-                }`}
-              >
-                <Presentation size={13} />
-                <span className="hidden sm:inline">Slides</span>
-              </button>
-              <button
-                onClick={() => setViewMode('memo')}
-                className={`px-2.5 py-1 flex items-center gap-1 transition-colors border-l-2 border-[#1f1a0e] ${
-                  viewMode === 'memo'
-                    ? 'bg-[#0e4dff] text-white'
-                    : 'bg-[#eedcb4] dark:bg-[#271f13] text-[#1f1a0e] dark:text-[#fdfaf2] hover:bg-white'
-                }`}
-              >
-                <FileText size={13} />
-                <span className="hidden sm:inline">Memo</span>
-              </button>
-            </div>
-
-            <button
-              onClick={toggleFullscreen}
-              title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen Presentation Mode (Press F)'}
-              className="p-1.5 bg-[#eedcb4] dark:bg-[#271f13] border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] hover:bg-[#ff7028] transition-colors cursor-pointer"
-            >
-              {isFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
-            </button>
           </div>
         </div>
 
-        {/* Slide Quick-Jump Pills (visible in Presentation mode) */}
+        {/* Slide Quick-Jump Bar (Horizontal scrollable with smooth touch) */}
         {viewMode === 'presentation' && (
-          <div className="max-w-7xl mx-auto pt-2 overflow-x-auto no-scrollbar flex items-center gap-1">
+          <div className="max-w-7xl mx-auto pt-1.5 overflow-x-auto no-scrollbar flex items-center gap-1 touch-pan-x">
             {SLIDES.map((s, idx) => {
               const isCurrent = currentSlide === idx;
               return (
                 <button
+                  type="button"
                   key={s.id}
                   onClick={() => setCurrentSlide(idx)}
-                  className={`px-2 py-1 font-mono text-[10px] font-bold uppercase whitespace-nowrap border-2 border-[#1f1a0e] transition-all cursor-pointer shrink-0 ${
+                  className={`px-2 py-0.5 font-mono text-[9px] sm:text-[10px] font-bold uppercase whitespace-nowrap border-2 border-[#1f1a0e] transition-all cursor-pointer shrink-0 ${
                     isCurrent
                       ? 'bg-[#ff4a8a] text-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] -translate-y-0.5'
                       : 'bg-[#eedcb4]/60 dark:bg-[#271f13]/60 text-[#5a4f30] dark:text-[#cdbe9e] hover:bg-white dark:hover:bg-[#342a1a]'
                   }`}
                 >
-                  <span className="mr-1">{s.number}</span>
-                  <span className="hidden md:inline">{s.badge}</span>
+                  <span className="mr-0.5">{s.number}</span>
+                  <span className="hidden sm:inline">{s.badge}</span>
                 </button>
               );
             })}
@@ -444,185 +455,186 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
           VIEW MODE A: THEATER / KEYNOTE PRESENTATION SLIDES
           ------------------------------------------------------------- */}
       {viewMode === 'presentation' && (
-        <div className="max-w-6xl mx-auto px-4 sm:px-8 py-6 sm:py-8 flex-1 flex flex-col justify-between">
-          {/* Active Slide Canvas */}
-          <div className="bg-[#f5ecd4] dark:bg-[#1a140b] border-4 border-[#1f1a0e] dark:border-[#eedcb4]/40 shadow-[10px_10px_0_#1f1a0e] dark:shadow-[10px_10px_0_#000] p-6 sm:p-10 min-h-[580px] flex flex-col justify-between relative transition-all">
-            {/* Slide Header Pill & Number Watermark */}
+        <div className="max-w-6xl mx-auto px-2.5 sm:px-6 md:px-8 py-4 sm:py-6 flex-1 flex flex-col justify-between">
+          {/* Active Slide Canvas Container */}
+          <div className="bg-[#f5ecd4] dark:bg-[#1a140b] border-3 sm:border-4 border-[#1f1a0e] dark:border-[#eedcb4]/40 shadow-[6px_6px_0_#1f1a0e] sm:shadow-[10px_10px_0_#1f1a0e] dark:shadow-[6px_6px_0_#000] p-4 sm:p-7 md:p-8 min-h-0 sm:min-h-[540px] flex flex-col justify-between relative transition-all">
+            {/* Slide Header: Badge, Title & Plain English Subtitle */}
             <div>
-              <div className="flex items-center justify-between border-b-3 border-[#1f1a0e] dark:border-[#eedcb4]/20 pb-4 mb-6">
-                <div>
-                  <span className="inline-block px-3 py-1 bg-[#ff7028] text-[#1f1a0e] font-['Bowlby_One'] text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] mb-2">
+              <div className="flex items-start justify-between border-b-2 sm:border-b-3 border-[#1f1a0e] dark:border-[#eedcb4]/20 pb-3 mb-3 sm:mb-5">
+                <div className="min-w-0 flex-1 pr-2">
+                  <span className="inline-block px-2.5 py-0.5 bg-[#ff7028] text-[#1f1a0e] font-['Bowlby_One'] text-[10px] sm:text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] mb-1.5">
                     {activeSlideMeta.number} // {activeSlideMeta.badge}
                   </span>
-                  <h1 className="font-['Bowlby_One'] text-2xl sm:text-4xl uppercase tracking-tight text-[#1f1a0e] dark:text-[#fdfaf2] leading-tight">
+                  <h1 className="font-['Bowlby_One'] text-xl sm:text-3xl md:text-4xl uppercase tracking-tight text-[#1f1a0e] dark:text-[#fdfaf2] leading-tight break-words">
                     {activeSlideMeta.title}
                   </h1>
                 </div>
-                <div className="text-right hidden sm:block">
-                  <span className="font-['Bowlby_One'] text-4xl sm:text-5xl text-[#1f1a0e]/15 dark:text-[#fdfaf2]/10 select-none">
+                <div className="text-right hidden sm:block shrink-0">
+                  <span className="font-['Bowlby_One'] text-3xl sm:text-5xl text-[#1f1a0e]/15 dark:text-[#fdfaf2]/10 select-none">
                     #{activeSlideMeta.number}
                   </span>
                 </div>
               </div>
-              <p className="font-['Crimson_Pro'] italic text-base sm:text-lg text-[#2a2515] dark:text-[#cdbe9e] mb-6">
+              <p className="font-['Crimson_Pro'] italic text-sm sm:text-base md:text-lg text-[#2a2515] dark:text-[#cdbe9e] mb-4 sm:mb-6 leading-relaxed">
                 {activeSlideMeta.subtitle}
               </p>
             </div>
 
-            {/* Slide Content Dynamic Renderer */}
-            <div className="flex-1 my-2">
-              {/* SLIDE 01: VISION & CATEGORY HOOK */}
+            {/* Dynamic Slide Content (Detailed & 100% Plain English) */}
+            <div className="flex-1 my-1">
+              {/* SLIDE 01: THE VISION & SIMPLE CORE PROMISE */}
               {currentSlide === 0 && (
-                <div className="space-y-6">
-                  <div className="p-5 sm:p-7 bg-[#eedcb4]/70 dark:bg-[#271f13] border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e]">
-                    <span className="text-xs font-mono font-bold text-[#0e4dff] uppercase tracking-wider block mb-2">
-                      The Category-Defining Thesis
+                <div className="space-y-4 sm:space-y-5">
+                  <div className="p-3.5 sm:p-5 bg-[#eedcb4]/70 dark:bg-[#271f13] border-2 sm:border-3 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e]">
+                    <span className="text-[10px] sm:text-xs font-mono font-bold text-[#0e4dff] uppercase tracking-wider block mb-1">
+                      Our Core Belief in Plain Words
                     </span>
-                    <blockquote className="font-['Bowlby_One'] text-xl sm:text-3xl uppercase leading-snug text-[#1f1a0e] dark:text-[#fdfaf2]">
-                      “SNEHA is the first on-device AI companion built for everyday Androids: zero GPU server cost, zero data harvesting, and 100% operational offline.”
+                    <blockquote className="font-['Bowlby_One'] text-lg sm:text-2xl md:text-3xl uppercase leading-snug text-[#1f1a0e] dark:text-[#fdfaf2] break-words">
+                      “AI should be like a calculator: it should live inside your phone, work without internet, and never send your private life to corporate cloud servers.”
                     </blockquote>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="p-4 bg-white dark:bg-[#1f180d] border-2 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e]">
-                      <div className="w-8 h-8 bg-[#ff4a8a] text-[#1f1a0e] flex items-center justify-center border border-[#1f1a0e] font-black mb-2">
-                        <DollarSign size={16} />
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                    <div className="p-3 sm:p-4 bg-white dark:bg-[#1f180d] border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e]">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 bg-[#ff4a8a] text-[#1f1a0e] flex items-center justify-center border border-[#1f1a0e] font-black mb-1.5">
+                        <DollarSign size={15} />
                       </div>
-                      <h2 className="font-['Bowlby_One'] text-base uppercase text-[#1f1a0e] dark:text-[#fdfaf2]">
-                        ₹0 Marginal Cost
+                      <h2 className="font-['Bowlby_One'] text-sm sm:text-base uppercase text-[#1f1a0e] dark:text-[#fdfaf2]">
+                        ₹0 Server Bills
                       </h2>
-                      <p className="font-['Crimson_Pro'] italic text-xs text-[#5a4f30] dark:text-[#cdbe9e] mt-1">
-                        Inference executes on the user's phone, not your AWS GPU bill. 90%+ gross margins from day one.
+                      <p className="font-['Crimson_Pro'] italic text-xs text-[#5a4f30] dark:text-[#cdbe9e] mt-0.5 leading-relaxed">
+                        Every question is calculated by your phone's processor. We do not pay big server companies, which means we keep over ₹90 of every ₹100 we earn as pure profit.
                       </p>
                     </div>
 
-                    <div className="p-4 bg-white dark:bg-[#1f180d] border-2 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e]">
-                      <div className="w-8 h-8 bg-[#0e4dff] text-white flex items-center justify-center border border-[#1f1a0e] font-black mb-2">
-                        <Shield size={16} />
+                    <div className="p-3 sm:p-4 bg-white dark:bg-[#1f180d] border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e]">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 bg-[#0e4dff] text-white flex items-center justify-center border border-[#1f1a0e] font-black mb-1.5">
+                        <Shield size={15} />
                       </div>
-                      <h2 className="font-['Bowlby_One'] text-base uppercase text-[#1f1a0e] dark:text-[#fdfaf2]">
-                        100% Privacy
+                      <h2 className="font-['Bowlby_One'] text-sm sm:text-base uppercase text-[#1f1a0e] dark:text-[#fdfaf2]">
+                        100% Private
                       </h2>
-                      <p className="font-['Crimson_Pro'] italic text-xs text-[#5a4f30] dark:text-[#cdbe9e] mt-1">
-                        Zero telemetry, zero cloud logging. Fully compliant with India DPDP Act and global GDPR.
+                      <p className="font-['Crimson_Pro'] italic text-xs text-[#5a4f30] dark:text-[#cdbe9e] mt-0.5 leading-relaxed">
+                        Your private conversations, homework notes, and bank receipts never leave your phone. Nobody can read them, hack them, or use them to sell you targeted ads.
                       </p>
                     </div>
 
-                    <div className="p-4 bg-white dark:bg-[#1f180d] border-2 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e]">
-                      <div className="w-8 h-8 bg-[#10b981] text-white flex items-center justify-center border border-[#1f1a0e] font-black mb-2">
-                        <Zap size={16} />
+                    <div className="p-3 sm:p-4 bg-white dark:bg-[#1f180d] border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e]">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 bg-[#10b981] text-white flex items-center justify-center border border-[#1f1a0e] font-black mb-1.5">
+                        <Zap size={15} />
                       </div>
-                      <h2 className="font-['Bowlby_One'] text-base uppercase text-[#1f1a0e] dark:text-[#fdfaf2]">
-                        Works Offline
+                      <h2 className="font-['Bowlby_One'] text-sm sm:text-base uppercase text-[#1f1a0e] dark:text-[#fdfaf2]">
+                        Always Works
                       </h2>
-                      <p className="font-['Crimson_Pro'] italic text-xs text-[#5a4f30] dark:text-[#cdbe9e] mt-1">
-                        Zero internet dependency. Seamless interaction in trains, flights, basements, or remote villages.
+                      <p className="font-['Crimson_Pro'] italic text-xs text-[#5a4f30] dark:text-[#cdbe9e] mt-0.5 leading-relaxed">
+                        On a flight, inside a Delhi or Mumbai metro tunnel, or in a village with no 5G signal — SNEHA answers your questions instantly with zero lag.
                       </p>
                     </div>
                   </div>
                 </div>
               )}
 
-              {/* SLIDE 02: THE FATAL CLOUD AI TRAP */}
+              {/* SLIDE 02: WHY CLOUD AI IS BROKEN */}
               {currentSlide === 1 && (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="p-4 bg-[#ff4a8a]/15 dark:bg-[#ff4a8a]/10 border-3 border-[#ff4a8a] shadow-[3px_3px_0_#ff4a8a]">
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+                    <div className="p-3.5 sm:p-4 bg-[#ff4a8a]/15 dark:bg-[#ff4a8a]/10 border-2 sm:border-3 border-[#ff4a8a] shadow-[2px_2px_0_#ff4a8a]">
                       <span className="text-[10px] font-mono font-bold text-[#ff4a8a] uppercase tracking-wider block mb-1">
-                        Trap 01 // Financial
+                        Flaw 01 // The Cost Trap
                       </span>
-                      <h2 className="font-['Bowlby_One'] text-base uppercase mb-1">GPU Bankruptcy</h2>
+                      <h2 className="font-['Bowlby_One'] text-sm sm:text-base uppercase mb-1">Burning Cash on Servers</h2>
                       <p className="font-['Crimson_Pro'] italic text-xs leading-relaxed text-[#2a2515] dark:text-[#cdbe9e]">
-                        Cloud LLMs charge $0.01 to $0.05 per prompt. Consumer AI startups going viral immediately face ₹20–50 Lakh monthly cloud bills that extinguish their seed runway.
+                        Every time someone asks ChatGPT or Claude a question, it costs the company real money for supercomputers and electricity. When an app gets millions of users, their server bills blow up to ₹50 Lakhs a month. That is why they must charge expensive ₹1,999/month subscriptions.
                       </p>
                     </div>
 
-                    <div className="p-4 bg-[#ff7028]/15 dark:bg-[#ff7028]/10 border-3 border-[#ff7028] shadow-[3px_3px_0_#ff7028]">
+                    <div className="p-3.5 sm:p-4 bg-[#ff7028]/15 dark:bg-[#ff7028]/10 border-2 sm:border-3 border-[#ff7028] shadow-[2px_2px_0_#ff7028]">
                       <span className="text-[10px] font-mono font-bold text-[#ff7028] uppercase tracking-wider block mb-1">
-                        Trap 02 // Surveillance
+                        Flaw 02 // Snooping on You
                       </span>
-                      <h2 className="font-['Bowlby_One'] text-base uppercase mb-1">The Ad Harvester</h2>
+                      <h2 className="font-['Bowlby_One'] text-sm sm:text-base uppercase mb-1">You Are the Product</h2>
                       <p className="font-['Crimson_Pro'] italic text-xs leading-relaxed text-[#2a2515] dark:text-[#cdbe9e]">
-                        Big Tech offers "free" cloud AI in exchange for harvesting private conversation transcripts, photos, and live screen contexts to build hyper-targeted ad dossiers.
+                        Big Tech gives you "free" cloud AI so they can ingest your screen, personal photos, and sensitive voice notes. They feed your words into massive databases so advertisers can target you with ads. With cloud AI, true privacy does not exist.
                       </p>
                     </div>
 
-                    <div className="p-4 bg-[#0e4dff]/15 dark:bg-[#0e4dff]/10 border-3 border-[#0e4dff] shadow-[3px_3px_0_#0e4dff]">
+                    <div className="p-3.5 sm:p-4 bg-[#0e4dff]/15 dark:bg-[#0e4dff]/10 border-2 sm:border-3 border-[#0e4dff] shadow-[2px_2px_0_#0e4dff]">
                       <span className="text-[10px] font-mono font-bold text-[#0e4dff] uppercase tracking-wider block mb-1">
-                        Trap 03 // Reliability
+                        Flaw 03 // The Signal Blocker
                       </span>
-                      <h2 className="font-['Bowlby_One'] text-base uppercase mb-1">Cloud Fragility</h2>
+                      <h2 className="font-['Bowlby_One'] text-sm sm:text-base uppercase mb-1">Useless Without Wi-Fi</h2>
                       <p className="font-['Crimson_Pro'] italic text-xs leading-relaxed text-[#2a2515] dark:text-[#cdbe9e]">
-                        The moment an Indian user enters a metro tunnel, flight, basement office, or rural zone without reliable 5G, cloud AI immediately renders unusable and dies.
+                        What happens when you are on a train between cities or in a basement office with no mobile network? Cloud AI gives you a spinning wheel of death and crashes. A true assistant should work whenever you need it, anywhere on Earth.
                       </p>
                     </div>
                   </div>
 
-                  <div className="p-3.5 bg-[#eedcb4] dark:bg-[#271f13] border-2 border-[#1f1a0e] text-xs font-mono flex items-center justify-between">
+                  <div className="p-2.5 sm:p-3 bg-[#eedcb4] dark:bg-[#271f13] border-2 border-[#1f1a0e] text-xs font-mono flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                     <span className="font-bold uppercase text-[#1f1a0e] dark:text-[#fdfaf2]">
-                      Key Takeaway for Investors:
+                      What this means for our business:
                     </span>
                     <span className="text-[#0e4dff] dark:text-[#38bdf8] font-bold">
-                      SNEHA decouples user growth from server inference costs.
+                      Our costs stay at ₹0 while cloud competitors bleed cash every day.
                     </span>
                   </div>
                 </div>
               )}
 
-              {/* SLIDE 03: THE ARCHITECTURE */}
+              {/* SLIDE 03: HOW SNEHA WORKS IN SIMPLE WORDS */}
               {currentSlide === 2 && (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="p-4 bg-white dark:bg-[#1f180d] border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e]">
-                      <h2 className="font-['Bowlby_One'] text-base uppercase text-[#0e4dff] mb-2 flex items-center gap-1.5">
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                    <div className="p-3.5 sm:p-4 bg-white dark:bg-[#1f180d] border-2 sm:border-3 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e]">
+                      <h2 className="font-['Bowlby_One'] text-sm sm:text-base uppercase text-[#0e4dff] mb-2 flex items-center gap-1.5">
                         <Cpu size={16} />
-                        Edge Neural Pipeline
+                        How the Smart Brain Works
                       </h2>
-                      <ul className="text-xs space-y-1.5 font-sans">
+                      <ul className="text-xs space-y-2 font-sans text-[#2a2515] dark:text-[#e8deca]">
                         <li className="flex items-start gap-1.5">
-                          <CheckCircle2 size={13} className="text-[#10b981] shrink-0 mt-0.5" />
-                          <span><strong>Quantized Model Execution:</strong> 2-bit &amp; 4-bit weights optimized for ARM64-v8a.</span>
+                          <CheckCircle2 size={14} className="text-[#10b981] shrink-0 mt-0.5" />
+                          <span><strong>Shrunk Down by 80%:</strong> We use new mathematical compression (called quantization) so a full AI brain fits into standard phone memory without slowing down the phone.</span>
                         </li>
                         <li className="flex items-start gap-1.5">
-                          <CheckCircle2 size={13} className="text-[#10b981] shrink-0 mt-0.5" />
-                          <span><strong>Direct Intent Parser:</strong> Sub-100ms local execution for calls, alarms, and settings.</span>
+                          <CheckCircle2 size={14} className="text-[#10b981] shrink-0 mt-0.5" />
+                          <span><strong>Instant 0.1-Second Speed:</strong> Because questions don't travel to America and back across the internet, SNEHA responds almost instantly.</span>
                         </li>
                         <li className="flex items-start gap-1.5">
-                          <CheckCircle2 size={13} className="text-[#10b981] shrink-0 mt-0.5" />
-                          <span><strong>Zero Network Roundtrips:</strong> Prompts never leave RAM buffer.</span>
+                          <CheckCircle2 size={14} className="text-[#10b981] shrink-0 mt-0.5" />
+                          <span><strong>Zero Battery Drain:</strong> The AI wakes up, finishes the answer in 0.1 seconds, and immediately goes back to sleep so your battery stays cool.</span>
                         </li>
                       </ul>
                     </div>
 
-                    <div className="p-4 bg-white dark:bg-[#1f180d] border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e]">
-                      <h2 className="font-['Bowlby_One'] text-base uppercase text-[#ff4a8a] mb-2 flex items-center gap-1.5">
+                    <div className="p-3.5 sm:p-4 bg-white dark:bg-[#1f180d] border-2 sm:border-3 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e]">
+                      <h2 className="font-['Bowlby_One'] text-sm sm:text-base uppercase text-[#ff4a8a] mb-2 flex items-center gap-1.5">
                         <Smartphone size={16} />
-                        Universal Android Range
+                        Runs on Phones You Already Own
                       </h2>
-                      <ul className="text-xs space-y-1.5 font-sans">
+                      <ul className="text-xs space-y-2 font-sans text-[#2a2515] dark:text-[#e8deca]">
                         <li className="flex items-start gap-1.5">
-                          <CheckCircle2 size={13} className="text-[#10b981] shrink-0 mt-0.5" />
-                          <span><strong>Min SDK 26 (Android 8.0 Oreo):</strong> Compatible with 95%+ of active devices.</span>
+                          <CheckCircle2 size={14} className="text-[#10b981] shrink-0 mt-0.5" />
+                          <span><strong>Works on Android 8.0 up to Android 15:</strong> Compatible with almost every phone sold in the last 8 years (over 95% of all phones in India).</span>
                         </li>
                         <li className="flex items-start gap-1.5">
-                          <CheckCircle2 size={13} className="text-[#10b981] shrink-0 mt-0.5" />
-                          <span><strong>Target SDK 35 (Android 15):</strong> Future-proofed for latest NPU neural extensions.</span>
+                          <CheckCircle2 size={14} className="text-[#10b981] shrink-0 mt-0.5" />
+                          <span><strong>Tiny 6.2 MB Download:</strong> Takes up less space than 2 photos on your phone. Easy to download over mobile data.</span>
                         </li>
                         <li className="flex items-start gap-1.5">
-                          <CheckCircle2 size={13} className="text-[#10b981] shrink-0 mt-0.5" />
-                          <span><strong>6.2 MB Starter Binary:</strong> Ultra-lean install footprint vs multi-gigabyte bloat.</span>
+                          <CheckCircle2 size={14} className="text-[#10b981] shrink-0 mt-0.5" />
+                          <span><strong>Controls Your Phone:</strong> Actually sets alarms, looks up contacts, and opens apps directly through native Android intents.</span>
                         </li>
                       </ul>
                     </div>
                   </div>
 
-                  <div className="p-3 bg-[#eedcb4]/60 dark:bg-[#271f13] border-2 border-dashed border-[#1f1a0e] flex items-center justify-between text-xs">
+                  <div className="p-3 bg-[#eedcb4]/60 dark:bg-[#271f13] border-2 border-dashed border-[#1f1a0e] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs">
                     <span className="font-['Crimson_Pro'] italic text-[#5a4f30] dark:text-[#cdbe9e]">
-                      Want to inspect the device compatibility breakdown live?
+                      See our verified phone compatibility matrix live:
                     </span>
                     <button
+                      type="button"
                       onClick={() => onNavigateTab('compatibility')}
-                      className="px-2.5 py-1 bg-[#ff7028] text-[#1f1a0e] font-bold text-[10px] uppercase border border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] hover:bg-[#ff4a8a] transition-all cursor-pointer flex items-center gap-1"
+                      className="px-2.5 py-1 bg-[#ff7028] text-[#1f1a0e] font-bold text-[10px] uppercase border border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] hover:bg-[#ff4a8a] transition-all cursor-pointer flex items-center gap-1 self-start sm:self-auto"
                     >
                       <span>Open Compatibility Matrix</span>
                       <ExternalLink size={11} />
@@ -633,124 +645,121 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
 
               {/* SLIDE 04: WHY RIGHT NOW IN 2026? */}
               {currentSlide === 3 && (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="p-4 bg-white dark:bg-[#1f180d] border-3 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e]">
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+                    <div className="p-3.5 sm:p-4 bg-white dark:bg-[#1f180d] border-2 sm:border-3 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e]">
                       <span className="text-[10px] font-mono font-bold text-[#ff7028] uppercase tracking-wider block mb-1">
                         Breakthrough 01
                       </span>
-                      <h2 className="font-['Bowlby_One'] text-base uppercase mb-1">SLM Quantization</h2>
+                      <h2 className="font-['Bowlby_One'] text-sm sm:text-base uppercase mb-1">AI Became Tiny</h2>
                       <p className="font-['Crimson_Pro'] italic text-xs leading-relaxed text-[#2a2515] dark:text-[#cdbe9e]">
-                        Recent algorithmic breakthroughs in 2-bit/4-bit quantization allow compact language models to execute with full coherence on modest 4GB/6GB RAM chipsets without frying device thermals.
+                        Two years ago, running AI needed a ₹2,00,000 graphics card. Today, small language models can run smoothly on a standard ₹10,000 phone with 4GB of RAM. The technology finally arrived.
                       </p>
                     </div>
 
-                    <div className="p-4 bg-white dark:bg-[#1f180d] border-3 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e]">
+                    <div className="p-3.5 sm:p-4 bg-white dark:bg-[#1f180d] border-2 sm:border-3 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e]">
                       <span className="text-[10px] font-mono font-bold text-[#ff4a8a] uppercase tracking-wider block mb-1">
                         Breakthrough 02
                       </span>
-                      <h2 className="font-['Bowlby_One'] text-base uppercase mb-1">The Flagship Gap</h2>
+                      <h2 className="font-['Bowlby_One'] text-sm sm:text-base uppercase mb-1">Big Tech Ignored India</h2>
                       <p className="font-['Crimson_Pro'] italic text-xs leading-relaxed text-[#2a2515] dark:text-[#cdbe9e]">
-                        Apple Intelligence and Google Gemini Nano require ₹80,000+ luxury flagships (iPhone 15 Pro, Pixel 9 Pro). Over 85% of Indian consumers are locked out by Big Tech.
+                        Apple Intelligence and Google Gemini Nano require ₹80,000+ luxury phones (iPhone 15 Pro, Pixel 9). Only 5% of people in India buy those phones. Big Tech left 600 Million people behind. SNEHA is built for the remaining 95%.
                       </p>
                     </div>
 
-                    <div className="p-4 bg-white dark:bg-[#1f180d] border-3 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e]">
+                    <div className="p-3.5 sm:p-4 bg-white dark:bg-[#1f180d] border-2 sm:border-3 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e]">
                       <span className="text-[10px] font-mono font-bold text-[#0e4dff] uppercase tracking-wider block mb-1">
                         Breakthrough 03
                       </span>
-                      <h2 className="font-['Bowlby_One'] text-base uppercase mb-1">Privacy Statutes</h2>
+                      <h2 className="font-['Bowlby_One'] text-sm sm:text-base uppercase mb-1">Strict Privacy Laws</h2>
                       <p className="font-['Crimson_Pro'] italic text-xs leading-relaxed text-[#2a2515] dark:text-[#cdbe9e]">
-                        India’s Digital Personal Data Protection (DPDP) Act and EU AI Acts impose massive penalties for cloud data leaks. Enterprise and student users actively demand local-first software.
+                        India just passed the DPDP Act with massive penalties for companies that leak user data. Students, lawyers, doctors, and businesses are actively searching for tools that never upload confidential documents to the cloud.
                       </p>
                     </div>
                   </div>
 
-                  {/* Flagship Exclusion Interactive Visualizer */}
-                  <div className="p-3 bg-[#eedcb4] dark:bg-[#271f13] border-2 border-[#1f1a0e]">
-                    <div className="flex items-center justify-between text-xs font-bold uppercase mb-2">
-                      <span>Indian Smartphone Market Coverage Reality:</span>
-                      <div className="flex gap-1 text-[10px]">
-                        <button
-                          onClick={() => setSelectedHardwareFilter('flagship')}
-                          className={`px-1.5 py-0.5 border border-[#1f1a0e] ${
-                            selectedHardwareFilter === 'flagship' ? 'bg-[#ff4a8a] text-white' : 'bg-white text-[#1f1a0e]'
-                          }`}
-                        >
-                          Apple &amp; Gemini Nano (5.5%)
-                        </button>
-                        <button
-                          onClick={() => setSelectedHardwareFilter('budget')}
-                          className={`px-1.5 py-0.5 border border-[#1f1a0e] ${
-                            selectedHardwareFilter === 'budget' ? 'bg-[#10b981] text-white' : 'bg-white text-[#1f1a0e]'
-                          }`}
-                        >
-                          SNEHA Market (94.5%)
-                        </button>
-                      </div>
-                    </div>
+                  {/* Flagship vs SNEHA Coverage Visualizer (Fully responsive for mobile) */}
+                  <div className="p-3 sm:p-4 bg-[#eedcb4] dark:bg-[#271f13] border-2 border-[#1f1a0e]">
+                    <span className="block text-xs font-bold uppercase mb-2 text-[#1f1a0e] dark:text-[#fdfaf2]">
+                      Indian Smartphone Market Reality:
+                    </span>
 
-                    <div className="w-full bg-[#1f1a0e]/20 h-5 border border-[#1f1a0e] flex overflow-hidden">
+                    {/* Progress bar */}
+                    <div className="w-full bg-[#1f1a0e]/20 h-6 border-2 border-[#1f1a0e] flex overflow-hidden mb-2.5">
                       <div
                         className="bg-[#ff4a8a] flex items-center justify-center text-[9px] font-black text-white"
-                        style={{ width: '5.5%' }}
-                        title="Apple Intelligence / Gemini Nano (5.5% of Indian Phones)"
+                        style={{ width: '6%' }}
+                        title="Apple & Google Flagships (5.5%)"
                       >
                         5%
                       </div>
                       <div
-                        className="bg-[#10b981] flex items-center justify-center text-[10px] font-black text-white"
-                        style={{ width: '94.5%' }}
-                        title="SNEHA Addressable Android Hardware (94.5% of Indian Phones)"
+                        className="bg-[#10b981] flex items-center justify-center text-[10px] font-black text-white px-2 truncate"
+                        style={{ width: '94%' }}
+                        title="SNEHA Addressable Market (94.5%)"
                       >
-                        SNEHA MASS MARKET REACH (94.5% OF SMARTPHONES)
+                        SNEHA MASS MARKET (94.5% OF PHONES)
+                      </div>
+                    </div>
+
+                    {/* 2 Comparison Cards on Mobile */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                      <div className="p-2 bg-white dark:bg-[#1f180d] border border-[#ff4a8a] flex items-center gap-2">
+                        <span className="w-2.5 h-2.5 bg-[#ff4a8a] shrink-0" />
+                        <span><strong>Apple &amp; Gemini Nano:</strong> Only ₹70,000+ phones (5.5% of market).</span>
+                      </div>
+                      <div className="p-2 bg-white dark:bg-[#1f180d] border border-[#10b981] flex items-center gap-2">
+                        <span className="w-2.5 h-2.5 bg-[#10b981] shrink-0" />
+                        <span><strong>SNEHA Opportunity:</strong> Any ₹8,000+ Android phone (94.5% of market = 600M+ users).</span>
                       </div>
                     </div>
                   </div>
                 </div>
               )}
 
-              {/* SLIDE 05: CODE REALITY, NOT SLIDES */}
+              {/* SLIDE 05: CODE REALITY, NOT EMPTY SLIDES */}
               {currentSlide === 4 && (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-3 text-center">
-                    <div className="p-3 bg-white dark:bg-[#1f180d] border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e]">
-                      <b className="font-['Bowlby_One'] text-2xl text-[#0e4dff] block leading-none mb-1">SDK 26</b>
-                      <span className="font-mono text-[10px] font-bold uppercase">Android 8.0+ Verified</span>
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 text-center">
+                    <div className="p-2.5 sm:p-3 bg-white dark:bg-[#1f180d] border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e]">
+                      <b className="font-['Bowlby_One'] text-xl sm:text-2xl text-[#0e4dff] block leading-none mb-1">SDK 26</b>
+                      <span className="font-mono text-[10px] font-bold uppercase block">Android 8.0+ Ready</span>
                     </div>
-                    <div className="p-3 bg-white dark:bg-[#1f180d] border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e]">
-                      <b className="font-['Bowlby_One'] text-2xl text-[#ff4a8a] block leading-none mb-1">0 Trackers</b>
-                      <span className="font-mono text-[10px] font-bold uppercase">Audited Codebase</span>
+                    <div className="p-2.5 sm:p-3 bg-white dark:bg-[#1f180d] border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e]">
+                      <b className="font-['Bowlby_One'] text-xl sm:text-2xl text-[#ff4a8a] block leading-none mb-1">0 Trackers</b>
+                      <span className="font-mono text-[10px] font-bold uppercase block">Verified by Code Audit</span>
                     </div>
-                    <div className="p-3 bg-white dark:bg-[#1f180d] border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e]">
-                      <b className="font-['Bowlby_One'] text-2xl text-[#ff7028] block leading-none mb-1">6.2 MB</b>
-                      <span className="font-mono text-[10px] font-bold uppercase">Pilot APK Binary</span>
+                    <div className="p-2.5 sm:p-3 bg-white dark:bg-[#1f180d] border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e]">
+                      <b className="font-['Bowlby_One'] text-xl sm:text-2xl text-[#ff7028] block leading-none mb-1">6.2 MB</b>
+                      <span className="font-mono text-[10px] font-bold uppercase block">Ultra-Lean APK Binary</span>
                     </div>
-                    <div className="p-3 bg-white dark:bg-[#1f180d] border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e]">
-                      <b className="font-['Bowlby_One'] text-2xl text-[#10b981] block leading-none mb-1">50/50</b>
-                      <span className="font-mono text-[10px] font-bold uppercase">Passing Tests</span>
+                    <div className="p-2.5 sm:p-3 bg-white dark:bg-[#1f180d] border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e]">
+                      <b className="font-['Bowlby_One'] text-xl sm:text-2xl text-[#10b981] block leading-none mb-1">58/58</b>
+                      <span className="font-mono text-[10px] font-bold uppercase block">Passing Test Suites</span>
                     </div>
                   </div>
 
-                  <div className="p-4 bg-[#eedcb4]/80 dark:bg-[#271f13] border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="p-3.5 sm:p-4 bg-[#eedcb4]/80 dark:bg-[#271f13] border-2 sm:border-3 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div>
                       <h2 className="font-['Bowlby_One'] text-sm sm:text-base uppercase text-[#1f1a0e] dark:text-[#fdfaf2]">
-                        Live Interactive Platform Already Operational
+                        This is an Active Product You Can Test Today
                       </h2>
                       <p className="font-['Crimson_Pro'] italic text-xs text-[#2a2515] dark:text-[#cdbe9e] mt-0.5">
-                        Test our QR sideloading flow, SHA-256 build checksum validator, or live tester sentiment analytics right now.
+                        We didn't just design wireframes in Figma. You can scan our QR code right now, download the APK, verify the SHA-256 code checksum, and inspect live feedback logs.
                       </p>
                     </div>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-col sm:flex-row gap-2 shrink-0">
                       <button
+                        type="button"
                         onClick={() => onNavigateTab('download')}
-                        className="px-3 py-1.5 bg-[#ff4a8a] text-[#1f1a0e] font-bold text-xs uppercase border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] hover:bg-[#ff7028] transition-all cursor-pointer"
+                        className="px-3 py-1.5 bg-[#ff4a8a] text-[#1f1a0e] font-bold text-xs uppercase border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] hover:bg-[#ff7028] transition-all cursor-pointer text-center"
                       >
-                        APK Sideload Hub →
+                        APK Download Hub →
                       </button>
                       <button
+                        type="button"
                         onClick={() => onNavigateTab('audit')}
-                        className="px-3 py-1.5 bg-[#0e4dff] text-white font-bold text-xs uppercase border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] hover:bg-[#1f1a0e] transition-all cursor-pointer"
+                        className="px-3 py-1.5 bg-[#0e4dff] text-white font-bold text-xs uppercase border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] hover:bg-[#1f1a0e] transition-all cursor-pointer text-center"
                       >
                         Code Audit Table →
                       </button>
@@ -759,75 +768,75 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
                 </div>
               )}
 
-              {/* SLIDE 06: TAM · SAM · SOM SIZING */}
+              {/* SLIDE 06: TAM · SAM · SOM MARKET SIZING */}
               {currentSlide === 5 && (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="p-4 bg-white dark:bg-[#1f180d] border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e]">
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+                    <div className="p-3.5 sm:p-4 bg-white dark:bg-[#1f180d] border-2 sm:border-3 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e]">
                       <span className="text-[10px] font-mono font-bold text-[#5a4f30] dark:text-[#cdbe9e] uppercase tracking-wider block mb-1">
-                        Total Addressable Market (TAM)
+                        Worldwide Market (TAM)
                       </span>
-                      <b className="font-['Bowlby_One'] text-3xl text-[#1f1a0e] dark:text-[#fdfaf2] block mb-1">
+                      <b className="font-['Bowlby_One'] text-2xl sm:text-3xl text-[#1f1a0e] dark:text-[#fdfaf2] block mb-1">
                         3.5 Billion
                       </b>
-                      <span className="text-xs font-bold uppercase text-[#0e4dff] block mb-2">Global Android Devices</span>
+                      <span className="text-xs font-bold uppercase text-[#0e4dff] block mb-1.5">Android Phones Globally</span>
                       <p className="font-['Crimson_Pro'] italic text-xs text-[#2a2515] dark:text-[#cdbe9e]">
-                        A $150 Billion worldwide consumer software and AI assistant ecosystem transitioning toward edge-local computing.
+                        A massive $150 Billion global market transitioning away from slow cloud apps toward fast, local phone software.
                       </p>
                     </div>
 
-                    <div className="p-4 bg-white dark:bg-[#1f180d] border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e]">
+                    <div className="p-3.5 sm:p-4 bg-white dark:bg-[#1f180d] border-2 sm:border-3 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e]">
                       <span className="text-[10px] font-mono font-bold text-[#5a4f30] dark:text-[#cdbe9e] uppercase tracking-wider block mb-1">
-                        Serviceable Available Market (SAM)
+                        India Market (SAM)
                       </span>
-                      <b className="font-['Bowlby_One'] text-3xl text-[#ff7028] block mb-1">
+                      <b className="font-['Bowlby_One'] text-2xl sm:text-3xl text-[#ff7028] block mb-1">
                         650 Million
                       </b>
-                      <span className="text-xs font-bold uppercase text-[#1f1a0e] dark:text-[#fdfaf2] block mb-2">Indian Android Handsets</span>
+                      <span className="text-xs font-bold uppercase text-[#1f1a0e] dark:text-[#fdfaf2] block mb-1.5">Indian Android Handsets</span>
                       <p className="font-['Crimson_Pro'] italic text-xs text-[#2a2515] dark:text-[#cdbe9e]">
-                        India is the world's second-largest smartphone market with ₹26,000 Crore+ ($3.2B) annual consumer digital spend.
+                        India is the 2nd largest smartphone market in the world with over ₹26,000 Crores spent annually on mobile software.
                       </p>
                     </div>
 
-                    <div className="p-4 bg-[#10b981]/15 dark:bg-[#10b981]/10 border-3 border-[#10b981] shadow-[4px_4px_0_#10b981]">
+                    <div className="p-3.5 sm:p-4 bg-[#10b981]/15 dark:bg-[#10b981]/10 border-2 sm:border-3 border-[#10b981] shadow-[3px_3px_0_#10b981]">
                       <span className="text-[10px] font-mono font-bold text-[#10b981] uppercase tracking-wider block mb-1">
-                        Serviceable Obtainable (SOM - Year 1–2)
+                        Our 2-Year Target (SOM)
                       </span>
-                      <b className="font-['Bowlby_One'] text-3xl text-[#10b981] block mb-1">
+                      <b className="font-['Bowlby_One'] text-2xl sm:text-3xl text-[#10b981] block mb-1">
                         2 Million
                       </b>
-                      <span className="text-xs font-bold uppercase text-[#1f1a0e] dark:text-[#fdfaf2] block mb-2">Active Indian Subscribers</span>
+                      <span className="text-xs font-bold uppercase text-[#1f1a0e] dark:text-[#fdfaf2] block mb-1.5">Active Subscribers in India</span>
                       <p className="font-['Crimson_Pro'] italic text-xs text-[#2a2515] dark:text-[#cdbe9e]">
-                        Capturing just 0.3% of Indian users yields <strong>₹160 Crore ($19.2M) ARR</strong> at our blended ₹799/yr annual tier.
+                        Getting just 0.3% of Indian users on our ₹799/year pass produces <strong>₹160 Crore ($19.2 Million) in annual recurring revenue</strong>.
                       </p>
                     </div>
                   </div>
 
-                  <div className="p-3 bg-[#eedcb4] dark:bg-[#271f13] border-2 border-[#1f1a0e] text-xs font-mono flex items-center justify-between">
-                    <span>Bottom-up conversion math:</span>
+                  <div className="p-2.5 sm:p-3 bg-[#eedcb4] dark:bg-[#271f13] border-2 border-[#1f1a0e] text-xs font-mono flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                    <span>How we reach 2 Million users:</span>
                     <span className="font-bold text-[#ff4a8a]">
-                      40M Indian University Students &amp; Developers $\times$ 5% target adoption = 2.0M users.
+                      There are 40 Million college students &amp; coders in India. We only need 1 out of 20 to use SNEHA.
                     </span>
                   </div>
                 </div>
               )}
 
-              {/* SLIDE 07: 90%+ GROSS MARGIN ECONOMICS (LIVE SIMULATOR) */}
+              {/* SLIDE 07: 90%+ PURE PROFIT MARGINS (SIMULATOR) */}
               {currentSlide === 6 && (
-                <div className="space-y-4">
-                  {/* Interactive Controls Bar */}
-                  <div className="p-4 bg-[#eedcb4] dark:bg-[#271f13] border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e]">
-                    <div className="flex flex-wrap items-center justify-between gap-4 mb-3">
-                      <div className="flex items-center gap-2">
-                        <Sliders size={16} className="text-[#0e4dff]" />
+                <div className="space-y-3 sm:space-y-4">
+                  {/* Slider Control Box */}
+                  <div className="p-3 sm:p-4 bg-[#eedcb4] dark:bg-[#271f13] border-2 sm:border-3 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e]">
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                      <div className="flex items-center gap-1.5">
+                        <Sliders size={15} className="text-[#0e4dff]" />
                         <span className="font-['Bowlby_One'] text-xs uppercase text-[#1f1a0e] dark:text-[#fdfaf2]">
-                          Interactive Financial &amp; Unit Economics Simulator:
+                          Interactive Profit Simulator:
                         </span>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-mono font-bold">Active User Base:</span>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-mono font-bold">Projected Users:</span>
                         <span className="px-2 py-0.5 bg-[#1f1a0e] text-[#f5ecd4] dark:bg-[#fdfaf2] dark:text-[#1f1a0e] font-mono text-xs font-bold">
-                          {simUsers.toLocaleString()} Users
+                          {simUsers.toLocaleString('en-IN')} Users
                         </span>
                       </div>
                     </div>
@@ -842,278 +851,286 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
                       className="w-full accent-[#ff4a8a] cursor-pointer"
                     />
 
-                    <div className="flex justify-between text-[10px] font-mono mt-1 text-[#5a4f30] dark:text-[#cdbe9e]">
-                      <span>10,000 (Early Scale)</span>
-                      <span>50,000 (12-Mo Target)</span>
-                      <span>100,000 (Growth)</span>
-                      <span>200,000 (Category Leader)</span>
+                    <div className="flex justify-between text-[9px] sm:text-[10px] font-mono mt-1 text-[#5a4f30] dark:text-[#cdbe9e]">
+                      <span>10k (Pilot)</span>
+                      <span>50k (Year 1 Goal)</span>
+                      <span>100k (Growth)</span>
+                      <span>200k (Scale)</span>
                     </div>
                   </div>
 
-                  {/* Financial Comparison Cards */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Comparison Cards */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                     {/* SNEHA Economics */}
-                    <div className="p-4 bg-[#10b981]/15 dark:bg-[#10b981]/10 border-3 border-[#10b981] shadow-[4px_4px_0_#10b981]">
+                    <div className="p-3.5 sm:p-4 bg-[#10b981]/15 dark:bg-[#10b981]/10 border-2 sm:border-3 border-[#10b981] shadow-[3px_3px_0_#10b981]">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="font-['Bowlby_One'] text-sm uppercase text-[#10b981]">
-                          SNEHA (On-Device Architecture)
+                        <span className="font-['Bowlby_One'] text-xs sm:text-sm uppercase text-[#10b981]">
+                          SNEHA (Runs on Phone)
                         </span>
-                        <span className="px-2 py-0.5 bg-[#10b981] text-white font-['Bowlby_One'] text-[10px] uppercase">
-                          {calculatedFinances.snehaGrossMarginPct}% GROSS MARGIN
+                        <span className="px-2 py-0.5 bg-[#10b981] text-white font-['Bowlby_One'] text-[9px] sm:text-[10px] uppercase">
+                          {calculatedFinances.snehaGrossMarginPct}% PURE PROFIT
                         </span>
                       </div>
                       <div className="space-y-1.5 text-xs font-mono">
                         <div className="flex justify-between">
-                          <span>Annual Revenue (ARR):</span>
-                          <strong className="text-base text-[#1f1a0e] dark:text-[#fdfaf2]">
-                            ₹{(calculatedFinances.annualRunRate / 10000000).toFixed(2)} Cr
+                          <span>Total Revenue (ARR):</span>
+                          <strong className="text-sm sm:text-base text-[#1f1a0e] dark:text-[#fdfaf2]">
+                            ₹{(calculatedFinances.annualRunRate / 10000000).toFixed(2)} Crores
                           </strong>
                         </div>
                         <div className="flex justify-between text-[#10b981]">
-                          <span>Cloud GPU Inference Costs:</span>
-                          <strong>₹0 (Runs on device)</strong>
+                          <span>Cloud Server Costs:</span>
+                          <strong>₹0 (User phone does the math)</strong>
                         </div>
                         <div className="flex justify-between">
-                          <span>Payment Gateway &amp; Ops (7%):</span>
-                          <span>₹{((calculatedFinances.monthlyTotalRevenue * 0.07 * 12) / 100000).toFixed(1)} Lakhs</span>
+                          <span>Payment Gateway (2%):</span>
+                          <span>₹{((calculatedFinances.monthlyTotalRevenue * 0.02 * 12) / 100000).toFixed(1)} Lakhs</span>
                         </div>
                         <div className="pt-2 border-t border-[#10b981]/40 flex justify-between font-bold text-sm text-[#10b981]">
                           <span>Annual Gross Profit:</span>
-                          <span>₹{((calculatedFinances.snehaGrossProfit * 12) / 10000000).toFixed(2)} Cr</span>
+                          <span>₹{((calculatedFinances.snehaGrossProfit * 12) / 10000000).toFixed(2)} Crores</span>
                         </div>
                       </div>
                     </div>
 
-                    {/* Competitor Cloud AI Economics */}
-                    <div className="p-4 bg-[#ff4a8a]/15 dark:bg-[#ff4a8a]/10 border-3 border-[#ff4a8a] shadow-[4px_4px_0_#ff4a8a]">
+                    {/* Competitor Cloud AI */}
+                    <div className="p-3.5 sm:p-4 bg-[#ff4a8a]/15 dark:bg-[#ff4a8a]/10 border-2 sm:border-3 border-[#ff4a8a] shadow-[3px_3px_0_#ff4a8a]">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="font-['Bowlby_One'] text-sm uppercase text-[#ff4a8a]">
-                          Typical Cloud AI (API Wrapper)
+                        <span className="font-['Bowlby_One'] text-xs sm:text-sm uppercase text-[#ff4a8a]">
+                          Typical Cloud AI Wrapper
                         </span>
-                        <span className="px-2 py-0.5 bg-[#ff4a8a] text-white font-['Bowlby_One'] text-[10px] uppercase">
+                        <span className="px-2 py-0.5 bg-[#ff4a8a] text-white font-['Bowlby_One'] text-[9px] sm:text-[10px] uppercase">
                           {calculatedFinances.cloudAiGrossMarginPct}% MARGIN
                         </span>
                       </div>
                       <div className="space-y-1.5 text-xs font-mono">
                         <div className="flex justify-between">
-                          <span>Annual Revenue (ARR):</span>
-                          <span>₹{(calculatedFinances.annualRunRate / 10000000).toFixed(2)} Cr</span>
+                          <span>Total Revenue (ARR):</span>
+                          <span>₹{(calculatedFinances.annualRunRate / 10000000).toFixed(2)} Crores</span>
                         </div>
                         <div className="flex justify-between text-[#ff4a8a]">
                           <span>Cloud GPU Server Bills:</span>
                           <strong>
-                            -₹{((calculatedFinances.cloudAiComputeCostPerMonth * 12) / 10000000).toFixed(2)} Cr
+                            -₹{((calculatedFinances.cloudAiComputeCostPerMonth * 12) / 10000000).toFixed(2)} Crores
                           </strong>
                         </div>
                         <div className="flex justify-between">
-                          <span>Payment Gateway &amp; Ops:</span>
-                          <span>₹{((calculatedFinances.monthlyTotalRevenue * 0.07 * 12) / 100000).toFixed(1)} Lakhs</span>
+                          <span>Payment Gateway:</span>
+                          <span>₹{((calculatedFinances.monthlyTotalRevenue * 0.02 * 12) / 100000).toFixed(1)} Lakhs</span>
                         </div>
                         <div className="pt-2 border-t border-[#ff4a8a]/40 flex justify-between font-bold text-sm text-[#ff4a8a]">
                           <span>Annual Gross Profit:</span>
-                          <span>₹{((calculatedFinances.cloudAiGrossProfit * 12) / 10000000).toFixed(2)} Cr</span>
+                          <span>₹{((calculatedFinances.cloudAiGrossProfit * 12) / 10000000).toFixed(2)} Crores</span>
                         </div>
                       </div>
                     </div>
                   </div>
 
                   <div className="p-2.5 bg-white dark:bg-[#1f180d] border border-[#1f1a0e] text-center text-xs font-mono">
-                    <strong className="text-[#0e4dff]">SNEHA Structural Moat:</strong> Saves ₹
-                    {(calculatedFinances.annualSavingsVsCloud / 10000000).toFixed(2)} Crores every year in cloud inference expenses at {simUsers.toLocaleString()} active users!
+                    <strong className="text-[#0e4dff]">The Secret:</strong> SNEHA saves ₹
+                    {(calculatedFinances.annualSavingsVsCloud / 10000000).toFixed(2)} Crores every year in cloud server bills because the computation happens locally!
                   </div>
                 </div>
               )}
 
-              {/* SLIDE 08: COMPETITIVE SUPERIORITY MATRIX */}
+              {/* SLIDE 08: COMPETITOR MATRIX (WHY WE WIN) */}
               {currentSlide === 7 && (
-                <div className="space-y-4">
-                  <div className="overflow-x-auto border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e] bg-white dark:bg-[#1f180d]">
-                    <table className="w-full text-left border-collapse text-xs min-w-[650px]">
-                      <thead>
-                        <tr className="bg-[#1f1a0e] text-[#f5ecd4] font-['Bowlby_One'] text-[10px] uppercase tracking-wider">
-                          <th className="p-2.5 border-r border-[#3a3320]">Competitive Metric</th>
-                          <th className="p-2.5 border-r border-[#3a3320] bg-[#ff4a8a] text-[#1f1a0e]">SNEHA</th>
-                          <th className="p-2.5 border-r border-[#3a3320]">ChatGPT Plus</th>
-                          <th className="p-2.5 border-r border-[#3a3320]">Google Gemini</th>
-                          <th className="p-2.5">Apple Intelligence</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-[#1f1a0e]/20 font-sans">
-                        <tr className="hover:bg-[#eedcb4]/30">
-                          <td className="p-2.5 font-bold border-r border-[#1f1a0e]/20">Marginal Compute Cost</td>
-                          <td className="p-2.5 border-r border-[#1f1a0e]/20 font-bold text-[#10b981] bg-[#10b981]/10">₹0 (On-Device)</td>
-                          <td className="p-2.5 border-r border-[#1f1a0e]/20 text-[#ff4a8a]">~$0.02 / query</td>
-                          <td className="p-2.5 border-r border-[#1f1a0e]/20 text-[#ff4a8a]">Cloud compute burn</td>
-                          <td className="p-2.5 text-[#ff7028]">Hybrid Cloud Server</td>
-                        </tr>
-                        <tr className="hover:bg-[#eedcb4]/30">
-                          <td className="p-2.5 font-bold border-r border-[#1f1a0e]/20">100% Offline Capable</td>
-                          <td className="p-2.5 border-r border-[#1f1a0e]/20 font-bold text-[#10b981] bg-[#10b981]/10">YES (Always)</td>
-                          <td className="p-2.5 border-r border-[#1f1a0e]/20 text-[#ff4a8a]">NO (Dead offline)</td>
-                          <td className="p-2.5 border-r border-[#1f1a0e]/20 text-[#ff4a8a]">NO (Requires Cloud)</td>
-                          <td className="p-2.5 text-[#ff7028]">Partial</td>
-                        </tr>
-                        <tr className="hover:bg-[#eedcb4]/30">
-                          <td className="p-2.5 font-bold border-r border-[#1f1a0e]/20">Zero Data Harvesting</td>
-                          <td className="p-2.5 border-r border-[#1f1a0e]/20 font-bold text-[#10b981] bg-[#10b981]/10">100% Verified</td>
-                          <td className="p-2.5 border-r border-[#1f1a0e]/20 text-[#ff4a8a]">Cloud logged</td>
-                          <td className="p-2.5 border-r border-[#1f1a0e]/20 text-[#ff4a8a]">Ad profile ingestion</td>
-                          <td className="p-2.5 text-[#ff7028]">PCC Cloud server</td>
-                        </tr>
-                        <tr className="hover:bg-[#eedcb4]/30">
-                          <td className="p-2.5 font-bold border-r border-[#1f1a0e]/20">Hardware Accessibility</td>
-                          <td className="p-2.5 border-r border-[#1f1a0e]/20 font-bold text-[#10b981] bg-[#10b981]/10">Android 8.0+ (95%+)</td>
-                          <td className="p-2.5 border-r border-[#1f1a0e]/20">Any (Needs 5G)</td>
-                          <td className="p-2.5 border-r border-[#1f1a0e]/20 text-[#ff4a8a]">₹70k+ Flagships only</td>
-                          <td className="p-2.5 text-[#ff4a8a]">₹80k+ iPhone 15 Pro+</td>
-                        </tr>
-                        <tr className="hover:bg-[#eedcb4]/30">
-                          <td className="p-2.5 font-bold border-r border-[#1f1a0e]/20">Consumer Price in India</td>
-                          <td className="p-2.5 border-r border-[#1f1a0e]/20 font-bold text-[#0e4dff] bg-[#0e4dff]/10">₹66–₹143 / mo</td>
-                          <td className="p-2.5 border-r border-[#1f1a0e]/20 text-[#ff4a8a]">₹1,999 / mo ($20)</td>
-                          <td className="p-2.5 border-r border-[#1f1a0e]/20 text-[#ff4a8a]">₹1,950 / mo</td>
-                          <td className="p-2.5 text-[#ff4a8a]">₹1,30,000 Device</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="border-2 sm:border-3 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] bg-white dark:bg-[#1f180d]">
+                    {/* Mobile swipe hint */}
+                    <div className="sm:hidden px-3 py-1 bg-[#eedcb4] text-[10px] font-mono text-[#5a4f30] border-b border-[#1f1a0e] flex items-center justify-between">
+                      <span>Comparison Table</span>
+                      <span>Swipe sideways to view →</span>
+                    </div>
+
+                    <div className="overflow-x-auto max-w-full">
+                      <table className="w-full text-left border-collapse text-xs min-w-[620px]">
+                        <thead>
+                          <tr className="bg-[#1f1a0e] text-[#f5ecd4] font-['Bowlby_One'] text-[10px] uppercase tracking-wider">
+                            <th className="p-2 sm:p-2.5 border-r border-[#3a3320]">What Matters to Users</th>
+                            <th className="p-2 sm:p-2.5 border-r border-[#3a3320] bg-[#ff4a8a] text-[#1f1a0e]">SNEHA</th>
+                            <th className="p-2 sm:p-2.5 border-r border-[#3a3320]">ChatGPT Plus</th>
+                            <th className="p-2 sm:p-2.5 border-r border-[#3a3320]">Google Gemini</th>
+                            <th className="p-2 sm:p-2.5">Apple Intelligence</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-[#1f1a0e]/20 font-sans">
+                          <tr className="hover:bg-[#eedcb4]/30">
+                            <td className="p-2 sm:p-2.5 font-bold border-r border-[#1f1a0e]/20">Server Cost per Question</td>
+                            <td className="p-2 sm:p-2.5 border-r border-[#1f1a0e]/20 font-bold text-[#10b981] bg-[#10b981]/10">₹0 (Zero)</td>
+                            <td className="p-2 sm:p-2.5 border-r border-[#1f1a0e]/20 text-[#ff4a8a]">Burns ~$0.02 every prompt</td>
+                            <td className="p-2 sm:p-2.5 border-r border-[#1f1a0e]/20 text-[#ff4a8a]">Expensive cloud GPU</td>
+                            <td className="p-2 sm:p-2.5 text-[#ff7028]">Hybrid Cloud Server</td>
+                          </tr>
+                          <tr className="hover:bg-[#eedcb4]/30">
+                            <td className="p-2 sm:p-2.5 font-bold border-r border-[#1f1a0e]/20">Works Without Internet</td>
+                            <td className="p-2 sm:p-2.5 border-r border-[#1f1a0e]/20 font-bold text-[#10b981] bg-[#10b981]/10">YES (100% Offline)</td>
+                            <td className="p-2 sm:p-2.5 border-r border-[#1f1a0e]/20 text-[#ff4a8a]">NO (Completely Dead)</td>
+                            <td className="p-2 sm:p-2.5 border-r border-[#1f1a0e]/20 text-[#ff4a8a]">NO (Requires Cloud)</td>
+                            <td className="p-2 sm:p-2.5 text-[#ff7028]">Partial only</td>
+                          </tr>
+                          <tr className="hover:bg-[#eedcb4]/30">
+                            <td className="p-2 sm:p-2.5 font-bold border-r border-[#1f1a0e]/20">Guaranteed Privacy</td>
+                            <td className="p-2 sm:p-2.5 border-r border-[#1f1a0e]/20 font-bold text-[#10b981] bg-[#10b981]/10">100% Locked on Phone</td>
+                            <td className="p-2 sm:p-2.5 border-r border-[#1f1a0e]/20 text-[#ff4a8a]">Chats stored on servers</td>
+                            <td className="p-2 sm:p-2.5 border-r border-[#1f1a0e]/20 text-[#ff4a8a]">Used to sell ads</td>
+                            <td className="p-2 sm:p-2.5 text-[#ff7028]">Cloud server backups</td>
+                          </tr>
+                          <tr className="hover:bg-[#eedcb4]/30">
+                            <td className="p-2 sm:p-2.5 font-bold border-r border-[#1f1a0e]/20">Hardware Needed</td>
+                            <td className="p-2 sm:p-2.5 border-r border-[#1f1a0e]/20 font-bold text-[#10b981] bg-[#10b981]/10">Any Android 8.0+ (₹8,000+)</td>
+                            <td className="p-2 sm:p-2.5 border-r border-[#1f1a0e]/20">Needs fast 5G data</td>
+                            <td className="p-2 sm:p-2.5 border-r border-[#1f1a0e]/20 text-[#ff4a8a]">₹70k+ Flagships only</td>
+                            <td className="p-2 sm:p-2.5 text-[#ff4a8a]">₹80k+ iPhone 15 Pro+</td>
+                          </tr>
+                          <tr className="hover:bg-[#eedcb4]/30">
+                            <td className="p-2 sm:p-2.5 font-bold border-r border-[#1f1a0e]/20">Price in India</td>
+                            <td className="p-2 sm:p-2.5 border-r border-[#1f1a0e]/20 font-bold text-[#0e4dff] bg-[#0e4dff]/10">₹66 to ₹143 / month</td>
+                            <td className="p-2 sm:p-2.5 border-r border-[#1f1a0e]/20 text-[#ff4a8a]">₹1,999 / month</td>
+                            <td className="p-2 sm:p-2.5 border-r border-[#1f1a0e]/20 text-[#ff4a8a]">₹1,950 / month</td>
+                            <td className="p-2 sm:p-2.5 text-[#ff4a8a]">₹1,30,000 device cost</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
 
-                  <div className="p-3 bg-[#eedcb4] dark:bg-[#271f13] border-2 border-[#1f1a0e] text-xs font-mono flex items-center justify-between">
-                    <span>The Unassailable Moat:</span>
+                  <div className="p-2.5 sm:p-3 bg-[#eedcb4] dark:bg-[#271f13] border-2 border-[#1f1a0e] text-xs font-mono flex items-center justify-between">
+                    <span>Our Unfair Advantage:</span>
                     <strong className="text-[#0e4dff]">
-                      Zero marginal cost allows SNEHA to price 10x cheaper than cloud AI while earning 4x higher margins.
+                      We are 10 times cheaper than ChatGPT while making 4 times higher profit margins.
                     </strong>
                   </div>
                 </div>
               )}
 
-              {/* SLIDE 09: GO-TO-MARKET (GTM) STRATEGY */}
+              {/* SLIDE 09: GO-TO-MARKET (HOW WE SCALE) */}
               {currentSlide === 8 && (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="p-4 bg-white dark:bg-[#1f180d] border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e]">
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+                    <div className="p-3.5 sm:p-4 bg-white dark:bg-[#1f180d] border-2 sm:border-3 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e]">
                       <span className="text-[10px] font-mono font-bold text-[#ff4a8a] uppercase tracking-wider block mb-1">
-                        Phase 01 // Viral Pilot
+                        Step 01 // Campus Virality
                       </span>
-                      <h2 className="font-['Bowlby_One'] text-base uppercase mb-1">Campus Ground Game</h2>
+                      <h2 className="font-['Bowlby_One'] text-sm sm:text-base uppercase mb-1">Colleges &amp; Coders</h2>
                       <p className="font-['Crimson_Pro'] italic text-xs leading-relaxed text-[#2a2515] dark:text-[#cdbe9e] mb-2">
-                        Now through Dec 1, 2026. Free pilot launch targeting engineering colleges and student tech hubs across India.
+                        Now through Dec 1, 2026. Free pilot launch targeting engineering colleges and student tech clubs.
                       </p>
-                      <div className="p-2 bg-[#eedcb4] dark:bg-[#271f13] border border-[#1f1a0e] text-[10px] font-mono">
-                        • Top 100 bug reporters receive lifetime free license.<br />
-                        • QR posters across campus labs.
+                      <div className="p-2 bg-[#eedcb4] dark:bg-[#271f13] border border-[#1f1a0e] text-[10px] font-mono space-y-1">
+                        <div>• Top 100 bug reporters get a lifetime free pass.</div>
+                        <div>• QR code posters in campus libraries and labs.</div>
                       </div>
                     </div>
 
-                    <div className="p-4 bg-white dark:bg-[#1f180d] border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e]">
+                    <div className="p-3.5 sm:p-4 bg-white dark:bg-[#1f180d] border-2 sm:border-3 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e]">
                       <span className="text-[10px] font-mono font-bold text-[#0e4dff] uppercase tracking-wider block mb-1">
-                        Phase 02 // Direct Rollout
+                        Step 02 // Direct Distribution
                       </span>
-                      <h2 className="font-['Bowlby_One'] text-base uppercase mb-1">0% App Store Cut</h2>
+                      <h2 className="font-['Bowlby_One'] text-sm sm:text-base uppercase mb-1">0% Google Play Cut</h2>
                       <p className="font-['Crimson_Pro'] italic text-xs leading-relaxed text-[#2a2515] dark:text-[#cdbe9e] mb-2">
-                        Direct APK sideload distribution saves the mandatory 30% Google Play Commission, passing savings to consumers.
+                        Direct download via WhatsApp and QR codes saves the mandatory 30% Google Play tax.
                       </p>
-                      <div className="p-2 bg-[#eedcb4] dark:bg-[#271f13] border border-[#1f1a0e] text-[10px] font-mono">
-                        • 1-Click UPI payment (PhonePe, GPay).<br />
-                        • Locked-in Founder lifetime pricing renewals.
+                      <div className="p-2 bg-[#eedcb4] dark:bg-[#271f13] border border-[#1f1a0e] text-[10px] font-mono space-y-1">
+                        <div>• 1-Click UPI payments (GPay, PhonePe, Paytm).</div>
+                        <div>• Savings passed directly to Indian students.</div>
                       </div>
                     </div>
 
-                    <div className="p-4 bg-white dark:bg-[#1f180d] border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e]">
+                    <div className="p-3.5 sm:p-4 bg-white dark:bg-[#1f180d] border-2 sm:border-3 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e]">
                       <span className="text-[10px] font-mono font-bold text-[#10b981] uppercase tracking-wider block mb-1">
-                        Phase 03 // Scale Moat
+                        Step 03 // Handset Partnerships
                       </span>
-                      <h2 className="font-['Bowlby_One'] text-base uppercase mb-1">OEM Pre-loads</h2>
+                      <h2 className="font-['Bowlby_One'] text-sm sm:text-base uppercase mb-1">Pre-Installed on Phones</h2>
                       <p className="font-['Crimson_Pro'] italic text-xs leading-relaxed text-[#2a2515] dark:text-[#cdbe9e] mb-2">
-                        Partnerships with regional smartphone brands (Lava, Micromax) and refurbished mobile distributors.
+                        Partnerships with regional phone brands (Lava, Micromax) and refurbished phone sellers.
                       </p>
-                      <div className="p-2 bg-[#eedcb4] dark:bg-[#271f13] border border-[#1f1a0e] text-[10px] font-mono">
-                        • Factory pre-install as private on-device assistant.<br />
-                        • Revenue-share with hardware vendors.
+                      <div className="p-2 bg-[#eedcb4] dark:bg-[#271f13] border border-[#1f1a0e] text-[10px] font-mono space-y-1">
+                        <div>• Pre-loaded on new phones out of the box.</div>
+                        <div>• Revenue share with device makers.</div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="p-3 bg-[#eedcb4] dark:bg-[#271f13] border-2 border-[#1f1a0e] text-xs font-mono flex items-center justify-between">
-                    <span>Customer Acquisition Cost (CAC) Advantage:</span>
+                  <div className="p-2.5 sm:p-3 bg-[#eedcb4] dark:bg-[#271f13] border-2 border-[#1f1a0e] text-xs font-mono flex items-center justify-between">
+                    <span>Our Acquisition Advantage:</span>
                     <strong className="text-[#10b981]">
-                      Blended CAC under ₹45 via peer-to-peer APK sharing and campus student ambassadors.
+                      Customer acquisition cost under ₹45 via peer-to-peer student recommendations.
                     </strong>
                   </div>
                 </div>
               )}
 
-              {/* SLIDE 10: THE ASK & MILESTONES */}
+              {/* SLIDE 10: THE ASK & 12-MONTH TARGETS */}
               {currentSlide === 9 && (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                     {/* The Ask */}
-                    <div className="p-5 bg-white dark:bg-[#1f180d] border-3 border-[#1f1a0e] shadow-[4px_4px_0_#1f1a0e]">
+                    <div className="p-4 sm:p-5 bg-white dark:bg-[#1f180d] border-2 sm:border-3 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e]">
                       <span className="text-xs font-mono font-bold text-[#ff4a8a] uppercase tracking-wider block mb-1">
-                        Seed Capital Ask
+                        Seed Capital / Prize Grant Ask
                       </span>
-                      <h2 className="font-['Bowlby_One'] text-3xl uppercase text-[#1f1a0e] dark:text-[#fdfaf2] mb-3">
+                      <h2 className="font-['Bowlby_One'] text-2xl sm:text-3xl uppercase text-[#1f1a0e] dark:text-[#fdfaf2] mb-2 sm:mb-3">
                         ₹25 Lakhs
                       </h2>
-                      <span className="font-mono text-xs font-bold text-[#5a4f30] dark:text-[#cdbe9e] block mb-3">
-                        Use of Proceeds &amp; Allocation:
+                      <span className="font-mono text-xs font-bold text-[#5a4f30] dark:text-[#cdbe9e] block mb-2">
+                        Exactly where every rupee goes:
                       </span>
                       <ul className="text-xs space-y-2 font-mono">
                         <li className="flex items-center justify-between p-2 bg-[#eedcb4]/50 dark:bg-[#271f13] border border-[#1f1a0e]">
-                          <span>50% Model Quantization &amp; NPU Tuning:</span>
+                          <span>50% Model Compression &amp; Tuning:</span>
                           <strong>₹12.5 Lakhs</strong>
                         </li>
                         <li className="flex items-center justify-between p-2 bg-[#eedcb4]/50 dark:bg-[#271f13] border border-[#1f1a0e]">
-                          <span>30% Campus Growth &amp; Referral Bounties:</span>
+                          <span>30% Campus Growth &amp; College Bounties:</span>
                           <strong>₹7.5 Lakhs</strong>
                         </li>
                         <li className="flex items-center justify-between p-2 bg-[#eedcb4]/50 dark:bg-[#271f13] border border-[#1f1a0e]">
-                          <span>20% OEM Compatibility Test Lab:</span>
+                          <span>20% Device Testing Lab (20 test phones):</span>
                           <strong>₹5.0 Lakhs</strong>
                         </li>
                       </ul>
                     </div>
 
                     {/* Milestones */}
-                    <div className="p-5 bg-[#10b981]/15 dark:bg-[#10b981]/10 border-3 border-[#10b981] shadow-[4px_4px_0_#10b981]">
+                    <div className="p-4 sm:p-5 bg-[#10b981]/15 dark:bg-[#10b981]/10 border-2 sm:border-3 border-[#10b981] shadow-[3px_3px_0_#10b981]">
                       <span className="text-xs font-mono font-bold text-[#10b981] uppercase tracking-wider block mb-1">
-                        12-Month Execution Roadmap
+                        12-Month Roadmap
                       </span>
-                      <h2 className="font-['Bowlby_One'] text-2xl uppercase text-[#1f1a0e] dark:text-[#fdfaf2] mb-3">
-                        Milestones &amp; Targets
+                      <h2 className="font-['Bowlby_One'] text-xl sm:text-2xl uppercase text-[#1f1a0e] dark:text-[#fdfaf2] mb-2 sm:mb-3">
+                        Clear Growth Milestones
                       </h2>
                       <div className="space-y-2 text-xs font-mono">
                         <div className="p-2 bg-white dark:bg-[#1f180d] border border-[#10b981]">
-                          <strong className="text-[#0e4dff]">Month 03:</strong> 15,000 Active Pilot Testers &amp; Bug Bounty completion.
+                          <strong className="text-[#0e4dff]">Month 03:</strong> 15,000 active pilot testers and full bug bounty completion.
                         </div>
                         <div className="p-2 bg-white dark:bg-[#1f180d] border border-[#10b981]">
-                          <strong className="text-[#ff7028]">Month 06:</strong> Commercial Launch, ₹50 Lakhs ARR run-rate achieved.
+                          <strong className="text-[#ff7028]">Month 06:</strong> Commercial rollout, reaching ₹50 Lakhs annual run-rate.
                         </div>
                         <div className="p-2 bg-white dark:bg-[#1f180d] border border-[#10b981]">
-                          <strong className="text-[#10b981]">Month 12:</strong> 50,000 Paid Subscribers, ₹3.5 Crore ARR at 90%+ Gross Margin.
+                          <strong className="text-[#10b981]">Month 12:</strong> 50,000 paid subscribers (₹3.5 Crore ARR) at 90%+ gross profit margin.
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="p-3 bg-[#eedcb4] dark:bg-[#271f13] border-2 border-[#1f1a0e] text-center">
-                    <span className="font-['Bowlby_One'] text-sm uppercase text-[#1f1a0e] dark:text-[#fdfaf2]">
-                      SNEHA: True Personal AI · 100% Private · The Future of Edge Computing
+                  <div className="p-2.5 sm:p-3 bg-[#eedcb4] dark:bg-[#271f13] border-2 border-[#1f1a0e] text-center">
+                    <span className="font-['Bowlby_One'] text-xs sm:text-sm uppercase text-[#1f1a0e] dark:text-[#fdfaf2]">
+                      SNEHA: True Personal AI · 100% Private · Built for Everyone
                     </span>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Slide Navigation Footer Bar */}
-            <div className="pt-4 border-t-3 border-[#1f1a0e] dark:border-[#eedcb4]/20 flex flex-wrap items-center justify-between gap-3">
+            {/* Slide Navigation Footer Bar (Responsive touch targets) */}
+            <div className="pt-3 sm:pt-4 border-t-2 sm:border-t-3 border-[#1f1a0e] dark:border-[#eedcb4]/20 flex items-center justify-between gap-2 mt-2">
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   disabled={currentSlide === 0}
                   onClick={prevSlide}
                   aria-label="Previous Slide"
-                  className="px-3.5 py-1.5 bg-[#eedcb4] dark:bg-[#271f13] text-[#1f1a0e] dark:text-[#fdfaf2] font-bold text-xs uppercase border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] hover:bg-[#ff7028] disabled:opacity-40 disabled:pointer-events-none transition-all flex items-center gap-1 cursor-pointer"
+                  className="px-3 py-1.5 sm:px-3.5 sm:py-1.5 bg-[#eedcb4] dark:bg-[#271f13] text-[#1f1a0e] dark:text-[#fdfaf2] font-bold text-xs uppercase border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] hover:bg-[#ff7028] disabled:opacity-40 disabled:pointer-events-none transition-all flex items-center gap-1 cursor-pointer"
                 >
                   <ChevronLeft size={14} />
                   <span>Prev</span>
@@ -1123,14 +1140,14 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
                   disabled={currentSlide === SLIDES.length - 1}
                   onClick={nextSlide}
                   aria-label="Next Slide"
-                  className="px-4 py-1.5 bg-[#ff4a8a] text-[#1f1a0e] font-bold text-xs uppercase border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] hover:bg-[#ff7028] disabled:opacity-40 disabled:pointer-events-none transition-all flex items-center gap-1 cursor-pointer"
+                  className="px-3.5 py-1.5 sm:px-4 sm:py-1.5 bg-[#ff4a8a] text-[#1f1a0e] font-bold text-xs uppercase border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] hover:bg-[#ff7028] disabled:opacity-40 disabled:pointer-events-none transition-all flex items-center gap-1 cursor-pointer"
                 >
                   <span>Next</span>
                   <ChevronRight size={14} />
                 </button>
               </div>
 
-              <div className="hidden sm:flex items-center gap-1.5 font-mono text-[11px] text-[#5a4f30] dark:text-[#cdbe9e]">
+              <div className="hidden md:flex items-center gap-1 font-mono text-[11px] text-[#5a4f30] dark:text-[#cdbe9e]">
                 <span>Navigate with</span>
                 <kbd className="px-1.5 py-0.5 bg-white dark:bg-[#271f13] border border-[#1f1a0e] font-bold text-[10px]">←</kbd>
                 <kbd className="px-1.5 py-0.5 bg-white dark:bg-[#271f13] border border-[#1f1a0e] font-bold text-[10px]">→</kbd>
@@ -1140,7 +1157,7 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
 
               <div className="text-right">
                 <span className="font-mono text-xs font-bold text-[#1f1a0e] dark:text-[#fdfaf2]">
-                  Slide {currentSlide + 1} of {SLIDES.length}
+                  {currentSlide + 1} / {SLIDES.length}
                 </span>
               </div>
             </div>
@@ -1152,18 +1169,18 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
           VIEW MODE B: EXECUTIVE INVESTOR MEMO (CONTINUOUS SCROLL)
           ------------------------------------------------------------- */}
       {viewMode === 'memo' && (
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+        <div className="max-w-4xl mx-auto px-3 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8">
           {/* Memo Executive Masthead */}
-          <div className="p-6 sm:p-8 bg-white dark:bg-[#1a140b] border-4 border-[#1f1a0e] dark:border-[#eedcb4]/40 shadow-[8px_8px_0_#1f1a0e]">
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-[#1f1a0e]/20 pb-3 mb-4 text-xs font-mono">
+          <div className="p-4 sm:p-8 bg-white dark:bg-[#1a140b] border-3 sm:border-4 border-[#1f1a0e] dark:border-[#eedcb4]/40 shadow-[6px_6px_0_#1f1a0e] sm:shadow-[8px_8px_0_#1f1a0e]">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-[#1f1a0e]/20 pb-3 mb-3 text-xs font-mono">
               <span className="font-bold uppercase text-[#0e4dff]">INVESTMENT MEMORANDUM // CONFIDENTIAL</span>
               <span>DATE: OCTOBER 2026</span>
             </div>
-            <h1 className="font-['Bowlby_One'] text-3xl sm:text-5xl uppercase tracking-tight text-[#1f1a0e] dark:text-[#fdfaf2] mb-3">
+            <h1 className="font-['Bowlby_One'] text-2xl sm:text-4xl md:text-5xl uppercase tracking-tight text-[#1f1a0e] dark:text-[#fdfaf2] mb-3 break-words">
               SNEHA: The On-Device AI Investment Memo
             </h1>
-            <p className="font-['Crimson_Pro'] italic text-base sm:text-lg text-[#2a2515] dark:text-[#cdbe9e] leading-relaxed">
-              Executive summary, unit economics analysis, and venture defensibility for SNEHA — the 100% on-device AI companion operating without cloud GPU overhead.
+            <p className="font-['Crimson_Pro'] italic text-sm sm:text-base md:text-lg text-[#2a2515] dark:text-[#cdbe9e] leading-relaxed">
+              Complete business breakdown, unit economics calculations, and market advantage for SNEHA — the 100% on-device AI companion operating with zero cloud server bills.
             </p>
           </div>
 
@@ -1171,34 +1188,34 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
           {SLIDES.map((slide, idx) => (
             <div
               key={slide.id}
-              className="p-6 bg-[#f5ecd4] dark:bg-[#1a140b] border-3 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[6px_6px_0_#1f1a0e]"
+              className="p-4 sm:p-6 bg-[#f5ecd4] dark:bg-[#1a140b] border-2 sm:border-3 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-[4px_4px_0_#1f1a0e] sm:shadow-[6px_6px_0_#1f1a0e]"
             >
-              <div className="flex items-center justify-between border-b-2 border-[#1f1a0e]/20 pb-2 mb-3">
-                <span className="font-['Bowlby_One'] text-sm uppercase text-[#ff4a8a]">
+              <div className="flex items-center justify-between border-b-2 border-[#1f1a0e]/20 pb-2 mb-2 sm:mb-3">
+                <span className="font-['Bowlby_One'] text-xs sm:text-sm uppercase text-[#ff4a8a]">
                   SECTION {slide.number} // {slide.badge}
                 </span>
                 <span className="font-mono text-xs font-bold text-[#5a4f30]">REF #{slide.number}</span>
               </div>
-              <h2 className="font-['Bowlby_One'] text-xl sm:text-2xl uppercase mb-2 text-[#1f1a0e] dark:text-[#fdfaf2]">
+              <h2 className="font-['Bowlby_One'] text-lg sm:text-2xl uppercase mb-1.5 text-[#1f1a0e] dark:text-[#fdfaf2] break-words">
                 {slide.title}
               </h2>
-              <p className="font-['Crimson_Pro'] italic text-sm text-[#2a2515] dark:text-[#cdbe9e] mb-4">
+              <p className="font-['Crimson_Pro'] italic text-xs sm:text-sm text-[#2a2515] dark:text-[#cdbe9e] mb-3 leading-relaxed">
                 {slide.subtitle}
               </p>
 
-              {/* Memo Section Summaries */}
+              {/* Memo Section Detailed Summaries in Plain English */}
               {idx === 0 && (
-                <div className="space-y-2 text-xs font-sans leading-relaxed">
+                <div className="space-y-2 text-xs font-sans leading-relaxed text-[#2a2515] dark:text-[#e8deca]">
                   <p>
-                    Consumer AI faces a looming margin collapse. While OpenAI and Anthropic charge monthly subscriptions, the underlying cloud GPU compute cost consumes the vast majority of gross revenues. SNEHA introduces a paradigm shift: executing neural inference directly on the user's Android phone hardware, reducing marginal compute cost to zero while protecting user privacy.
+                    Most consumer AI companies are trapped in a deadly financial model: every time a user chats with their bot, the company pays cloud fees to OpenAI or Microsoft. If their app goes viral, their server bills blow up and they go bankrupt. SNEHA solves this completely by moving all the computation onto the phone the user already owns.
                   </p>
                 </div>
               )}
 
               {idx === 1 && (
-                <div className="space-y-2 text-xs font-sans leading-relaxed">
+                <div className="space-y-2 text-xs font-sans leading-relaxed text-[#2a2515] dark:text-[#e8deca]">
                   <p>
-                    Cloud AI architectures inherently suffer from three fatal flaws: high inference burn rates, ad-monetization surveillance models, and total dependency on cellular connectivity. SNEHA circumvents all three by operating as an edge-native APK application.
+                    Cloud AI has three fatal problems today: 1) Massive server electricity bills, 2) Snooping on private user messages to sell targeted advertisements, and 3) Failing completely whenever a user is in a metro tunnel, flight, or village with no internet. SNEHA runs locally as an independent Android app with zero cloud dependency.
                   </p>
                 </div>
               )}
@@ -1215,7 +1232,7 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
 
               {idx === 7 && (
                 <div className="p-3 bg-white dark:bg-[#1f180d] border border-[#1f1a0e] text-xs font-mono space-y-1">
-                  <strong>The Defensive Moat:</strong> SNEHA’s zero marginal compute cost enables pricing 10x lower than ChatGPT Plus (₹799/year vs ₹24,000/year) while maintaining 90%+ gross margins that venture-backed API wrappers cannot match.
+                  <strong>The Defensive Moat:</strong> Because our server costs are zero, SNEHA can charge 10 times less than ChatGPT Plus (₹799/year vs ₹24,000/year) while maintaining 90%+ pure profit margins that cloud wrappers cannot copy.
                 </div>
               )}
             </div>
@@ -1225,38 +1242,39 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
 
       {/* -------------------------------------------------------------
           BOTTOM DRAWER: JUDGE Q&A DEFENSE (SPEAKER CHEAT SHEET)
+          Written in simple, powerful English
           ------------------------------------------------------------- */}
-      <section aria-label="Judge Q&A Defense" className="max-w-6xl mx-auto px-4 sm:px-8 mt-10">
-        <div className="p-5 sm:p-6 bg-[#eedcb4] dark:bg-[#1f180d] border-4 border-[#1f1a0e] dark:border-[#eedcb4]/40 shadow-[8px_8px_0_#1f1a0e]">
-          <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+      <section aria-label="Judge Q&A Defense" className="max-w-6xl mx-auto px-2.5 sm:px-6 md:px-8 mt-6 sm:mt-10">
+        <div className="p-4 sm:p-6 bg-[#eedcb4] dark:bg-[#1f180d] border-3 sm:border-4 border-[#1f1a0e] dark:border-[#eedcb4]/40 shadow-[6px_6px_0_#1f1a0e] sm:shadow-[8px_8px_0_#1f1a0e]">
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-3 sm:mb-4">
             <div className="flex items-center gap-2">
-              <Award size={18} className="text-[#ff4a8a]" />
-              <h2 className="font-['Bowlby_One'] text-base sm:text-lg uppercase text-[#1f1a0e] dark:text-[#fdfaf2]">
-                Judge Q&amp;A Defense · Battle-Tested Answers
+              <Award size={18} className="text-[#ff4a8a] shrink-0" />
+              <h2 className="font-['Bowlby_One'] text-sm sm:text-lg uppercase text-[#1f1a0e] dark:text-[#fdfaf2]">
+                Judge Q&amp;A Defense · Clear Answers for Tough Questions
               </h2>
             </div>
-            <span className="font-mono text-xs font-bold text-[#5a4f30] dark:text-[#cdbe9e]">
-              Speaker Cheat Sheet for Tough Panel Questions
+            <span className="font-mono text-[10px] sm:text-xs font-bold text-[#5a4f30] dark:text-[#cdbe9e]">
+              Cheat Sheet for Panel Questions
             </span>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {[
               {
-                q: 'Q1. Can cheap budget phones really execute AI models without severe thermal throttling or battery drain?',
-                a: 'Yes. SNEHA does not run a bloated 7B parameter cloud model continuously. We utilize INT4 quantized Small Language Models paired with an intelligent Intent Router. For 80% of everyday actions (alarms, contacts, notes, app automation), execution takes under 100ms and immediately idles the neural engine, consuming less battery than scrolling a social media feed.'
+                q: 'Q1. Can a cheap ₹10,000 phone really run an AI without heating up or draining the battery?',
+                a: 'Yes, because SNEHA does not run a giant cloud model constantly in the background. We use tiny, compressed models paired with a smart intent router. When you ask SNEHA to take notes, set an alarm, or draft a text, it calculates the answer in less than 100 milliseconds and instantly puts the processor back to sleep. It consumes less battery than watching a 30-second YouTube reel.'
               },
               {
-                q: 'Q2. What prevents Google or Apple from expanding Gemini Nano or Apple Intelligence to cheaper phones?',
-                a: 'Structural business disincentives. Google generates over $200 Billion annually from cloud search ads. Their business model requires capturing user telemetry, voice queries, and shopping intents in the cloud to profile users. SNEHA is architecturally zero-telemetry and runs 100% offline. Google cannot eliminate cloud tracking without cannibalizing their core ad revenue.'
+                q: 'Q2. What stops Google or Apple from bringing this to cheaper phones and crushing you?',
+                a: 'Their business model stops them. Google makes over $200 Billion a year from cloud search ads. To sell targeted ads, Google needs your search queries and voice notes sent to their cloud servers. SNEHA is built to be 100% offline with zero cloud tracking. Google cannot copy our zero-cloud model without hurting their own advertising business.'
               },
               {
-                q: 'Q3. Why distribute as a sideloaded APK instead of launching exclusively on the Google Play Store?',
-                a: 'Two strategic reasons: 1) Economics: Google Play extracts a mandatory 15% to 30% toll on every subscription. By distributing directly, we pass 100% of those savings to Indian students and founders at ₹143/mo and ₹799/yr. 2) Speed of Innovation: Direct APK distribution enables instant hotfixes without multi-day Play Store review delays. We will list on Google Play in Phase 2 for mainstream trust.'
+                q: 'Q3. Why are you distributing as an APK download instead of putting it on the Google Play Store?',
+                a: 'Two reasons: 1) The 30% Google Tax: Google forces apps to give them 30% of every subscription. By distributing directly, we keep our costs ultra-low and pass those savings to students at ₹143/month and ₹799/year. 2) Speed of Updates: We can ship instant fixes to users without waiting days for app store approvals. Once we have strong brand loyalty, we will launch on the Play Store too.'
               },
               {
-                q: 'Q4. How will you prevent software piracy or unauthorized APK copying?',
-                a: 'Each SNEHA install generates a device-unique cryptographic Android Keystore token bound to hardware identifiers. Paid subscriptions issue a signed, offline-validating time-locked license certificate that cryptographically binds to the specific device without needing persistent cloud phone-home verification.'
+                q: 'Q4. What stops someone from copying your APK file and sharing it for free without paying?',
+                a: 'Every time SNEHA is installed, it creates a unique digital fingerprint bound to that specific phone’s hardware chip (using Android Keystore). When a user buys a pass, our system issues a cryptographically signed license file that only works on their specific phone. If someone copies the APK file to a different phone, it refuses to unlock without a new license.'
               }
             ].map((item, qIdx) => {
               const isExpanded = expandedFaqIndex === qIdx;
@@ -1266,14 +1284,15 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
                   className="bg-white dark:bg-[#271f13] border-2 border-[#1f1a0e] transition-all"
                 >
                   <button
+                    type="button"
                     onClick={() => setExpandedFaqIndex(isExpanded ? null : qIdx)}
-                    className="w-full p-3 text-left font-['Bowlby_One'] text-xs sm:text-sm uppercase flex items-center justify-between gap-3 cursor-pointer hover:bg-[#eedcb4]/40"
+                    className="w-full p-2.5 sm:p-3 text-left font-['Bowlby_One'] text-xs sm:text-sm uppercase flex items-center justify-between gap-2 sm:gap-3 cursor-pointer hover:bg-[#eedcb4]/40"
                   >
-                    <span>{item.q}</span>
+                    <span className="leading-snug">{item.q}</span>
                     {isExpanded ? <ChevronUp size={16} className="shrink-0" /> : <ChevronDown size={16} className="shrink-0" />}
                   </button>
                   {isExpanded && (
-                    <div className="px-3 pb-3 pt-1 border-t border-[#1f1a0e]/15 font-['Crimson_Pro'] italic text-xs sm:text-sm text-[#2a2515] dark:text-[#cdbe9e] leading-relaxed">
+                    <div className="px-2.5 pb-2.5 pt-1 sm:px-3 sm:pb-3 border-t border-[#1f1a0e]/15 font-['Crimson_Pro'] italic text-xs sm:text-sm text-[#2a2515] dark:text-[#cdbe9e] leading-relaxed">
                       {item.a}
                     </div>
                   )}
@@ -1288,4 +1307,3 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
 };
 
 export default PitchDeck;
-

@@ -949,9 +949,12 @@ export default function App() {
           </div>
         </div>
 
-        {/* Menu Drawer - full overlay, matches website style */}
+        {/* Menu Drawer - full overlay with scrollbar on mobile screens */}
         {menuOpen && (
-          <div ref={menuRef} className="absolute top-full left-0 right-0 bg-[#f5ecd4] border-b-4 border-[#1f1a0e] shadow-2xl z-50 animate-[fade-in_0.2s_ease-out]">
+          <div
+            ref={menuRef}
+            className="absolute top-full left-0 right-0 bg-[#f5ecd4] dark:bg-[#1a140b] border-b-4 border-[#1f1a0e] dark:border-[#eedcb4]/30 shadow-2xl z-50 animate-[fade-in_0.2s_ease-out] max-h-[82vh] overflow-y-auto overscroll-contain"
+          >
             <div className="flex flex-col">
               <button onClick={() => { setActiveTab('pitch-deck'); setMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] bg-[#eedcb4]/40 hover:bg-[#ff4a8a] hover:text-[#f5ecd4] transition-all flex items-center justify-between">
                 <div className="flex items-center gap-2">

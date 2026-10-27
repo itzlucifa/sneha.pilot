@@ -20,8 +20,8 @@ describe('PitchDeck Component', () => {
 
     // Slide 01 title & content
     expect(screen.getByText(/The On-Device AI Revolution/i)).toBeInTheDocument();
-    expect(screen.getByText(/₹0 Marginal Cost/i)).toBeInTheDocument();
-    expect(screen.getByText(/100% Privacy/i)).toBeInTheDocument();
+    expect(screen.getByText(/₹0 Server Bills/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /100% Private/i })).toBeInTheDocument();
   });
 
   it('navigates through slides using Next and Prev buttons', () => {
@@ -37,8 +37,8 @@ describe('PitchDeck Component', () => {
     // Advance to Slide 02
     fireEvent.click(nextBtn);
     expect(screen.getByText(/SLIDE 02 \/ 10/i)).toBeInTheDocument();
-    expect(screen.getByText(/The Fatal Cloud AI Trap/i)).toBeInTheDocument();
-    expect(screen.getByText(/GPU Bankruptcy/i)).toBeInTheDocument();
+    expect(screen.getByText(/Why Cloud AI is Broken Today/i)).toBeInTheDocument();
+    expect(screen.getByText(/Burning Cash on Servers/i)).toBeInTheDocument();
     expect(prevBtn).not.toBeDisabled();
 
     // Advance to Slide 03
@@ -60,8 +60,8 @@ describe('PitchDeck Component', () => {
     fireEvent.click(slide07Btn);
 
     expect(screen.getByText(/SLIDE 07 \/ 10/i)).toBeInTheDocument();
-    expect(screen.getByText(/90%\+ Gross Margin Economics/i)).toBeInTheDocument();
-    expect(screen.getByText(/Interactive Financial & Unit Economics Simulator:/i)).toBeInTheDocument();
+    expect(screen.getByText(/90%\+ Pure Profit Margins/i)).toBeInTheDocument();
+    expect(screen.getByText(/Interactive Profit Simulator:/i)).toBeInTheDocument();
   });
 
   it('updates financial calculations dynamically when adjusting the simulator slider', () => {
@@ -75,7 +75,7 @@ describe('PitchDeck Component', () => {
     expect(slider).toBeInTheDocument();
 
     // Default 50,000 users
-    expect(screen.getByText(/50,000 Users/i)).toBeInTheDocument();
+    expect(screen.getByText(/(50,000|50,000) Users/i)).toBeInTheDocument();
 
     // Slide to 100,000 users
     fireEvent.change(slider, { target: { value: '100000' } });
@@ -99,14 +99,14 @@ describe('PitchDeck Component', () => {
     render(<PitchDeck onNavigateTab={handleNavigate} />);
 
     const q1Button = screen.getByRole('button', {
-      name: /Can cheap budget phones really execute AI models without severe thermal throttling or battery drain\?/i
+      name: /Can a cheap ₹10,000 phone really run an AI without heating up or draining the battery\?/i
     });
     expect(q1Button).toBeInTheDocument();
 
     // Click to expand
     fireEvent.click(q1Button);
     expect(
-      screen.getByText(/We utilize INT4 quantized Small Language Models paired with an intelligent Intent Router/i)
+      screen.getByText(/We use tiny, compressed models paired with a smart intent router/i)
     ).toBeInTheDocument();
   });
 
@@ -117,7 +117,7 @@ describe('PitchDeck Component', () => {
     // Jump to Slide 05 (Live Proof)
     fireEvent.click(screen.getByText('05'));
 
-    const apkHubBtn = screen.getByRole('button', { name: /APK Sideload Hub →/i });
+    const apkHubBtn = screen.getByRole('button', { name: /APK Download Hub →/i });
     fireEvent.click(apkHubBtn);
     expect(handleNavigate).toHaveBeenCalledWith('download');
 
