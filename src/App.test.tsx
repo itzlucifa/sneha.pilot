@@ -31,6 +31,15 @@ describe('SNEHA Pilot Distribution App', () => {
       expect(screen.getByText(/Overall Rating \(1 to 5\) \*/i)).toBeInTheDocument();
     });
 
+    it('switches to Investor Pitch Deck tab and displays presentation canvas', async () => {
+      render(<App />);
+      const pitchDeckHeaderBtn = screen.getByTitle('Open Investor Pitch Deck');
+      fireEvent.click(pitchDeckHeaderBtn);
+
+      expect(screen.getByText(/The On-Device AI Revolution/i)).toBeInTheDocument();
+      expect(screen.getByText(/SLIDE 01 \/ 10/i)).toBeInTheDocument();
+    });
+
     it('switches to Download APK tab and displays download cards and sideload uploader', async () => {
       render(<App />);
       const hamburger = screen.getByLabelText('Toggle menu');

@@ -44,7 +44,8 @@ import {
   DownloadCloud,
   Trash2,
   Search,
-  Filter
+  Filter,
+  Presentation
 } from 'lucide-react';
 import {
   supabaseInsert,
@@ -63,6 +64,7 @@ import {
   DeviceInspector,
   AdminAnalytics,
   FeedbackStatusBadge,
+  PitchDeck,
 } from './components';
 
 // Reusable Copyable Badge with instant feedback
@@ -174,7 +176,7 @@ export class ErrorBoundary extends React.Component<
 }
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'pilot-site' | 'in-app-feedback' | 'privacy' | 'audit' | 'faq' | 'download' | 'compatibility' | 'changelog' | 'admin'>('pilot-site');
+  const [activeTab, setActiveTab] = useState<'pilot-site' | 'in-app-feedback' | 'privacy' | 'audit' | 'faq' | 'download' | 'compatibility' | 'changelog' | 'admin' | 'pitch-deck'>('pilot-site');
   const [viewportMode, setViewportMode] = useState<'desktop' | 'tablet' | 'mobile' | 'compact'>('desktop');
   const [menuOpen, setMenuOpen] = useState(false);
   const [darkMode, setDarkMode] = useState<boolean>(() => {
@@ -910,6 +912,20 @@ export default function App() {
             >
               SNEHA.4U
             </button>
+            <button
+              type="button"
+              onClick={() => { setActiveTab('pitch-deck'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`px-2.5 py-1 border-2 border-[#1f1a0e] font-['Bowlby_One'] text-xs uppercase tracking-wider transition-all cursor-pointer shadow-[2px_2px_0_#1f1a0e] flex items-center gap-1.5 ${
+                activeTab === 'pitch-deck'
+                  ? 'bg-[#10b981] text-white'
+                  : 'bg-[#0e4dff] text-white hover:bg-[#ff4a8a] hover:text-[#1f1a0e]'
+              }`}
+              title="Open Investor Pitch Deck"
+            >
+              <Presentation size={13} className="shrink-0" />
+              <span>Pitch Deck</span>
+              <span className="hidden sm:inline-block text-[9px] bg-[#1f1a0e] text-[#f5ecd4] px-1 py-0.2">2026</span>
+            </button>
           </div>
 
           {/* Hamburger Toggle - visible on all screens, opens drawer */}
@@ -937,6 +953,13 @@ export default function App() {
         {menuOpen && (
           <div ref={menuRef} className="absolute top-full left-0 right-0 bg-[#f5ecd4] border-b-4 border-[#1f1a0e] shadow-2xl z-50 animate-[fade-in_0.2s_ease-out]">
             <div className="flex flex-col">
+              <button onClick={() => { setActiveTab('pitch-deck'); setMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] bg-[#eedcb4]/40 hover:bg-[#ff4a8a] hover:text-[#f5ecd4] transition-all flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Presentation size={18} />
+                  <span>Investor Pitch Deck</span>
+                </div>
+                <span className="text-[10px] font-mono uppercase bg-[#10b981] text-white px-2 py-0.5 border border-[#1f1a0e]">10 Slides · 90% Margin</span>
+              </button>
               <button onClick={() => { setActiveTab('pilot-site'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#ff4a8a] hover:text-[#f5ecd4] transition-all">
                 1. Pilot Site
               </button>
@@ -1039,6 +1062,14 @@ export default function App() {
                     >
                       Join Free Pilot →
                     </a>
+                    <button
+                      type="button"
+                      onClick={() => { setActiveTab('pitch-deck'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                      className="px-4 py-3 bg-[#0e4dff] text-white font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] hover:bg-[#1f1a0e] hover:text-[#f5ecd4] transition-all cursor-pointer flex items-center gap-1.5"
+                    >
+                      <Presentation size={13} />
+                      <span>Investor Pitch Deck</span>
+                    </button>
                     <a
                       href="#pricing"
                       className="px-4 py-3 bg-[#eedcb4] text-[#1f1a0e] font-bold text-xs uppercase tracking-wider border-2 border-[#1f1a0e] shadow-[3px_3px_0_#1f1a0e] hover:bg-[#1f1a0e] hover:text-[#f5ecd4] transition-all"
@@ -1733,6 +1764,11 @@ export default function App() {
                   <div>
                     <h5 className="font-bold text-[11px] text-[#ff4a8a] tracking-widest uppercase mb-3">// PILOT RESOURCES</h5>
                     <ul className="space-y-1.5 text-[#eedcb4]">
+                      <li>
+                        <button onClick={() => { setActiveTab('pitch-deck'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="hover:text-[#ff4a8a] transition-colors text-left flex items-center gap-1 text-[#ff7028] font-bold">
+                          <span>Investor Pitch Deck (2026)</span>
+                        </button>
+                      </li>
                       <li>
                         <button onClick={() => setActiveTab('in-app-feedback')} className="hover:text-[#ff4a8a] transition-colors text-left">
                           Submit Feedback Form
@@ -2909,6 +2945,16 @@ export default function App() {
               </div>
             )}
           </div>
+        )}
+
+        {/* Tab 10: Venture Investor Pitch Deck */}
+        {activeTab === 'pitch-deck' && (
+          <PitchDeck
+            onNavigateTab={(tab) => {
+              setActiveTab(tab);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+          />
         )}
         </ErrorBoundary>
       </main>

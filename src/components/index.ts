@@ -15,3 +15,6 @@ export type { AdminAnalyticsProps } from './AdminAnalytics';
 
 export { FeedbackStatusBadge } from './FeedbackStatusBadge';
 export type { FeedbackStatusBadgeProps, FeedbackTriageStatus } from './FeedbackStatusBadge';
+
+export { PitchDeck } from './PitchDeck';
+export type { PitchDeckProps } from './PitchDeck';
