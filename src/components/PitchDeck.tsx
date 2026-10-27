@@ -125,6 +125,114 @@ const SLIDES: SlideMeta[] = [
   }
 ];
 
+export interface SlideQaItem {
+  q: string;
+  a: string;
+}
+
+export const SLIDE_QA_DEFENSE: Record<number, SlideQaItem[]> = {
+  0: [ // Slide 01: Vision & Mission
+    {
+      q: 'Q1. Is an on-device AI companion really a venture-scale business, or just a small phone utility app?',
+      a: 'This is the biggest architectural shift in mobile software since apps moved to the cloud. Over 1 Billion people want private, instant assistance with their daily calls, notes, and tasks, but refuse to send their private life to corporate cloud servers. By owning the on-device AI assistant layer on everyday phones, SNEHA becomes the default operating system companion for personal productivity across India and emerging markets.'
+    },
+    {
+      q: 'Q2. Why do you call it an "AI Companion" instead of just an AI tool or chatbot?',
+      a: 'Tools only work when you open them and type into a box. SNEHA is a companion because it understands on-device context: it manages alarms, looks up contacts, notes your schedule, and works completely offline without snooping. That emotional utility and everyday convenience turns an optional ₹66/month tool into an indispensable daily habit.'
+    }
+  ],
+  1: [ // Slide 02: Why Cloud AI is Broken
+    {
+      q: 'Q1. Don’t giants like Microsoft and Google have infinite cash to subsidize cloud server costs forever?',
+      a: 'No company can subsidize negative margins indefinitely at mass scale. Microsoft Copilot reportedly loses up to $20 per user per month on heavy usage. As AI shifts from novelty to continuous daily workflows, server electricity bills grow exponentially. Cloud AI apps are inevitably forced to either insert intrusive ads, degrade response speeds, or hike prices. SNEHA’s marginal compute cost is ₹0 from day one.'
+    },
+    {
+      q: 'Q2. Do everyday Indian users actually care about privacy, or is that only a concern for tech geeks?',
+      a: 'Privacy in India is rapidly becoming the #1 buying factor. People routinely see their private WhatsApp chats or search queries turn into creepy Instagram ads 10 minutes later. When we tell users: "SNEHA literally cannot see your data because it has zero servers to upload to", the relief and conversion is instantaneous.'
+    }
+  ],
+  2: [ // Slide 03: How SNEHA Works (Architecture)
+    {
+      q: 'Q1. Can a cheap ₹10,000 phone with 4GB RAM really run an AI without lagging or overheating?',
+      a: 'Yes, because SNEHA does not run a giant 70-billion parameter cloud model. We use INT4 quantized Small Language Models paired with an intelligent local Intent Router. For 80% of daily actions (setting alarms, looking up contacts, drafting quick messages, summarizing notes), execution takes under 100 milliseconds and immediately idles the processor. It uses less battery than watching a 30-second YouTube reel.'
+    },
+    {
+      q: 'Q2. What happens when a user asks an extremely complex question that requires live web knowledge?',
+      a: 'SNEHA handles all daily device actions, personal organization, and local reasoning completely on-device. For broad web queries, we provide an optional, user-permissioned web lookup that strips all personal identifiers before fetching public facts, preserving 100% privacy.'
+    }
+  ],
+  3: [ // Slide 04: The Market Timing (Why Now in 2026?)
+    {
+      q: 'Q1. What stops Google from bringing Gemini Nano to budget ₹10,000 Android phones next year?',
+      a: 'Google’s core business model is a massive conflict of interest. Google makes over $200 Billion annually from cloud advertising. To sell targeted ads, Google must capture your search queries, location, and shopping intents on their cloud servers. SNEHA is architecturally zero-telemetry and runs 100% offline. Google cannot eliminate cloud tracking on budget phones without cannibalizing their own advertising machine.'
+    },
+    {
+      q: 'Q2. Apple is already marketing privacy heavily. Can’t Apple win the private AI market?',
+      a: 'Apple Intelligence requires an iPhone 15 Pro or 16, which costs ₹80,000 to ₹1,40,000. In India, less than 3% of smartphone users own these devices. Over 94% of India uses Android. Apple will never build software for ₹12,000 Xiaomi, Realme, or Samsung phones. That entire 600-million user market belongs to SNEHA.'
+    }
+  ],
+  4: [ // Slide 05: Real Working Code (Code Reality & Live Proof)
+    {
+      q: 'Q1. How do we know SNEHA is actually running locally and not secretly calling a cloud API in the background?',
+      a: 'You can test it live right now. Put any phone running SNEHA into Airplane Mode with Wi-Fi, Bluetooth, and mobile data turned completely off. Ask SNEHA to process intents, summarize notes, or answer prompts. It responds instantaneously. Furthermore, our entire binary has been audited by packet-sniffers: there are zero telemetry packages or analytics SDKs.'
+    },
+    {
+      q: 'Q2. Why is the download size only 6.2 MB if it includes an AI engine?',
+      a: 'The 6.2 MB initial APK is the lightning-fast installation wrapper containing the native Android intent engine and sideloading manager. Upon first launch, it seamlessly unpacks the optimized local quantized neural runtime directly into internal app storage, ensuring the initial APK is lightweight enough to share over WhatsApp.'
+    }
+  ],
+  5: [ // Slide 06: Market Size (TAM · SAM · SOM)
+    {
+      q: 'Q1. Do Indian consumers and students actually pay for software, or do they only expect everything for free?',
+      a: 'Indian consumers happily pay when pricing matches micro-budget reality and solves an immediate pain. Look at YouTube Premium, Spotify India, and OTT subscriptions: millions of Indian students pay ₹89–₹149/month. At ₹143/month or ₹799/year (effective ₹2.20/day), SNEHA is an impulse purchase cheaper than a cup of chai. We aren\'t asking for ₹2,000/month like ChatGPT Plus.'
+    },
+    {
+      q: 'Q2. How will you prevent user churn during college exam breaks or vacations?',
+      a: 'Students actually use SNEHA more during exams because it works offline in libraries, study halls, and dorm rooms without internet distractions. Furthermore, our 1-Year Founder Pass (₹799) locks in annual upfront revenue, completely eliminating monthly churn risk.'
+    }
+  ],
+  6: [ // Slide 07: Business Model & 90%+ Profit Margins
+    {
+      q: 'Q1. Why are your gross margins above 90% when most AI startups struggle at 20% to 40% margins?',
+      a: 'In cloud AI, every prompt burns money on AWS or OpenAI GPUs. When a user asks 500 questions a month, the cloud startup pays ₹100 in server bills. With SNEHA, the user\'s phone provides the processor and battery. Our server cost per question is exactly ₹0. We only pay standard 2% payment gateway fees and negligible CDN bandwidth for the one-time APK download. That is why our gross margin is mathematically locked above 90%.'
+    },
+    {
+      q: 'Q2. Why offer a ₹143 monthly tier if your goal is annual subscriptions?',
+      a: 'The ₹143 tier removes all psychological friction. A student can test SNEHA for one month with zero risk. Once they experience how fast and reliable offline AI is, our in-app founder upgrade offers the full annual pass for just ₹799, converting 40%+ of trial users into high-LTV annual subscribers.'
+    }
+  ],
+  7: [ // Slide 08: Why We Win (Competitive Moat)
+    {
+      q: 'Q1. If Meta releases a free open-source Llama model on Android, won’t anyone be able to clone SNEHA?',
+      a: 'A raw AI model is not a consumer product. Raw open-source models do not have Android system permissions, intent hooks, battery-saving sleep cycles, or hardware-optimized quantization for low-RAM chipsets. SNEHA is not just a model; it is a full native companion deeply integrated with Android alarms, contacts, notifications, and device controls. Building that native bridge takes months of OEM-specific engineering.'
+    },
+    {
+      q: 'Q2. What happens if device manufacturers like Samsung build their own local AI into One UI?',
+      a: 'Samsung only adds premium features to their S-series flagships (₹70,000+). Their budget Galaxy M-series and A-series phones get stripped-down software. SNEHA is brand-agnostic: a user keeps their SNEHA companion whether they switch from a Xiaomi to a Samsung or a OnePlus.'
+    }
+  ],
+  8: [ // Slide 09: Growth Strategy (Go-To-Market)
+    {
+      q: 'Q1. Won’t everyday users be scared of installing an APK from outside the Google Play Store?',
+      a: 'We designed an intuitive, 3-step Sideloading Wizard directly on our website that walks users through OEM-specific security prompts (Xiaomi, Samsung, Pixel, OnePlus). Millions of Indians already sideload apps for gaming, BGMI updates, and testing. Furthermore, our campus ambassador ground game uses trusted peer-to-peer sharing: when a classmate shares the APK over WhatsApp and shows it running in airplane mode, all hesitation disappears.'
+    },
+    {
+      q: 'Q2. How do you plan to scale beyond tech-savvy college students?',
+      a: 'Phase 2 introduces a Google Play Store release for mainstream consumer trust once our brand is established. Phase 3 focuses on OEM partnerships: pre-installing SNEHA on budget handsets (Lava, Micromax) and refurbished devices, offering phone brands a private AI selling point out of the box.'
+    }
+  ],
+  9: [ // Slide 10: The Investment Ask & Growth Targets
+    {
+      q: 'Q1. Is ₹25 Lakhs really enough capital to achieve 50,000 paid subscribers?',
+      a: 'Yes, because our Customer Acquisition Cost (CAC) is under ₹45 per user thanks to college ambassador referral loops and viral offline demonstrations. More importantly, we do not have to spend ₹10 Lakhs a month on server GPU bills. Every rupee of this seed capital goes toward software optimization and direct student acquisition, giving us an 18-month operational runway to reach cash-flow positivity.'
+    },
+    {
+      q: 'Q2. What is your expected timeline to become profitable?',
+      a: 'Because of our 90%+ gross margins, our break-even point is just 6,500 active paid subscribers (approx. ₹50 Lakhs annual run-rate). At our projected growth rate, we achieve full operational profitability by Month 7 post-commercial launch.'
+    }
+  ]
+};
+
 export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
   // Presentation Controls
   const [viewMode, setViewMode] = useState<'presentation' | 'memo'>('presentation');
@@ -144,8 +252,13 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
   // Interactive Hardware Exclusion Selector
   const [selectedHardwareFilter, setSelectedHardwareFilter] = useState<'all' | 'flagship' | 'budget'>('all');
 
-  // Judge Q&A Defense Drawer
-  const [expandedFaqIndex, setExpandedFaqIndex] = useState<number | null>(null);
+  // Judge Q&A Defense Drawer (default first item open for instant visibility)
+  const [expandedFaqIndex, setExpandedFaqIndex] = useState<number | null>(0);
+
+  // Auto-expand first Q&A whenever slide changes
+  useEffect(() => {
+    setExpandedFaqIndex(0);
+  }, [currentSlide]);
 
   // Touch coordinates for mobile swipe
   const touchStartXRef = useRef<number>(0);
@@ -1235,73 +1348,76 @@ export const PitchDeck: React.FC<PitchDeckProps> = ({ onNavigateTab }) => {
                   <strong>The Defensive Moat:</strong> Because our server costs are zero, SNEHA can charge 10 times less than ChatGPT Plus (₹799/year vs ₹24,000/year) while maintaining 90%+ pure profit margins that cloud wrappers cannot copy.
                 </div>
               )}
+
+              {/* Dynamic Slide-Specific Judge Q&A Defense for Memo View */}
+              {SLIDE_QA_DEFENSE[idx] && (
+                <div className="mt-4 pt-3 border-t-2 border-dashed border-[#1f1a0e]/20">
+                  <div className="font-['Bowlby_One'] text-[11px] uppercase text-[#0e4dff] mb-2 flex items-center gap-1.5">
+                    <Award size={13} className="text-[#ff4a8a]" />
+                    <span>Panel Objection Defense // Section {slide.number}:</span>
+                  </div>
+                  <div className="space-y-2">
+                    {SLIDE_QA_DEFENSE[idx].map((qa, qIndex) => (
+                      <div key={qIndex} className="p-2.5 bg-white dark:bg-[#271f13] border border-[#1f1a0e] text-xs">
+                        <strong className="block font-['Bowlby_One'] text-[#1f1a0e] dark:text-[#fdfaf2] mb-1">{qa.q}</strong>
+                        <p className="font-['Crimson_Pro'] italic text-[#2a2515] dark:text-[#cdbe9e] leading-relaxed">{qa.a}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
       )}
 
       {/* -------------------------------------------------------------
-          BOTTOM DRAWER: JUDGE Q&A DEFENSE (SPEAKER CHEAT SHEET)
-          Written in simple, powerful English
+          BOTTOM DRAWER: SLIDE-SPECIFIC JUDGE Q&A DEFENSE (SPEAKER CHEAT SHEET)
+          Dynamically updates to show the exact objections & defense for currentSlide
           ------------------------------------------------------------- */}
-      <section aria-label="Judge Q&A Defense" className="max-w-6xl mx-auto px-2.5 sm:px-6 md:px-8 mt-6 sm:mt-10">
-        <div className="p-4 sm:p-6 bg-[#eedcb4] dark:bg-[#1f180d] border-3 sm:border-4 border-[#1f1a0e] dark:border-[#eedcb4]/40 shadow-[6px_6px_0_#1f1a0e] sm:shadow-[8px_8px_0_#1f1a0e]">
-          <div className="flex flex-wrap items-center justify-between gap-2 mb-3 sm:mb-4">
-            <div className="flex items-center gap-2">
-              <Award size={18} className="text-[#ff4a8a] shrink-0" />
-              <h2 className="font-['Bowlby_One'] text-sm sm:text-lg uppercase text-[#1f1a0e] dark:text-[#fdfaf2]">
-                Judge Q&amp;A Defense · Clear Answers for Tough Questions
-              </h2>
+      {viewMode === 'presentation' && (
+        <section aria-label="Judge Q&A Defense" className="max-w-6xl mx-auto px-2.5 sm:px-6 md:px-8 mt-6 sm:mt-10">
+          <div className="p-4 sm:p-6 bg-[#eedcb4] dark:bg-[#1f180d] border-3 sm:border-4 border-[#1f1a0e] dark:border-[#eedcb4]/40 shadow-[6px_6px_0_#1f1a0e] sm:shadow-[8px_8px_0_#1f1a0e]">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-3 sm:mb-4">
+              <div className="flex items-center gap-2">
+                <Award size={18} className="text-[#ff4a8a] shrink-0" />
+                <h2 className="font-['Bowlby_One'] text-sm sm:text-base uppercase text-[#1f1a0e] dark:text-[#fdfaf2]">
+                  Slide {activeSlideMeta.number} Judge Defense · {activeSlideMeta.badge}
+                </h2>
+              </div>
+              <span className="font-mono text-[10px] sm:text-xs font-bold text-[#0e4dff] dark:text-[#38bdf8]">
+                Panel Objection Cheat Sheet for Slide {activeSlideMeta.number}
+              </span>
             </div>
-            <span className="font-mono text-[10px] sm:text-xs font-bold text-[#5a4f30] dark:text-[#cdbe9e]">
-              Cheat Sheet for Panel Questions
-            </span>
-          </div>
 
-          <div className="space-y-2 sm:space-y-3">
-            {[
-              {
-                q: 'Q1. Can a cheap ₹10,000 phone really run an AI without heating up or draining the battery?',
-                a: 'Yes, because SNEHA does not run a giant cloud model constantly in the background. We use tiny, compressed models paired with a smart intent router. When you ask SNEHA to take notes, set an alarm, or draft a text, it calculates the answer in less than 100 milliseconds and instantly puts the processor back to sleep. It consumes less battery than watching a 30-second YouTube reel.'
-              },
-              {
-                q: 'Q2. What stops Google or Apple from bringing this to cheaper phones and crushing you?',
-                a: 'Their business model stops them. Google makes over $200 Billion a year from cloud search ads. To sell targeted ads, Google needs your search queries and voice notes sent to their cloud servers. SNEHA is built to be 100% offline with zero cloud tracking. Google cannot copy our zero-cloud model without hurting their own advertising business.'
-              },
-              {
-                q: 'Q3. Why are you distributing as an APK download instead of putting it on the Google Play Store?',
-                a: 'Two reasons: 1) The 30% Google Tax: Google forces apps to give them 30% of every subscription. By distributing directly, we keep our costs ultra-low and pass those savings to students at ₹143/month and ₹799/year. 2) Speed of Updates: We can ship instant fixes to users without waiting days for app store approvals. Once we have strong brand loyalty, we will launch on the Play Store too.'
-              },
-              {
-                q: 'Q4. What stops someone from copying your APK file and sharing it for free without paying?',
-                a: 'Every time SNEHA is installed, it creates a unique digital fingerprint bound to that specific phone’s hardware chip (using Android Keystore). When a user buys a pass, our system issues a cryptographically signed license file that only works on their specific phone. If someone copies the APK file to a different phone, it refuses to unlock without a new license.'
-              }
-            ].map((item, qIdx) => {
-              const isExpanded = expandedFaqIndex === qIdx;
-              return (
-                <div
-                  key={qIdx}
-                  className="bg-white dark:bg-[#271f13] border-2 border-[#1f1a0e] transition-all"
-                >
-                  <button
-                    type="button"
-                    onClick={() => setExpandedFaqIndex(isExpanded ? null : qIdx)}
-                    className="w-full p-2.5 sm:p-3 text-left font-['Bowlby_One'] text-xs sm:text-sm uppercase flex items-center justify-between gap-2 sm:gap-3 cursor-pointer hover:bg-[#eedcb4]/40"
+            <div className="space-y-2 sm:space-y-3">
+              {(SLIDE_QA_DEFENSE[currentSlide] || []).map((item, qIdx) => {
+                const isExpanded = expandedFaqIndex === qIdx;
+                return (
+                  <div
+                    key={qIdx}
+                    className="bg-white dark:bg-[#271f13] border-2 border-[#1f1a0e] transition-all"
                   >
-                    <span className="leading-snug">{item.q}</span>
-                    {isExpanded ? <ChevronUp size={16} className="shrink-0" /> : <ChevronDown size={16} className="shrink-0" />}
-                  </button>
-                  {isExpanded && (
-                    <div className="px-2.5 pb-2.5 pt-1 sm:px-3 sm:pb-3 border-t border-[#1f1a0e]/15 font-['Crimson_Pro'] italic text-xs sm:text-sm text-[#2a2515] dark:text-[#cdbe9e] leading-relaxed">
-                      {item.a}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+                    <button
+                      type="button"
+                      onClick={() => setExpandedFaqIndex(isExpanded ? null : qIdx)}
+                      className="w-full p-2.5 sm:p-3 text-left font-['Bowlby_One'] text-xs sm:text-sm uppercase flex items-center justify-between gap-2 sm:gap-3 cursor-pointer hover:bg-[#eedcb4]/40"
+                    >
+                      <span className="leading-snug">{item.q}</span>
+                      {isExpanded ? <ChevronUp size={16} className="shrink-0" /> : <ChevronDown size={16} className="shrink-0" />}
+                    </button>
+                    {isExpanded && (
+                      <div className="px-2.5 pb-2.5 pt-1 sm:px-3 sm:pb-3 border-t border-[#1f1a0e]/15 font-['Crimson_Pro'] italic text-xs sm:text-sm text-[#2a2515] dark:text-[#cdbe9e] leading-relaxed">
+                        {item.a}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   );
 };

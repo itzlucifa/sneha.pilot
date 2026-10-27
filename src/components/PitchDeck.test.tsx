@@ -82,7 +82,7 @@ describe('PitchDeck Component', () => {
     expect(screen.getByText(/(100,000|1,00,000) Users/i)).toBeInTheDocument();
   });
 
-  it('switches to Executive Investor Memo view and renders continuous sections', () => {
+  it('switches to Executive Investor Memo view and renders continuous sections and slide-specific Q&A', () => {
     const handleNavigate = vi.fn();
     render(<PitchDeck onNavigateTab={handleNavigate} />);
 
@@ -92,21 +92,41 @@ describe('PitchDeck Component', () => {
     // Masthead in Memo mode
     expect(screen.getByText(/INVESTMENT MEMORANDUM \/\/ CONFIDENTIAL/i)).toBeInTheDocument();
     expect(screen.getByText(/SNEHA: The On-Device AI Investment Memo/i)).toBeInTheDocument();
+    expect(screen.getByText(/Panel Objection Defense \/\/ Section 01:/i)).toBeInTheDocument();
   });
 
-  it('expands Judge Q&A Defense items on click', () => {
+  it('updates Judge Q&A Defense items dynamically for each slide', () => {
     const handleNavigate = vi.fn();
     render(<PitchDeck onNavigateTab={handleNavigate} />);
 
-    const q1Button = screen.getByRole('button', {
-      name: /Can a cheap ₹10,000 phone really run an AI without heating up or draining the battery\?/i
-    });
-    expect(q1Button).toBeInTheDocument();
-
-    // Click to expand
-    fireEvent.click(q1Button);
+    // Slide 01 Q&A Defense is rendered by default
+    expect(screen.getByText(/Slide 01 Judge Defense · VISION & MISSION/i)).toBeInTheDocument();
     expect(
-      screen.getByText(/We use tiny, compressed models paired with a smart intent router/i)
+      screen.getByText(/Is an on-device AI companion really a venture-scale business, or just a small phone utility app\?/i)
+    ).toBeInTheDocument();
+    // Default 0 index is auto-expanded
+    expect(
+      screen.getByText(/This is the biggest architectural shift in mobile software since apps moved to the cloud/i)
+    ).toBeInTheDocument();
+
+    // Advance to Slide 02
+    const nextBtn = screen.getByRole('button', { name: /Next Slide/i });
+    fireEvent.click(nextBtn);
+
+    // Slide 02 Q&A Defense updates dynamically
+    expect(screen.getByText(/Slide 02 Judge Defense · THE BIG PROBLEM/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Don’t giants like Microsoft and Google have infinite cash to subsidize cloud server costs forever\?/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/No company can subsidize negative margins indefinitely at mass scale/i)
+    ).toBeInTheDocument();
+
+    // Jump to Slide 03 (Architecture)
+    fireEvent.click(screen.getByText('03'));
+    expect(screen.getByText(/Slide 03 Judge Defense · HOW SNEHA WORKS/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Can a cheap ₹10,000 phone with 4GB RAM really run an AI without lagging or overheating\?/i)
     ).toBeInTheDocument();
   });
 
