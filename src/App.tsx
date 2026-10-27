@@ -45,8 +45,7 @@ import {
   Trash2,
   Search,
   Filter,
-  Presentation,
-  Cloud
+  Presentation
 } from 'lucide-react';
 import {
   supabaseInsert,
@@ -128,61 +127,6 @@ export function CopyableBadge({
         <Copy size={12} className="opacity-70 hover:opacity-100" />
       )}
     </button>
-  );
-}
-
-// Creative Neo-Brutalist Fluffy Cloud Badge with dynamic vector contours
-export function CloudBadge({
-  text,
-  variant,
-}: {
-  text: string;
-  variant: 'deck' | 'pricing';
-}) {
-  const isDeck = variant === 'deck';
-  const width = isDeck ? 172 : 130;
-  // Fluffy scalloped comic-book cloud path with 360-degree rounded lobes
-  const path = isDeck
-    ? 'M 14 12 A 20 20 0 0 0 49 12 A 20 20 0 0 0 84 12 A 20 20 0 0 0 119 12 A 20 20 0 0 0 154 12 A 8 8 0 0 1 154 24 A 33 33 0 0 1 107 24 A 33 33 0 0 1 61 24 A 33 33 0 0 1 14 24 A 8 8 0 0 1 14 12 Z'
-    : 'M 14 12 A 19 19 0 0 0 47 12 A 19 19 0 0 0 81 12 A 19 19 0 0 0 114 12 A 8 8 0 0 1 114 24 A 35 35 0 0 1 64 24 A 35 35 0 0 1 14 24 A 8 8 0 0 1 14 12 Z';
-
-  return (
-    <div
-      className="relative inline-flex items-center justify-center shrink-0 scale-90 sm:scale-100 origin-right transition-transform hover:scale-105"
-      style={{ filter: 'drop-shadow(2px 2px 0px #1f1a0e)' }}
-      aria-label={text}
-    >
-      <svg
-        viewBox={`0 0 ${width} 36`}
-        width={width}
-        height={36}
-        className="block pointer-events-none"
-        aria-hidden="true"
-      >
-        <path
-          d={path}
-          fill="#10b981"
-          stroke="#1f1a0e"
-          strokeWidth={2}
-          strokeLinejoin="round"
-        />
-        {/* Soft highlight arc on top puff for charming 3D cloud depth */}
-        <path
-          d={isDeck ? 'M 54 7 A 16 16 0 0 0 78 7' : 'M 52 7 A 15 15 0 0 0 74 7'}
-          fill="none"
-          stroke="#6ee7b7"
-          strokeWidth={1.5}
-          strokeLinecap="round"
-          opacity={0.85}
-        />
-      </svg>
-      <div className="absolute inset-0 flex items-center justify-center gap-1.5 text-white px-3 pointer-events-none">
-        <Cloud size={11} className="fill-white/30 text-white shrink-0 drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]" />
-        <span className="font-['Space_Grotesk'] font-bold text-[10.5px] uppercase tracking-wider text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] whitespace-nowrap">
-          {text}
-        </span>
-      </div>
-    </div>
   );
 }
 
@@ -1069,14 +1013,18 @@ export default function App() {
                   <Presentation size={18} />
                   <span>Investor Pitch Deck</span>
                 </div>
-                <CloudBadge text="10 Slides · 90% Margin" variant="deck" />
+                <span className="inline-flex items-center px-3 py-1 sm:px-3.5 sm:py-1.5 text-[11px] sm:text-xs font-black uppercase tracking-wider border-2 border-[#1f1a0e] bg-[#10b981] text-white shadow-[3px_3px_0_#1f1a0e] font-sans shrink-0">
+                  10 Slides · 90% Margin
+                </span>
               </button>
               <button onClick={(e) => { playClickSound(); triggerGeometricBlast(e.clientX, e.clientY, 8); setActiveTab('pilot-site'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#ff4a8a] hover:text-[#f5ecd4] transition-all cursor-pointer">
                 1. Pilot Site
               </button>
               <button onClick={(e) => { playPopSound(); triggerGeometricBlast(e.clientX, e.clientY, 12); setActiveTab('pilot-site'); setMenuOpen(false); setTimeout(() => { document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' }); }, 150); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#ff7028] hover:text-[#1f1a0e] transition-all flex items-center justify-between gap-2 cursor-pointer">
                 <span>Founder Pricing</span>
-                <CloudBadge text="Free Till Dec 1" variant="pricing" />
+                <span className="inline-flex items-center px-3 py-1 sm:px-3.5 sm:py-1.5 text-[11px] sm:text-xs font-black uppercase tracking-wider border-2 border-[#1f1a0e] bg-[#10b981] text-white shadow-[3px_3px_0_#1f1a0e] font-sans shrink-0">
+                  Free Till Dec 1
+                </span>
               </button>
               <button onClick={() => { setActiveTab('in-app-feedback'); setMenuOpen(false); }} className="px-5 py-4 text-left text-[#1f1a0e] font-['Bowlby_One'] text-lg border-b-3 border-[#1f1a0e] hover:bg-[#0e4dff] hover:text-white transition-all">
                 2. App-Side Feedback
