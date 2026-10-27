@@ -251,6 +251,10 @@ export default function App() {
   const [adminActiveSubTab, setAdminActiveSubTab] = useState<'signups' | 'feedback' | 'offline' | 'analytics'>('signups');
   const [adminSearchQuery, setAdminSearchQuery] = useState('');
   const [adminFeedbackRatingFilter, setAdminFeedbackRatingFilter] = useState<number | 'all'>('all');
+  const [adminSignupsPage, setAdminSignupsPage] = useState(1);
+  const [adminSignupsPageSize, setAdminSignupsPageSize] = useState<number>(50);
+  const [adminFeedbackPage, setAdminFeedbackPage] = useState(1);
+  const [adminFeedbackPageSize, setAdminFeedbackPageSize] = useState<number>(50);
   const [adminOfflineQueue, setAdminOfflineQueue] = useState<{ signups: any[]; feedback: any[] }>({ signups: [], feedback: [] });
   const [adminSyncNotice, setAdminSyncNotice] = useState('');
   const [adminRealtimeActive, setAdminRealtimeActive] = useState(true);
@@ -917,6 +921,18 @@ export default function App() {
     if (adminFeedbackRatingFilter === 'all') return true;
     return f.rating === adminFeedbackRatingFilter;
   });
+
+  const totalSignupsPages = Math.max(1, Math.ceil(filteredSignups.length / adminSignupsPageSize));
+  const paginatedSignups = filteredSignups.slice(
+    (adminSignupsPage - 1) * adminSignupsPageSize,
+    adminSignupsPage * adminSignupsPageSize
+  );
+
+  const totalFeedbackPages = Math.max(1, Math.ceil(filteredFeedback.length / adminFeedbackPageSize));
+  const paginatedFeedback = filteredFeedback.slice(
+    (adminFeedbackPage - 1) * adminFeedbackPageSize,
+    adminFeedbackPage * adminFeedbackPageSize
+  );
 
   return (
     <div className="min-h-screen bg-[#f5ecd4] text-[#1f1a0e] font-sans selection:bg-[#1f1a0e] selection:text-[#f5ecd4] relative">
@@ -2829,7 +2845,7 @@ export default function App() {
                         <input
                           type="text"
                           value={adminSearchQuery}
-                          onChange={(e) => setAdminSearchQuery(e.target.value)}
+                          onChange={(e) => { setAdminSearchQuery(e.target.value); setAdminSignupsPage(1); }}
                           placeholder="Search by name, email, or device..."
                           className="w-full p-2 bg-[#f5ecd4] border-2 border-[#1f1a0e] text-xs focus:border-[#0e4dff] focus:outline-none"
                         />
@@ -2862,7 +2878,7 @@ export default function App() {
                               </td>
                             </tr>
                           ) : (
-                            filteredSignups.map((s, idx) => (
+                            paginatedSignups.map((s, idx) => (
                               <tr key={s.id || idx} className="hover:bg-[#eedcb4]/50 transition-colors">
                                 <td className="p-2.5 border-r border-[#1f1a0e]/20 font-mono text-[10px]">
                                   {s.id && (
@@ -2884,6 +2900,69 @@ export default function App() {
                         </tbody>
                       </table>
                     </div>
+
+                    {/* Signups Pagination Bar */}
+                    {filteredSignups.length > 0 && (
+                      <div className="pt-2 flex flex-wrap items-center justify-between gap-3 text-xs border-t border-[#1f1a0e]/20">
+                        <div className="flex items-center gap-2">
+                          <span className="font-['Crimson_Pro'] italic text-[#5a4f30]">
+                            Showing {Math.min((adminSignupsPage - 1) * adminSignupsPageSize + 1, filteredSignups.length)}–{Math.min(adminSignupsPage * adminSignupsPageSize, filteredSignups.length)} of {filteredSignups.length}
+                          </span>
+                          <span className="text-[#5a4f30]">|</span>
+                          <label className="flex items-center gap-1 font-bold text-[#1f1a0e]">
+                            <span>Per page:</span>
+                            <select
+                              value={adminSignupsPageSize}
+                              onChange={(e) => { setAdminSignupsPageSize(Number(e.target.value)); setAdminSignupsPage(1); }}
+                              className="px-1.5 py-0.5 bg-[#eedcb4] border border-[#1f1a0e] font-mono text-xs cursor-pointer"
+                            >
+                              <option value={25}>25</option>
+                              <option value={50}>50</option>
+                              <option value={100}>100</option>
+                              <option value={250}>250</option>
+                              <option value={500}>500</option>
+                            </select>
+                          </label>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => setAdminSignupsPage(1)}
+                            disabled={adminSignupsPage === 1}
+                            className="px-2 py-1 bg-[#eedcb4] border border-[#1f1a0e] font-bold text-xs disabled:opacity-40 hover:bg-white transition-colors cursor-pointer"
+                          >
+                            « First
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setAdminSignupsPage((p) => Math.max(1, p - 1))}
+                            disabled={adminSignupsPage === 1}
+                            className="px-2 py-1 bg-[#eedcb4] border border-[#1f1a0e] font-bold text-xs disabled:opacity-40 hover:bg-white transition-colors cursor-pointer"
+                          >
+                            ‹ Prev
+                          </button>
+                          <span className="px-2 font-mono font-bold text-xs">
+                            {adminSignupsPage} / {totalSignupsPages}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => setAdminSignupsPage((p) => Math.min(totalSignupsPages, p + 1))}
+                            disabled={adminSignupsPage === totalSignupsPages}
+                            className="px-2 py-1 bg-[#eedcb4] border border-[#1f1a0e] font-bold text-xs disabled:opacity-40 hover:bg-white transition-colors cursor-pointer"
+                          >
+                            Next ›
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setAdminSignupsPage(totalSignupsPages)}
+                            disabled={adminSignupsPage === totalSignupsPages}
+                            className="px-2 py-1 bg-[#eedcb4] border border-[#1f1a0e] font-bold text-xs disabled:opacity-40 hover:bg-white transition-colors cursor-pointer"
+                          >
+                            Last »
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -2896,7 +2975,7 @@ export default function App() {
                         {['all', 5, 4, 3, 2, 1].map((r) => (
                           <button
                             key={r}
-                            onClick={() => setAdminFeedbackRatingFilter(r as any)}
+                            onClick={() => { setAdminFeedbackRatingFilter(r as any); setAdminFeedbackPage(1); }}
                             className={`px-2 py-0.5 text-xs font-bold border border-[#1f1a0e] uppercase transition-all cursor-pointer ${
                               adminFeedbackRatingFilter === r
                                 ? 'bg-[#ff4a8a] text-[#1f1a0e]'
@@ -2918,7 +2997,7 @@ export default function App() {
                           No reviews found matching this filter.
                         </div>
                       ) : (
-                        filteredFeedback.map((f, idx) => (
+                        paginatedFeedback.map((f, idx) => (
                           <div key={f.id || idx} className="p-4 bg-[#eedcb4]/40 border-2 border-[#1f1a0e] shadow-[2px_2px_0_#1f1a0e] space-y-2">
                             <div className="flex items-center justify-between border-b border-[#1f1a0e]/20 pb-2">
                               <div className="flex items-center gap-2">
@@ -2972,6 +3051,69 @@ export default function App() {
                         ))
                       )}
                     </div>
+
+                    {/* Feedback Reviews Pagination Bar */}
+                    {filteredFeedback.length > 0 && (
+                      <div className="pt-2 flex flex-wrap items-center justify-between gap-3 text-xs border-t border-[#1f1a0e]/20">
+                        <div className="flex items-center gap-2">
+                          <span className="font-['Crimson_Pro'] italic text-[#5a4f30]">
+                            Showing {Math.min((adminFeedbackPage - 1) * adminFeedbackPageSize + 1, filteredFeedback.length)}–{Math.min(adminFeedbackPage * adminFeedbackPageSize, filteredFeedback.length)} of {filteredFeedback.length}
+                          </span>
+                          <span className="text-[#5a4f30]">|</span>
+                          <label className="flex items-center gap-1 font-bold text-[#1f1a0e]">
+                            <span>Per page:</span>
+                            <select
+                              value={adminFeedbackPageSize}
+                              onChange={(e) => { setAdminFeedbackPageSize(Number(e.target.value)); setAdminFeedbackPage(1); }}
+                              className="px-1.5 py-0.5 bg-[#eedcb4] border border-[#1f1a0e] font-mono text-xs cursor-pointer"
+                            >
+                              <option value={25}>25</option>
+                              <option value={50}>50</option>
+                              <option value={100}>100</option>
+                              <option value={250}>250</option>
+                              <option value={500}>500</option>
+                            </select>
+                          </label>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => setAdminFeedbackPage(1)}
+                            disabled={adminFeedbackPage === 1}
+                            className="px-2 py-1 bg-[#eedcb4] border border-[#1f1a0e] font-bold text-xs disabled:opacity-40 hover:bg-white transition-colors cursor-pointer"
+                          >
+                            « First
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setAdminFeedbackPage((p) => Math.max(1, p - 1))}
+                            disabled={adminFeedbackPage === 1}
+                            className="px-2 py-1 bg-[#eedcb4] border border-[#1f1a0e] font-bold text-xs disabled:opacity-40 hover:bg-white transition-colors cursor-pointer"
+                          >
+                            ‹ Prev
+                          </button>
+                          <span className="px-2 font-mono font-bold text-xs">
+                            {adminFeedbackPage} / {totalFeedbackPages}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => setAdminFeedbackPage((p) => Math.min(totalFeedbackPages, p + 1))}
+                            disabled={adminFeedbackPage === totalFeedbackPages}
+                            className="px-2 py-1 bg-[#eedcb4] border border-[#1f1a0e] font-bold text-xs disabled:opacity-40 hover:bg-white transition-colors cursor-pointer"
+                          >
+                            Next ›
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setAdminFeedbackPage(totalFeedbackPages)}
+                            disabled={adminFeedbackPage === totalFeedbackPages}
+                            className="px-2 py-1 bg-[#eedcb4] border border-[#1f1a0e] font-bold text-xs disabled:opacity-40 hover:bg-white transition-colors cursor-pointer"
+                          >
+                            Last »
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
 

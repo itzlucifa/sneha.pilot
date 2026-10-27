@@ -37,10 +37,36 @@ export async function supabaseInsert<T = any>(table: string, data: any): Promise
 export async function supabaseSelect<T = any>(
   table: string,
   query: string = 'select=*&order=created_at.desc',
-  pin: string = 'Sneha@143'
+  pin: string = 'Sneha@143',
+  batchSize: number = 1000
 ): Promise<T[]> {
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY) throw new Error('Supabase not configured');
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${query}`, {
+
+  // If the caller explicitly supplied an arbitrary limit, execute a single direct query
+  if (query.includes('limit=')) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${query}`, {
+      method: 'GET',
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        Pragma: 'no-cache',
+        'x-admin-pin': pin,
+      },
+    });
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err || `HTTP ${res.status}`);
+    }
+    return res.json();
+  }
+
+  // PostgREST default maximum rows is 1000. Auto-paginate to fetch 100% of all rows (10,000+ scale)
+  const sep = query ? '&' : '';
+  const firstUrl = `${SUPABASE_URL}/rest/v1/${table}?${query}${sep}limit=${batchSize}&offset=0`;
+
+  const firstRes = await fetch(firstUrl, {
     method: 'GET',
     headers: {
       apikey: SUPABASE_ANON_KEY,
@@ -48,14 +74,104 @@ export async function supabaseSelect<T = any>(
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       Pragma: 'no-cache',
+      Prefer: 'count=exact',
       'x-admin-pin': pin,
     },
   });
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(err || `HTTP ${res.status}`);
+
+  if (!firstRes.ok) {
+    const err = await firstRes.text();
+    throw new Error(err || `HTTP ${firstRes.status}`);
   }
-  return res.json();
+
+  const contentRange = firstRes.headers.get('content-range') || '';
+  const firstBatch: T[] = await firstRes.json();
+  if (!Array.isArray(firstBatch)) return [];
+
+  // If the first page has fewer than batchSize rows, we already have everything
+  if (firstBatch.length < batchSize) {
+    return firstBatch;
+  }
+
+  let totalCount = -1;
+  if (contentRange && contentRange.includes('/')) {
+    const parsed = parseInt(contentRange.split('/')[1], 10);
+    if (!isNaN(parsed) && parsed >= 0) {
+      totalCount = parsed;
+    }
+  }
+
+  // Fast-path: When PostgREST provides total count in Content-Range, fetch remaining pages in parallel
+  if (totalCount > batchSize) {
+    const remainingOffsets: number[] = [];
+    for (let offset = batchSize; offset < totalCount; offset += batchSize) {
+      remainingOffsets.push(offset);
+    }
+
+    const remainingPages = await Promise.all(
+      remainingOffsets.map(async (offset) => {
+        const pageUrl = `${SUPABASE_URL}/rest/v1/${table}?${query}${sep}limit=${batchSize}&offset=${offset}`;
+        const res = await fetch(pageUrl, {
+          method: 'GET',
+          headers: {
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            Pragma: 'no-cache',
+            'x-admin-pin': pin,
+          },
+        });
+        if (!res.ok) {
+          const err = await res.text();
+          throw new Error(err || `HTTP ${res.status}`);
+        }
+        const data: T[] = await res.json();
+        return Array.isArray(data) ? data : [];
+      })
+    );
+
+    return [firstBatch, ...remainingPages].flat();
+  }
+
+  // Safe fallback: Sequential pagination loop if Content-Range header is missing or wildcard
+  const allRows: T[] = [...firstBatch];
+  let currentOffset = batchSize;
+  let hasMore = true;
+
+  while (hasMore) {
+    const pageUrl = `${SUPABASE_URL}/rest/v1/${table}?${query}${sep}limit=${batchSize}&offset=${currentOffset}`;
+    const res = await fetch(pageUrl, {
+      method: 'GET',
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        Pragma: 'no-cache',
+        'x-admin-pin': pin,
+      },
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err || `HTTP ${res.status}`);
+    }
+
+    const batch: T[] = await res.json();
+    if (!Array.isArray(batch) || batch.length === 0) {
+      break;
+    }
+
+    allRows.push(...batch);
+    if (batch.length < batchSize) {
+      hasMore = false;
+    } else {
+      currentOffset += batch.length;
+    }
+  }
+
+  return allRows;
 }
 
 // -------------------------------------------------------------

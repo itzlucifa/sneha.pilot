@@ -205,6 +205,114 @@ async function supabaseRequest(endpoint: string, options: RequestInit = {}) {
   return res.json();
 }
 
+// Auto-paginated helper for Supabase REST requests to retrieve 100% of rows at any scale (10,000+)
+async function supabaseRequestAll(endpoint: string, options: RequestInit = {}, batchSize: number = 1000) {
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
+    throw new Error('Supabase is not configured on the server');
+  }
+
+  const sep = endpoint.includes('?') ? '&' : '?';
+  const firstUrl = `${SUPABASE_URL}/rest/v1/${endpoint}${sep}limit=${batchSize}&offset=0`;
+
+  const firstRes = await fetch(firstUrl, {
+    ...options,
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json',
+      Prefer: 'count=exact',
+      'x-admin-pin': ADMIN_SECRET,
+      ...(options.headers || {}),
+    },
+  });
+
+  if (!firstRes.ok) {
+    const errorText = await firstRes.text();
+    throw new Error(errorText || `Supabase error: HTTP ${firstRes.status}`);
+  }
+
+  const contentRange = firstRes.headers.get('content-range') || '';
+  const firstBatch = await firstRes.json();
+  if (!Array.isArray(firstBatch)) return [];
+
+  if (firstBatch.length < batchSize) {
+    return firstBatch;
+  }
+
+  let totalCount = -1;
+  if (contentRange && contentRange.includes('/')) {
+    const parsed = parseInt(contentRange.split('/')[1], 10);
+    if (!isNaN(parsed) && parsed >= 0) {
+      totalCount = parsed;
+    }
+  }
+
+  if (totalCount > batchSize) {
+    const remainingOffsets: number[] = [];
+    for (let offset = batchSize; offset < totalCount; offset += batchSize) {
+      remainingOffsets.push(offset);
+    }
+
+    const remainingPages = await Promise.all(
+      remainingOffsets.map(async (offset) => {
+        const pageUrl = `${SUPABASE_URL}/rest/v1/${endpoint}${sep}limit=${batchSize}&offset=${offset}`;
+        const res = await fetch(pageUrl, {
+          ...options,
+          headers: {
+            apikey: SUPABASE_KEY,
+            Authorization: `Bearer ${SUPABASE_KEY}`,
+            'Content-Type': 'application/json',
+            'x-admin-pin': ADMIN_SECRET,
+            ...(options.headers || {}),
+          },
+        });
+        if (!res.ok) {
+          const err = await res.text();
+          throw new Error(err || `HTTP ${res.status}`);
+        }
+        const data = await res.json();
+        return Array.isArray(data) ? data : [];
+      })
+    );
+
+    return [firstBatch, ...remainingPages].flat();
+  }
+
+  const allRows = [...firstBatch];
+  let currentOffset = batchSize;
+  let hasMore = true;
+
+  while (hasMore) {
+    const pageUrl = `${SUPABASE_URL}/rest/v1/${endpoint}${sep}limit=${batchSize}&offset=${currentOffset}`;
+    const res = await fetch(pageUrl, {
+      ...options,
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'x-admin-pin': ADMIN_SECRET,
+        ...(options.headers || {}),
+      },
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err || `HTTP ${res.status}`);
+    }
+
+    const batch = await res.json();
+    if (!Array.isArray(batch) || batch.length === 0) break;
+    allRows.push(...batch);
+    if (batch.length < batchSize) {
+      hasMore = false;
+    } else {
+      currentOffset += batch.length;
+    }
+  }
+
+  return allRows;
+}
+
 // -------------------------------------------------------------
 // Automated Email Dispatcher (Section 5)
 // -------------------------------------------------------------
@@ -473,7 +581,7 @@ app.get('/api/admin/signups', adminRateLimit, adminAuth, async (req: Request, re
     if (!SUPABASE_URL || !SUPABASE_KEY) {
       return res.json([]);
     }
-    const data = await supabaseRequest('pilot_signups?select=*&order=created_at.desc');
+    const data = await supabaseRequestAll('pilot_signups?select=*&order=created_at.desc');
     return res.json(data);
   } catch (error: any) {
     return res.status(500).json({ error: 'Failed to fetch signups.' });
@@ -486,7 +594,7 @@ app.get('/api/admin/feedback', adminRateLimit, adminAuth, async (req: Request, r
     if (!SUPABASE_URL || !SUPABASE_KEY) {
       return res.json([]);
     }
-    const data = await supabaseRequest('pilot_feedback?select=*&order=created_at.desc');
+    const data = await supabaseRequestAll('pilot_feedback?select=*&order=created_at.desc');
     return res.json(data);
   } catch (error: any) {
     return res.status(500).json({ error: 'Failed to fetch feedback.' });
@@ -499,8 +607,8 @@ app.get('/api/admin/stats', adminRateLimit, adminAuth, async (req: Request, res:
     let signups: any[] = [];
     let feedback: any[] = [];
     if (SUPABASE_URL && SUPABASE_KEY) {
-      signups = await supabaseRequest('pilot_signups?select=id,device_model,android_version,created_at');
-      feedback = await supabaseRequest('pilot_feedback?select=id,rating,created_at');
+      signups = await supabaseRequestAll('pilot_signups?select=id,device_model,android_version,created_at');
+      feedback = await supabaseRequestAll('pilot_feedback?select=id,rating,created_at');
     }
 
     const totalSignups = signups.length;
