@@ -1,5 +1,5 @@
 // SNEHA Pilot Companion Service Worker
-const CACHE_NAME = 'sneha-pilot-v4';
+const CACHE_NAME = 'sneha-pilot-v5';
 const PRECACHE_URLS = [
   './',
   './index.html',
