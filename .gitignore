@@ -7,3 +7,5 @@ coverage/
 .env*
 !.env.example
 .andromity/
+*.apk
+final apk/

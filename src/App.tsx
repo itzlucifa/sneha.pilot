@@ -2381,10 +2381,10 @@ export default function App() {
                     <p className="text-xs text-[#5a4f30] mt-1 font-['Crimson_Pro'] italic">com.sneha.app · Min SDK 26 · Target SDK 35 · Arm64-v8a</p>
                   </div>
                   <div className="text-right">
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#1f1a0e] border-2 border-[#1f1a0e] px-2 py-0.5">6.2 MB</span>
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#1f1a0e] border-2 border-[#1f1a0e] px-2 py-0.5">848.5 MB</span>
                     <a
-                      href="./assets/sneha-pilot-1.0.1.apk"
-                      download="sneha-pilot-1.0.1.apk"
+                      href="https://github.com/itzlucifa/sneha.pilot/releases/download/v1.0.1/Sneha-Full-Offline-AI.apk"
+                      download="Sneha-Full-Offline-AI.apk"
                       onClick={() => {
                         fetch('./assets/sneha-pilot-1.0.1.apk', { method: 'HEAD' })
                           .then((r) => { if (!r.ok) window.open('https://github.com/itzlucifa/sneha.pilot/releases/latest', '_blank'); })
@@ -2468,8 +2468,8 @@ export default function App() {
                 {/* Cryptographic APK Checksum Validator */}
                 <div className="mt-8">
                   <ChecksumValidator
-                    expectedHash="c7a409f9e160ef5212384918e90e768393e5066db293bb859c253456860d5e1b"
-                    fileName="sneha-pilot-1.0.1.apk"
+                    expectedHash="12d26ff64610c28670804a06287f8a38304d2a1cd53a463d970d7a95e6a7ecfe"
+                    fileName="Sneha-Full-Offline-AI.apk"
                   />
                 </div>
               </div>
@@ -3329,7 +3329,7 @@ export default function App() {
       <QRCodeModal
         isOpen={isQrModalOpen}
         onClose={() => setIsQrModalOpen(false)}
-        url="https://itzlucifa.github.io/sneha.pilot/assets/sneha-pilot-1.0.1.apk"
+        url="https://github.com/itzlucifa/sneha.pilot/releases/download/v1.0.1/Sneha-Full-Offline-AI.apk"
         title="Scan to Download SNEHA APK"
       />
     </div>
